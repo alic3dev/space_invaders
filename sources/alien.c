@@ -1,8 +1,11 @@
 #include "alien.h"
 
+#include <stdlib.h>
+
 #include "cexil.h"
 
 #include "game_state.h"
+#include "projectile.h"
 
 const struct cexil_size size_alien = { width: ALIEN_SIZE_WIDTH, height: ALIEN_SIZE_HEIGHT };
 
@@ -49,4 +52,21 @@ void alien_frame_set(char** pixels) {
   }
 }
 
-void alien_poll(struct alien* alien) {}
+void alien_poll(struct alien* alien) {
+  if (rand() % 1000 >= 999) {
+    struct projectile* projectile = malloc(sizeof(struct projectile));
+
+    projectile_initialize(
+      projectile,
+      ALIEN
+    );
+
+    projectile->sprite.position.x = alien->sprite.position.x + (alien->sprite.size.width / 2);
+    projectile->sprite.position.y = alien->sprite.position.y + (alien->sprite.size.height);
+
+    game_state_projectile_alien_add(
+      alien->game_state,
+      projectile
+    );
+  }
+}
