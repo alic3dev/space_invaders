@@ -12,7 +12,10 @@ const unsigned int player_default_health_max = 5;
 const unsigned int player_default_health = 5;
 const float player_default_speed = 2.0f;
 
-void player_initialize(struct player* player, struct game_state* game_state) {
+void player_initialize(
+  struct player* player,
+  struct game_state* game_state
+) {
   player->game_state = game_state;
   velocity_initialize(&player->velocity);
   player->speed = player_default_speed;
