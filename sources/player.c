@@ -132,6 +132,19 @@ void player_poll(
   player->velocity.y_rollover = 0;
 }
 
+void player_damage(struct player* player) {
+  if (player->health > 0) {
+    player->health = (
+      player->health - 1
+    );
+
+    heart_frame_set(
+      player->sprites_hearts[player->health].pixels,
+      0
+    );
+  }
+}
+
 void player_destroy(struct player* player) {
   free(player->sprites_hearts);
 }
