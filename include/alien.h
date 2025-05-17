@@ -3,6 +3,7 @@
 
 #include "cexil.h"
 
+#include "game_state.h"
 #include "velocity.h"
 
 #define ALIEN_SIZE_WIDTH 8
@@ -16,9 +17,13 @@ extern const char alien_frame[ALIEN_SIZE_HEIGHT][ALIEN_SIZE_WIDTH];
 struct alien {
   struct cexil_sprite sprite;
   struct velocity velocity;
+  struct game_state* game_state;
 };
 
-void alien_initialize(struct alien*);
+void alien_initialize(
+  struct alien*,
+  struct game_state*
+);
 
 void alien_frame_set(char**);
 
