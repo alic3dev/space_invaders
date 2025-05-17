@@ -3,7 +3,9 @@
 
 #include "cexil.h"
 
+#include "alien.h"
 #include "player.h"
+#include "projectile.h"
 #include "velocity.h"
 
 struct game_state {
