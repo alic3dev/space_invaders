@@ -57,6 +57,7 @@ void game_state_alien_remove(
 void game_state_projectile_add(
   struct game_state* game_state,
   struct projectile* projectile,
+  struct projectile*** projectiles,
   unsigned short int* projectiles_count
 );
 
