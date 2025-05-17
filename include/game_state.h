@@ -54,6 +54,12 @@ void game_state_alien_remove(
   unsigned short int index_alien
 );
 
+void game_state_projectile_add(
+  struct game_state* game_state,
+  struct projectile* projectile,
+  unsigned short int* projectiles_count
+);
+
 void game_state_projectile_player_add(
   struct game_state*,
   struct projectile*

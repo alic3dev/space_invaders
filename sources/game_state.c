@@ -50,7 +50,10 @@ void game_state_initialize(
         sizeof(struct alien)
       );
 
-      alien_initialize(game_state->aliens[index_alien]);
+      alien_initialize(
+        game_state->aliens[index_alien],
+        game_state
+      );
 
       game_state->aliens[index_alien]->sprite.position.x = 0 + (x_index * (ALIEN_SIZE_WIDTH + ALIEN_SPACING_X));
       game_state->aliens[index_alien]->sprite.position.y = 14 + (y_index * (ALIEN_SIZE_HEIGHT + ALIEN_SPACING_Y));
@@ -337,21 +340,23 @@ void game_state_alien_remove(
   );
 }
 
-void game_state_projectile_player_add(
+void game_state_projectile_add(
   struct game_state* game_state,
-  struct projectile* projectile
+  struct projectile* projectile,
+  struct projectile*** projectiles,
+  unsigned short int* projectiles_count
 ) {
-  game_state->projectiles_player_count = (
-    game_state->projectiles_player_count + 1
+  *projectiles_count = (
+    *projectiles_count + 1
   );
 
-  game_state->projectiles_player = realloc(
-    game_state->projectiles_player,
-    sizeof(struct projectile*) * game_state->projectiles_player_count
+  *projectiles = realloc(
+    *projectiles,
+    sizeof(struct projectile*) * *projectiles_count
   );
 
-  game_state->projectiles_player[
-    game_state->projectiles_player_count - 1
+  (*projectiles)[
+    *projectiles_count - 1
   ] = projectile;
 
   cexil_renderer_sprite_add(
@@ -364,18 +369,24 @@ void game_state_projectile_alien_add(
   struct game_state* game_state,
   struct projectile* projectile
 ) {
-  game_state->projectiles_alien_count = (
-    game_state->projectiles_alien_count + 1
+  game_state_projectile_add(
+    game_state,
+    projectile,
+    &game_state->projectiles_alien,
+    &game_state->projectiles_alien_count
   );
+}
 
-  game_state->projectiles_alien = realloc(
-    game_state->projectiles_alien,
-    sizeof(struct projectile*) * game_state->projectiles_alien_count
+void game_state_projectile_player_add(
+  struct game_state* game_state,
+  struct projectile* projectile
+) {
+  game_state_projectile_add(
+    game_state,
+    projectile,
+    &game_state->projectiles_player,
+    &game_state->projectiles_player_count
   );
-
-  game_state->projectiles_alien[
-    game_state->projectiles_alien_count - 1
-  ] = projectile;
 }
 
 void game_state_projectile_remove(
