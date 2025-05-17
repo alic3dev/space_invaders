@@ -209,7 +209,22 @@ void game_state_poll(
   ) {
     projectile_poll(game_state->projectiles_alien[index_projectile_alien]);
 
-    if (game_state->projectiles_alien[index_projectile_alien]->sprite.position.y >= game_state->renderer->size.height) {
+    unsigned char projectile_should_remove = 0;
+
+    if (
+      cexil_collision_intersects(
+        &game_state->player->sprite.position,
+        &game_state->player->sprite.size,
+        &game_state->projectiles_alien[index_projectile_alien]->sprite.position,
+        &game_state->projectiles_alien[index_projectile_alien]->sprite.size
+      ) == 1
+    ) {
+      projectile_should_remove = 1;
+    } else if (game_state->projectiles_alien[index_projectile_alien]->sprite.position.y >= game_state->renderer->size.height) {
+      projectile_should_remove = 1;
+    }
+
+    if (projectile_should_remove == 1) {
       game_state_projectile_alien_remove(
         game_state,
         index_projectile_alien
