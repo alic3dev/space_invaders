@@ -3,6 +3,7 @@
 
 #include "cexil.h"
 
+#include "player.h"
 #include "velocity.h"
 
 struct game_state {
@@ -11,6 +12,8 @@ struct game_state {
 
   int total_score;
   unsigned long long int total_time;
+
+  struct player* player;
   
   struct alien** aliens;
   unsigned short int aliens_count;
@@ -38,7 +41,8 @@ extern const unsigned int game_state_default_level;
 
 void game_state_initialize(
   struct game_state*,
-  struct cexil_renderer*
+  struct cexil_renderer*,
+  struct player*
 );
 
 void game_state_progress_level(struct game_state*);

@@ -5,6 +5,7 @@
 #include "cexil.h"
 
 #include "alien.h"
+#include "player.h"
 #include "projectile.h"
 
 const unsigned int game_state_default_health = 0;
@@ -12,9 +13,12 @@ const unsigned int game_state_default_level = 1;
 
 void game_state_initialize(
   struct game_state* game_state,
-  struct cexil_renderer* renderer
+  struct cexil_renderer* renderer,
+  struct player* player
 ) {
   game_state->renderer = renderer;
+
+  game_state->player = player;
 
   game_state->aliens_columns = 20;
   game_state->aliens_rows = 4;

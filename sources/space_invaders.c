@@ -32,12 +32,14 @@ int main() {
   );
 
   struct game_state game_state;
+  struct player player;
+
   game_state_initialize(
     &game_state,
-    &renderer
+    &renderer,
+    &player
   );
 
-  struct player player;
   player_initialize(
     &player,
     &game_state
