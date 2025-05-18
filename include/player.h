@@ -27,7 +27,10 @@ void player_initialize(
 
 void player_poll(struct player*);
 
-void player_damage(struct player*);
+void player_damage(
+  struct player*,
+  unsigned char
+);
 
 void player_destroy(struct player*);
 

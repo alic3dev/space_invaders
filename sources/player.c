@@ -132,16 +132,30 @@ void player_poll(
   player->velocity.y_rollover = 0;
 }
 
-void player_damage(struct player* player) {
-  if (player->health > 0) {
-    player->health = (
-      player->health - 1
-    );
+void player_damage(
+  struct player* player,
+  unsigned char amount
+) {
+  for (
+    unsigned char index_damage = 0;
+    index_damage < amount;
+    ++index_damage
+  ) {
+    if (player->health > 0) {
+      player->health = (
+        player->health - 1
+      );
 
-    heart_frame_set(
-      player->sprites_hearts[player->health].pixels,
-      0
-    );
+      heart_frame_set(
+        player->sprites_hearts[player->health].pixels,
+        0
+      );
+    } else {
+      break;
+    }
+  }
+}
+
   }
 }
 

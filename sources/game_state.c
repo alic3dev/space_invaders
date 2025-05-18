@@ -221,7 +221,10 @@ void game_state_poll(
     ) {
       projectile_should_remove = 1;
 
-      player_damage(game_state->player);
+      player_damage(
+        game_state->player,
+        1
+      );
     } else if (game_state->projectiles_alien[index_projectile_alien]->sprite.position.y >= game_state->renderer->size.height) {
       projectile_should_remove = 1;
     }
