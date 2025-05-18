@@ -32,6 +32,11 @@ void player_damage(
   unsigned char
 );
 
+void player_heal(
+  struct player*,
+  unsigned char
+);
+
 void player_destroy(struct player*);
 
 #endif

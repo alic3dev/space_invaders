@@ -156,6 +156,27 @@ void player_damage(
   }
 }
 
+void player_heal(
+  struct player* player,
+  unsigned char amount
+) {
+  for (
+    unsigned char index_heal = 0;
+    index_heal < amount;
+    ++index_heal
+  ) {
+    if (player->health < player->health_max) {
+      player->health = (
+        player->health + 1
+      );
+
+      heart_frame_set(
+        player->sprites_hearts[player->health].pixels,
+        0
+      );
+    } else {
+      break;
+    }
   }
 }
 
