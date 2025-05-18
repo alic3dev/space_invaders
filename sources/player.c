@@ -9,7 +9,7 @@
 #include "projectile.h"
 
 const unsigned int player_default_health_max = 5;
-const unsigned int player_default_health = 5;
+const unsigned int player_default_health = player_default_health_max;
 const float player_default_speed = 2.0f;
 
 void player_initialize(
