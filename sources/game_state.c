@@ -112,6 +112,11 @@ void game_state_progress_level(struct game_state* game_state) {
   cexil_timer_start(&game_state->timer);
 
   game_state->level = game_state->level + 1; 
+
+  player_heal(
+    game_state->player,
+    1
+  );
 }
 
 void game_state_score_text_set(
