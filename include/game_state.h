@@ -47,6 +47,8 @@ void game_state_initialize(
   struct player*
 );
 
+void game_state_aliens_populate(struct game_state*);
+
 void game_state_progress_level(struct game_state*);
 
 void game_state_score_text_set(
@@ -59,6 +61,8 @@ void game_state_alien_remove(
   struct game_state*,
   unsigned short int index_alien
 );
+
+void game_state_aliens_remove_all(struct game_state*);
 
 void game_state_projectile_add(
   struct game_state* game_state,

@@ -22,13 +22,58 @@ void game_state_initialize(
 
   game_state->aliens_columns = 20;
   game_state->aliens_rows = 4;
-
-  game_state->aliens_count = game_state->aliens_columns * game_state->aliens_rows;
+  game_state->aliens_count = 0;
   game_state->aliens = malloc(
     sizeof(struct alien*) * game_state->aliens_count
   );
 
   velocity_initialize(&game_state->aliens_velocity);
+  
+  game_state_aliens_populate(game_state);
+
+  game_state->score = 0;
+  game_state->total_score = 0;
+  
+  cexil_text_initialize(
+    &game_state->score_text,
+    ""
+  );
+  
+  cexil_renderer_text_add(
+    game_state->renderer,
+    &game_state->score_text
+  );
+
+  game_state_score_text_set(
+    game_state
+  );
+  
+  game_state->total_time = 0;
+  cexil_timer_start(&game_state->timer);
+
+  game_state->health = game_state_default_health;
+  game_state->level = game_state_default_level;
+
+  game_state->projectiles_player_count = 0;
+  game_state->projectiles_alien_count = 0;
+
+  game_state->projectiles_player = malloc(
+    sizeof(struct projectile*) * game_state->projectiles_player_count
+  );
+  game_state->projectiles_alien = malloc(
+    sizeof(struct projectile*) * game_state->projectiles_alien_count
+  );
+}
+
+void game_state_aliens_populate(struct game_state* game_state) {
+  game_state_aliens_remove_all(game_state);
+
+  game_state->aliens_count = game_state->aliens_columns * game_state->aliens_rows;
+  game_state->aliens = realloc(
+    game_state->aliens,
+    sizeof(struct alien*) * game_state->aliens_count
+  );
+
   game_state->aliens_velocity.x = 1;
 
   game_state->aliens_size.width = (game_state->aliens_columns * (ALIEN_SIZE_WIDTH + ALIEN_SPACING_X)) - ALIEN_SPACING_X;
@@ -68,39 +113,6 @@ void game_state_initialize(
       );
     }
   }
-
-  game_state->score = 0;
-  game_state->total_score = 0;
-  
-  cexil_text_initialize(
-    &game_state->score_text,
-    ""
-  );
-  
-  cexil_renderer_text_add(
-    game_state->renderer,
-    &game_state->score_text
-  );
-
-  game_state_score_text_set(
-    game_state
-  );
-  
-  game_state->total_time = 0;
-  cexil_timer_start(&game_state->timer);
-
-  game_state->health = game_state_default_health;
-  game_state->level = game_state_default_level;
-
-  game_state->projectiles_player_count = 0;
-  game_state->projectiles_alien_count = 0;
-
-  game_state->projectiles_player = malloc(
-    sizeof(struct projectile*) * game_state->projectiles_player_count
-  );
-  game_state->projectiles_alien = malloc(
-    sizeof(struct projectile*) * game_state->projectiles_alien_count
-  );
 }
 
 void game_state_progress_level(struct game_state* game_state) {
@@ -117,6 +129,8 @@ void game_state_progress_level(struct game_state* game_state) {
     game_state->player,
     1
   );
+
+  game_state_aliens_populate(game_state);
 }
 
 void game_state_score_text_set(
@@ -327,10 +341,6 @@ void game_state_poll(
           index_alien - 1
         );
 
-        if (game_state->aliens_count == 0) {
-          game_state_progress_level(game_state);
-        }
-
         break;
       }
     }
@@ -338,6 +348,10 @@ void game_state_poll(
 
   game_state->aliens_velocity.x_rollover = 0;
   game_state->aliens_velocity.y_rollover = 0;
+
+  if (game_state->aliens_count == 0) {
+    game_state_progress_level(game_state);
+  }
 }
 
 void game_state_alien_remove(
@@ -367,6 +381,23 @@ void game_state_alien_remove(
     game_state->aliens,
     sizeof(struct alien*) * game_state->aliens_count
   );
+}
+
+void game_state_aliens_remove_all(struct game_state* game_state) {
+  if (game_state->aliens_count == 0) {
+    return;
+  }
+
+  for (
+    unsigned short int index_alien = game_state->aliens_count;
+    index_alien > 0;
+    --index_alien
+  ) {
+    game_state_alien_remove(
+      game_state,
+      index_alien - 1
+    );
+  }
 }
 
 void game_state_projectile_add(
