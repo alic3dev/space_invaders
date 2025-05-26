@@ -25,6 +25,6 @@ void player_input_thread_join();
 
 void player_input_destroy();
 
-void* __player_input_get();
+void* __player_input_get(void*);
 
 #endif

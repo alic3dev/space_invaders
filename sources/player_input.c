@@ -66,7 +66,7 @@ void player_input_destroy() {
   );
 }
 
-void* __player_input_get() {
+void* __player_input_get(void* _) {
   struct termios termios_attrs_original;
   struct termios termios_attrs_updated;
 
@@ -187,3 +187,4 @@ void* __player_input_get() {
     &termios_attrs_original
   );
 }
+
