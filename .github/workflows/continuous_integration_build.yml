@@ -1,0 +1,23 @@
+name: continuous_integration_build
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+jobs:
+  continuous_integration_build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout_space_invaders
+      uses: actions/checkout@v4
+      with:
+        path: space_invaders
+    - name: checkout_cexil
+      uses: actions/checkout@v4
+      with:
+        repository: alic3dev/cexil
+        path: cexil
+    - name: make_cexil
+      run: cd cexil && make
+    - name: make_space_invaders
+      run: cd space_invaders && make
