@@ -1,9 +1,9 @@
 name: continuous_integration_build
 on:
   push:
-    branches: ["main"]
+    branches: ["core"]
   pull_request:
-    branches: ["main"]
+    branches: ["core"]
 jobs:
   continuous_integration_build:
     runs-on: ubuntu-latest
