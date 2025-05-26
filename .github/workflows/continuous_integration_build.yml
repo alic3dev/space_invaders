@@ -1,0 +1,37 @@
+name: continuous_integration_build
+on:
+  push:
+    branches: ["core"]
+  pull_request:
+    branches: ["core"]
+jobs:
+  continuous_integration_build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout_space_invaders
+      uses: actions/checkout@v4
+      with:
+        path: space_invaders
+    - name: checkout_cexil
+      uses: actions/checkout@v4
+      with:
+        repository: alic3dev/cexil
+        path: cexil
+    - name: checkout_clic3
+      uses: actions/checkout@v4
+      with:
+        repository: alic3dev/clic3
+        path: clic3
+    - name: checkout_interrupt_handler
+      uses: actions/checkout@v4
+      with:
+        repository: alic3dev/interrupt_handler
+        path: interrupt_handler
+    - name: make_cexil
+      run: cd cexil && make
+    - name: make_clic3
+      run: cd clic3 && make
+    - name: make_interrupt_handler
+      run: cd interrupt_handler && make
+    - name: make_space_invaders
+      run: cd space_invaders && make
