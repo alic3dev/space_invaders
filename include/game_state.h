@@ -3,6 +3,9 @@
 
 #include "cexil.h"
 
+#include "alien.h"
+#include "player.h"
+#include "projectile.h"
 #include "velocity.h"
 
 struct game_state {
@@ -11,6 +14,8 @@ struct game_state {
 
   int total_score;
   unsigned long long int total_time;
+
+  struct player* player;
   
   struct alien** aliens;
   unsigned short int aliens_count;
@@ -38,8 +43,11 @@ extern const unsigned int game_state_default_level;
 
 void game_state_initialize(
   struct game_state*,
-  struct cexil_renderer*
+  struct cexil_renderer*,
+  struct player*
 );
+
+void game_state_aliens_populate(struct game_state*);
 
 void game_state_progress_level(struct game_state*);
 
@@ -52,6 +60,15 @@ void game_state_poll(struct game_state*);
 void game_state_alien_remove(
   struct game_state*,
   unsigned short int index_alien
+);
+
+void game_state_aliens_remove_all(struct game_state*);
+
+void game_state_projectile_add(
+  struct game_state* game_state,
+  struct projectile* projectile,
+  struct projectile*** projectiles,
+  unsigned short int* projectiles_count
 );
 
 void game_state_projectile_player_add(

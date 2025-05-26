@@ -9,10 +9,13 @@
 #include "projectile.h"
 
 const unsigned int player_default_health_max = 5;
-const unsigned int player_default_health = 5;
+const unsigned int player_default_health = player_default_health_max;
 const float player_default_speed = 2.0f;
 
-void player_initialize(struct player* player, struct game_state* game_state) {
+void player_initialize(
+  struct player* player,
+  struct game_state* game_state
+) {
   player->game_state = game_state;
   velocity_initialize(&player->velocity);
   player->speed = player_default_speed;
@@ -127,6 +130,54 @@ void player_poll(
 
   player->velocity.x_rollover = 0;
   player->velocity.y_rollover = 0;
+}
+
+void player_damage(
+  struct player* player,
+  unsigned char amount
+) {
+  for (
+    unsigned char index_damage = 0;
+    index_damage < amount;
+    ++index_damage
+  ) {
+    if (player->health > 0) {
+      player->health = (
+        player->health - 1
+      );
+
+      heart_frame_set(
+        player->sprites_hearts[player->health].pixels,
+        0
+      );
+    } else {
+      break;
+    }
+  }
+}
+
+void player_heal(
+  struct player* player,
+  unsigned char amount
+) {
+  for (
+    unsigned char index_heal = 0;
+    index_heal < amount;
+    ++index_heal
+  ) {
+    if (player->health < player->health_max) {
+      player->health = (
+        player->health + 1
+      );
+
+      heart_frame_set(
+        player->sprites_hearts[player->health].pixels,
+        0
+      );
+    } else {
+      break;
+    }
+  }
 }
 
 void player_destroy(struct player* player) {

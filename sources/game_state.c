@@ -5,6 +5,7 @@
 #include "cexil.h"
 
 #include "alien.h"
+#include "player.h"
 #include "projectile.h"
 
 const unsigned int game_state_default_health = 0;
@@ -12,55 +13,23 @@ const unsigned int game_state_default_level = 1;
 
 void game_state_initialize(
   struct game_state* game_state,
-  struct cexil_renderer* renderer
+  struct cexil_renderer* renderer,
+  struct player* player
 ) {
   game_state->renderer = renderer;
 
+  game_state->player = player;
+
   game_state->aliens_columns = 20;
   game_state->aliens_rows = 4;
-
-  game_state->aliens_count = game_state->aliens_columns * game_state->aliens_rows;
+  game_state->aliens_count = 0;
   game_state->aliens = malloc(
     sizeof(struct alien*) * game_state->aliens_count
   );
 
   velocity_initialize(&game_state->aliens_velocity);
-  game_state->aliens_velocity.x = 1;
-
-  game_state->aliens_size.width = (game_state->aliens_columns * (ALIEN_SIZE_WIDTH + ALIEN_SPACING_X)) - ALIEN_SPACING_X;
-  game_state->aliens_size.height = game_state->aliens_rows * (ALIEN_SIZE_WIDTH + ALIEN_SPACING_Y);
-
-  game_state->aliens_position.x = 0;
-
-  for (
-    unsigned char y_index = 0;
-    y_index < game_state->aliens_rows;
-    ++y_index
-  ) {
-    unsigned char y_offset = y_index * game_state->aliens_columns;
-
-    for (
-      unsigned char x_index = 0;
-      x_index < game_state->aliens_columns;
-      ++x_index
-    ) {
-      unsigned char index_alien = y_offset + x_index;
-
-      game_state->aliens[index_alien] = malloc(
-        sizeof(struct alien)
-      );
-
-      alien_initialize(game_state->aliens[index_alien]);
-
-      game_state->aliens[index_alien]->sprite.position.x = 0 + (x_index * (ALIEN_SIZE_WIDTH + ALIEN_SPACING_X));
-      game_state->aliens[index_alien]->sprite.position.y = 14 + (y_index * (ALIEN_SIZE_HEIGHT + ALIEN_SPACING_Y));
-
-      cexil_renderer_sprite_add(
-        game_state->renderer,
-        &game_state->aliens[index_alien]->sprite
-      );
-    }
-  }
+  
+  game_state_aliens_populate(game_state);
 
   game_state->score = 0;
   game_state->total_score = 0;
@@ -96,6 +65,56 @@ void game_state_initialize(
   );
 }
 
+void game_state_aliens_populate(struct game_state* game_state) {
+  game_state_aliens_remove_all(game_state);
+
+  game_state->aliens_count = game_state->aliens_columns * game_state->aliens_rows;
+  game_state->aliens = realloc(
+    game_state->aliens,
+    sizeof(struct alien*) * game_state->aliens_count
+  );
+
+  game_state->aliens_velocity.x = 1;
+
+  game_state->aliens_size.width = (game_state->aliens_columns * (ALIEN_SIZE_WIDTH + ALIEN_SPACING_X)) - ALIEN_SPACING_X;
+  game_state->aliens_size.height = game_state->aliens_rows * (ALIEN_SIZE_WIDTH + ALIEN_SPACING_Y);
+
+  game_state->aliens_position.x = 0;
+
+  for (
+    unsigned char y_index = 0;
+    y_index < game_state->aliens_rows;
+    ++y_index
+  ) {
+    unsigned char y_offset = y_index * game_state->aliens_columns;
+
+    for (
+      unsigned char x_index = 0;
+      x_index < game_state->aliens_columns;
+      ++x_index
+    ) {
+      unsigned char index_alien = y_offset + x_index;
+
+      game_state->aliens[index_alien] = malloc(
+        sizeof(struct alien)
+      );
+
+      alien_initialize(
+        game_state->aliens[index_alien],
+        game_state
+      );
+
+      game_state->aliens[index_alien]->sprite.position.x = 0 + (x_index * (ALIEN_SIZE_WIDTH + ALIEN_SPACING_X));
+      game_state->aliens[index_alien]->sprite.position.y = 14 + (y_index * (ALIEN_SIZE_HEIGHT + ALIEN_SPACING_Y));
+
+      cexil_renderer_sprite_add(
+        game_state->renderer,
+        &game_state->aliens[index_alien]->sprite
+      );
+    }
+  }
+}
+
 void game_state_progress_level(struct game_state* game_state) {
   game_state->total_score = game_state->total_score + game_state->score;
   // game_state->score = 0;
@@ -105,6 +124,13 @@ void game_state_progress_level(struct game_state* game_state) {
   cexil_timer_start(&game_state->timer);
 
   game_state->level = game_state->level + 1; 
+
+  player_heal(
+    game_state->player,
+    1
+  );
+
+  game_state_aliens_populate(game_state);
 }
 
 void game_state_score_text_set(
@@ -202,7 +228,27 @@ void game_state_poll(
   ) {
     projectile_poll(game_state->projectiles_alien[index_projectile_alien]);
 
-    if (game_state->projectiles_alien[index_projectile_alien]->sprite.position.y >= game_state->renderer->size.height) {
+    unsigned char projectile_should_remove = 0;
+
+    if (
+      cexil_collision_intersects(
+        &game_state->player->sprite.position,
+        &game_state->player->sprite.size,
+        &game_state->projectiles_alien[index_projectile_alien]->sprite.position,
+        &game_state->projectiles_alien[index_projectile_alien]->sprite.size
+      ) == 1
+    ) {
+      projectile_should_remove = 1;
+
+      player_damage(
+        game_state->player,
+        1
+      );
+    } else if (game_state->projectiles_alien[index_projectile_alien]->sprite.position.y >= game_state->renderer->size.height) {
+      projectile_should_remove = 1;
+    }
+
+    if (projectile_should_remove == 1) {
       game_state_projectile_alien_remove(
         game_state,
         index_projectile_alien
@@ -295,10 +341,6 @@ void game_state_poll(
           index_alien - 1
         );
 
-        if (game_state->aliens_count == 0) {
-          game_state_progress_level(game_state);
-        }
-
         break;
       }
     }
@@ -306,6 +348,10 @@ void game_state_poll(
 
   game_state->aliens_velocity.x_rollover = 0;
   game_state->aliens_velocity.y_rollover = 0;
+
+  if (game_state->aliens_count == 0) {
+    game_state_progress_level(game_state);
+  }
 }
 
 void game_state_alien_remove(
@@ -337,21 +383,40 @@ void game_state_alien_remove(
   );
 }
 
-void game_state_projectile_player_add(
+void game_state_aliens_remove_all(struct game_state* game_state) {
+  if (game_state->aliens_count == 0) {
+    return;
+  }
+
+  for (
+    unsigned short int index_alien = game_state->aliens_count;
+    index_alien > 0;
+    --index_alien
+  ) {
+    game_state_alien_remove(
+      game_state,
+      index_alien - 1
+    );
+  }
+}
+
+void game_state_projectile_add(
   struct game_state* game_state,
-  struct projectile* projectile
+  struct projectile* projectile,
+  struct projectile*** projectiles,
+  unsigned short int* projectiles_count
 ) {
-  game_state->projectiles_player_count = (
-    game_state->projectiles_player_count + 1
+  *projectiles_count = (
+    *projectiles_count + 1
   );
 
-  game_state->projectiles_player = realloc(
-    game_state->projectiles_player,
-    sizeof(struct projectile*) * game_state->projectiles_player_count
+  *projectiles = realloc(
+    *projectiles,
+    sizeof(struct projectile*) * *projectiles_count
   );
 
-  game_state->projectiles_player[
-    game_state->projectiles_player_count - 1
+  (*projectiles)[
+    *projectiles_count - 1
   ] = projectile;
 
   cexil_renderer_sprite_add(
@@ -364,18 +429,24 @@ void game_state_projectile_alien_add(
   struct game_state* game_state,
   struct projectile* projectile
 ) {
-  game_state->projectiles_alien_count = (
-    game_state->projectiles_alien_count + 1
+  game_state_projectile_add(
+    game_state,
+    projectile,
+    &game_state->projectiles_alien,
+    &game_state->projectiles_alien_count
   );
+}
 
-  game_state->projectiles_alien = realloc(
-    game_state->projectiles_alien,
-    sizeof(struct projectile*) * game_state->projectiles_alien_count
+void game_state_projectile_player_add(
+  struct game_state* game_state,
+  struct projectile* projectile
+) {
+  game_state_projectile_add(
+    game_state,
+    projectile,
+    &game_state->projectiles_player,
+    &game_state->projectiles_player_count
   );
-
-  game_state->projectiles_alien[
-    game_state->projectiles_alien_count - 1
-  ] = projectile;
 }
 
 void game_state_projectile_remove(

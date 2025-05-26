@@ -17,7 +17,11 @@ void projectile_initialize(
 
   velocity_initialize(&projectile->velocity);
   projectile->velocity.x = 0;
-  projectile->velocity.y = -1.25125f;
+  projectile->velocity.y = (
+    source == PLAYER
+    ? -1.25125f
+    : 1.25125f
+  );
 
   cexil_sprite_initialize(
     &projectile->sprite,
