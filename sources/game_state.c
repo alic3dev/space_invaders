@@ -5,11 +5,11 @@
 #include "cexil.h"
 
 #include "alien.h"
+#include <intro.h>
 #include <mode.h>
 #include "player.h"
 #include "projectile.h"
 
-const unsigned int game_state_default_health = 0;
 const unsigned int game_state_default_level = 1;
 
 void game_state_initialize_with_mode(
@@ -20,6 +20,27 @@ void game_state_initialize_with_mode(
 ) {
   game_state->renderer = renderer;
 
+  intro_initialize(
+    &game_state->intro
+  );
+  
+  cexil_renderer_sprite_add(
+    game_state->renderer,
+    &game_state->intro.sprite
+  );
+
+  game_state->intro.sprite.position.x = (
+    (game_state->renderer->size.width / 2) - 
+    (game_state->intro.sprite.size.width / 2)
+  );
+
+  game_state->intro.sprite.position.y = (
+    (game_state->renderer->size.height / 2) - 
+    (game_state->intro.sprite.size.height / 2)
+  );
+
+  game_state->intro.sprite.visible = mode == intro ? 1 : 0;
+  
   game_state->player = player;
 
   game_state->aliens_columns = 20;
@@ -30,8 +51,6 @@ void game_state_initialize_with_mode(
   );
 
   velocity_initialize(&game_state->aliens_velocity);
-  
-  game_state_aliens_populate(game_state);
 
   game_state->score = 0;
   game_state->total_score = 0;
@@ -51,9 +70,7 @@ void game_state_initialize_with_mode(
   );
   
   game_state->total_time = 0;
-  cexil_timer_start(&game_state->timer);
 
-  game_state->health = game_state_default_health;
   game_state->level = game_state_default_level;
 
   game_state->projectiles_player_count = 0;
@@ -62,13 +79,14 @@ void game_state_initialize_with_mode(
   game_state->projectiles_player = malloc(
     sizeof(struct projectile*) * game_state->projectiles_player_count
   );
+
   game_state->projectiles_alien = malloc(
     sizeof(struct projectile*) * game_state->projectiles_alien_count
   );
 
   game_state_mode_set(
     game_state,
-    game_state->mode
+    mode
   );
 }
 
@@ -89,14 +107,47 @@ void game_state_mode_set(
   struct game_state* game_state,
   enum mode mode
 ) {
+  if (game_state->mode == mode) {
+    return;
+  }
+
   game_state->mode = mode;
+
+  unsigned char elements_game_visible = (
+    game_state->mode == game
+    ? 1
+    : 0
+  );
+
+  if (game_state->player->initialized == 1) {
+    player_visibility_set(
+      game_state->player,
+      elements_game_visible
+    );
+  }
+
+  game_state->score_text.visible = elements_game_visible;
+
+  game_state->intro.sprite.visible = mode == intro ? 1 : 0;
 
   switch (game_state->mode) {
     case intro:
+      cexil_timer_start(&game_state->timer);
       break;
     case menu:
       break;
     case game:
+      game_state->level = game_state_default_level;
+
+      game_state->score = 0;
+      game_state->total_score = 0;
+
+      cexil_timer_start(&game_state->timer);
+      game_state->total_time = 0;
+
+      velocity_initialize(&game_state->aliens_velocity);
+
+      game_state_aliens_populate(game_state);
       break;
     case game_over:
       break;
@@ -244,7 +295,33 @@ void game_state_score_text_set(
   free(score_char_array);
 }
 
-void game_state_poll(
+void game_state_poll_intro(
+  struct game_state* game_state
+) {
+  if (game_state->intro.size_render.height < game_state->intro.sprite.size.height) {
+    if (cexil_timer_time_elapsed(&game_state->timer) >= 50000) {
+      game_state->intro.size_render.height = (
+        game_state->intro.size_render.height + 1
+      );
+
+      cexil_sprite_render_size_set(
+        &game_state->intro.sprite,
+        &game_state->intro.size_render
+      );
+
+      cexil_timer_start(&game_state->timer);
+    }
+  } else {
+    if (cexil_timer_time_elapsed(&game_state->timer) >= 2500000) {
+      game_state_mode_set(
+        game_state,
+        game
+      );
+    }
+  }
+}
+
+void game_state_poll_game(
   struct game_state* game_state
 ) {
   for (
@@ -396,6 +473,21 @@ void game_state_poll(
 
   if (game_state->aliens_count == 0) {
     game_state_progress_level(game_state);
+  }
+}
+
+void game_state_poll(
+  struct game_state* game_state
+) {
+  switch (game_state->mode) {
+    case intro:
+      game_state_poll_intro(game_state);
+      break;
+    case game:
+      game_state_poll_game(game_state);
+      break;
+    default:
+      break;
   }
 }
 

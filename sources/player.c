@@ -8,8 +8,8 @@
 #include "player_input.h"
 #include "projectile.h"
 
-const unsigned int player_default_health_max = 5;
-const unsigned int player_default_health = player_default_health_max;
+const unsigned char player_default_health_max = 5;
+const unsigned char player_default_health = player_default_health_max;
 const float player_default_speed = 2.0f;
 
 void player_initialize(
@@ -61,7 +61,7 @@ void player_initialize(
   };
 
   for (
-    unsigned int index_health = 0;
+    unsigned char index_health = 0;
     index_health < player->health_max;
     ++index_health
   ) {
@@ -85,6 +85,23 @@ void player_initialize(
     ].position.x = (
       (size_sprite_heart.width + 2) * index_health
     );
+  }
+
+  player->initialized = 1;
+}
+
+void player_visibility_set(
+  struct player* player,
+  unsigned char visible
+) {
+  player->sprite.visible = visible;
+
+  for (
+    unsigned char index_health = 0;
+    index_health < player->health_max;
+    ++index_health
+  ) {
+    player->sprites_hearts[index_health].visible = visible;
   }
 }
 
