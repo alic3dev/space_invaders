@@ -130,6 +130,11 @@ void game_state_progress_level(struct game_state* game_state) {
     1
   );
 
+  game_state_aliens_remove_all(game_state);
+
+  game_state_projectiles_alien_remove_all(game_state);
+  game_state_projectiles_player_remove_all(game_state);
+
   game_state_aliens_populate(game_state);
 }
 
@@ -504,6 +509,45 @@ void game_state_projectile_player_remove(
   );
 }
 
+void game_state_projectiles_remove_all( 
+  struct game_state* game_state,
+  struct projectile*** projectiles,
+  unsigned short int* projectiles_count 
+) {
+  for (
+    unsigned int index_projectile = *projectiles_count;
+    index_projectile > 0;
+    --index_projectile
+  ) {
+    game_state_projectile_remove(
+      game_state,
+      projectiles,
+      index_projectile - 1,
+      projectiles_count
+    );
+  }
+}
+
+void game_state_projectiles_alien_remove_all(
+  struct game_state* game_state
+) {
+  game_state_projectiles_remove_all(
+    game_state,
+    &game_state->projectiles_alien,
+    &game_state->projectiles_alien_count
+  );
+}
+
+void game_state_projectiles_player_remove_all(
+  struct game_state* game_state
+) {
+  game_state_projectiles_remove_all(
+    game_state,
+    &game_state->projectiles_player,
+    &game_state->projectiles_player_count
+  );
+}
+
 void game_state_destroy(struct game_state* game_state) {
   for (
     unsigned int index_projectile_player = 0;
@@ -533,3 +577,4 @@ void game_state_destroy(struct game_state* game_state) {
   free(game_state->projectiles_player);
   free(game_state->projectiles_alien);
 }
+

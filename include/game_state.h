@@ -98,6 +98,20 @@ void game_state_projectile_alien_remove(
   unsigned short int
 );
 
+void game_state_projectiles_remove_all(
+  struct game_state*,
+  struct projectile***,
+  unsigned short int*
+);
+
+void game_state_projectiles_alien_remove_all(
+  struct game_state*
+);
+
+void game_state_projectiles_player_remove_all(
+  struct game_state*
+);
+
 void game_state_destroy(struct game_state*);
 
 #endif
