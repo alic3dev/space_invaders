@@ -4,11 +4,19 @@
 #include "cexil.h"
 
 #include "alien.h"
+#include <intro.h>
+#include <mode.h>
 #include "player.h"
 #include "projectile.h"
 #include "velocity.h"
 
+extern const unsigned int game_state_default_level;
+
 struct game_state {
+  enum mode mode;
+
+  struct intro intro;
+
   struct cexil_text score_text;
   int score;
 
@@ -25,7 +33,6 @@ struct game_state {
   struct cexil_size aliens_size;
   struct velocity aliens_velocity;
   
-  unsigned int health;
   struct cexil_timer timer;
   unsigned int level;
 
@@ -38,13 +45,22 @@ struct game_state {
   unsigned short int projectiles_alien_count;
 };
 
-extern const unsigned int game_state_default_health;
-extern const unsigned int game_state_default_level;
+void game_state_initialize_with_mode(
+  struct game_state*,
+  struct cexil_renderer*,
+  struct player*,
+  enum mode
+);
 
 void game_state_initialize(
   struct game_state*,
   struct cexil_renderer*,
   struct player*
+);
+
+void game_state_mode_set(
+  struct game_state*,
+  enum mode
 );
 
 void game_state_aliens_populate(struct game_state*);
@@ -55,6 +71,8 @@ void game_state_score_text_set(
   struct game_state*
 );
 
+void game_state_poll_intro(struct game_state*);
+void game_state_poll_game(struct game_state*);
 void game_state_poll(struct game_state*);
 
 void game_state_alien_remove(
