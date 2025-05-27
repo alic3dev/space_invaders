@@ -1,8 +1,5 @@
 #include <intro.h>
 
-const unsigned char size_intro_height = 18;
-const unsigned char size_intro_width = 70;
-
 const struct cexil_size size_intro = {
   height: size_intro_height,
   width: size_intro_width

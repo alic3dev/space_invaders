@@ -3,8 +3,8 @@
 
 #include <cexil.h>
 
-extern const unsigned char size_intro_height;
-extern const unsigned char size_intro_width;
+#define size_intro_height 18
+#define size_intro_width 70
 
 struct intro {
   struct cexil_sprite sprite;
