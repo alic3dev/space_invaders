@@ -25,7 +25,10 @@ void player_initialize(
     height: 8
   };
 
-  cexil_sprite_initialize(&player->sprite, &size_sprite_player);
+  cexil_sprite_initialize(
+    &player->sprite,
+    &size_sprite_player
+  );
   
   for (
     unsigned int index_x = 0;
@@ -43,16 +46,15 @@ void player_initialize(
     }
   }
   
-  player->sprite.position.x = game_state->renderer->size.width / 2 - size_sprite_player.width / 2;
-  player->sprite.position.y = game_state->renderer->size.height - size_sprite_player.height - 8;
+  player_reset(
+    game_state,
+    player
+  );
 
   cexil_renderer_sprite_add(
     game_state->renderer,
     &player->sprite
   );
-
-  player->health = player_default_health;
-  player->health_max = player_default_health_max;
 
   player->sprites_hearts = malloc(sizeof(struct cexil_sprite) * player->health_max);
   struct cexil_size size_sprite_heart = {
@@ -86,6 +88,31 @@ void player_initialize(
       (size_sprite_heart.width + 2) * index_health
     );
   }
+}
+
+void player_reset(
+  struct game_state* game_state,
+  struct player* player
+) {
+  player->health = player_default_health;
+  player->health_max = player_default_health_max;
+
+  player_center(
+    game_state,
+    player
+  );
+}
+
+void player_center(
+  struct game_state* game_state,
+  struct player* player
+) {
+  player->sprite.position.x = game_state->renderer->size.width / 2 - player->sprite.size.width / 2;
+  player->sprite.position.y = game_state->renderer->size.height - player->sprite.size.height - 8;
+
+  velocity_reset(
+    &player->velocity
+  );
 }
 
 void player_poll(
