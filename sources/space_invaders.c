@@ -45,14 +45,22 @@ int main() {
     &game_state
   );
 
+  player_visibility_set(
+    &player,
+    0
+  );
+
   player_input_thread_start();
 
   while (interrupt_handler_interrupted == 0) {
     cexil_renderer_render_clear(
       &renderer
     );
-    
-    player_poll(&player);
+
+    if (game_state.mode == game) {
+      player_poll(&player);
+    }
+
     game_state_poll(&game_state);
 
     cexil_renderer_render(
