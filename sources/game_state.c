@@ -5,16 +5,18 @@
 #include "cexil.h"
 
 #include "alien.h"
+#include <mode.h>
 #include "player.h"
 #include "projectile.h"
 
 const unsigned int game_state_default_health = 0;
 const unsigned int game_state_default_level = 1;
 
-void game_state_initialize(
+void game_state_initialize_with_mode(
   struct game_state* game_state,
   struct cexil_renderer* renderer,
-  struct player* player
+  struct player* player,
+  enum mode mode
 ) {
   game_state->renderer = renderer;
 
@@ -63,6 +65,44 @@ void game_state_initialize(
   game_state->projectiles_alien = malloc(
     sizeof(struct projectile*) * game_state->projectiles_alien_count
   );
+
+  game_state_mode_set(
+    game_state,
+    game_state->mode
+  );
+}
+
+void game_state_initialize(
+  struct game_state* game_state,
+  struct cexil_renderer* renderer,
+  struct player* player
+) {
+  game_state_initialize_with_mode(
+    game_state,
+    renderer,
+    player,
+    intro
+  );
+}
+
+void game_state_mode_set(
+  struct game_state* game_state,
+  enum mode mode
+) {
+  game_state->mode = mode;
+
+  switch (game_state->mode) {
+    case intro:
+      break;
+    case menu:
+      break;
+    case game:
+      break;
+    case game_over:
+      break;
+    case outro:
+      break;
+  }
 }
 
 void game_state_aliens_populate(struct game_state* game_state) {
