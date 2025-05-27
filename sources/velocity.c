@@ -1,6 +1,10 @@
 #include "velocity.h"
 
 void velocity_initialize(struct velocity* velocity) {
+  velocity_reset(velocity);
+}
+
+void velocity_reset(struct velocity* velocity) {
   velocity->x = 0.0f;
   velocity->y = 0.0f;
   velocity->x_buffer = 0.0f;

@@ -137,17 +137,31 @@ void game_state_mode_set(
     case menu:
       break;
     case game:
-      game_state->level = game_state_default_level;
-
-      game_state->score = 0;
       game_state->total_score = 0;
+      game_state->score = 0;
 
-      cexil_timer_start(&game_state->timer);
       game_state->total_time = 0;
+      cexil_timer_start(&game_state->timer);
+
+      game_state->level = game_state_default_level; 
+
+      player_heal(
+        game_state->player,
+        player_default_health_max
+      );
+
+      game_state_aliens_remove_all(game_state);
+
+      game_state_projectiles_alien_remove_all(game_state);
+      game_state_projectiles_player_remove_all(game_state);
 
       velocity_initialize(&game_state->aliens_velocity);
-
       game_state_aliens_populate(game_state);
+
+      player_reset(
+        game_state,
+        game_state->player
+      );
       break;
     case game_over:
       break;
@@ -227,6 +241,11 @@ void game_state_progress_level(struct game_state* game_state) {
   game_state_projectiles_player_remove_all(game_state);
 
   game_state_aliens_populate(game_state);
+
+  player_center(
+    game_state,
+    game_state->player
+  );
 }
 
 void game_state_score_text_set(

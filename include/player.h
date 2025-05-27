@@ -26,6 +26,16 @@ void player_initialize(
   struct game_state*
 );
 
+void player_reset(
+  struct game_state*,
+  struct player*
+);
+
+void player_center(
+  struct game_state*,
+  struct player*
+);
+
 void player_visibility_set(
   struct player*,
   unsigned char
