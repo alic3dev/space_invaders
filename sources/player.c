@@ -172,6 +172,37 @@ void player_poll(
   player->sprite.position.x = player->sprite.position.x + player->velocity.x_rollover;
   player->sprite.position.y = player->sprite.position.y + player->velocity.y_rollover;
 
+  struct cexil_position position_max = {
+    x: (
+      player->game_state->renderer->size.width -
+      player->sprite.size.width
+    ),
+    y: (
+      player->game_state->renderer->size.height -
+      player->sprite.size.height
+    )
+  };
+
+  if (player->sprite.position.x < 0) {
+    player->sprite.position.x = 0;
+    
+    velocity_reset_x(&player->velocity);
+  } else if (player->sprite.position.x > position_max.x) {
+    player->sprite.position.x = position_max.x;
+
+    velocity_reset_x(&player->velocity);
+  }
+
+  if (player->sprite.position.y < 0) {
+    player->sprite.position.y = 0;
+
+    velocity_reset_y(&player->velocity);
+  } else if (player->sprite.position.y > position_max.y) {
+    player->sprite.position.y = position_max.y;
+
+    velocity_reset_y(&player->velocity);
+  }
+
   player->velocity.x_rollover = 0;
   player->velocity.y_rollover = 0;
 }
