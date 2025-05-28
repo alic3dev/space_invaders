@@ -12,6 +12,8 @@ struct velocity {
 
 void velocity_initialize(struct velocity*);
 void velocity_reset(struct velocity*);
+void velocity_reset_x(struct velocity*);
+void velocity_reset_y(struct velocity*);
 void velocity_advance(struct velocity*);
 
 #endif
