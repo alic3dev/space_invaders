@@ -100,7 +100,7 @@ void* __player_input_get(void* _) {
     player_input_intermediary = getchar();
 
     switch(player_input_intermediary) {
-      case CLIC3_CHAR_VALUE_CTRL:
+      case clic3_char_value_ctrl:
         if (player_input_intermediary_buffer_index == 0) {
           player_input_intermediary_buffer[0] = player_input_intermediary;
           player_input_intermediary_buffer_index = 1;
@@ -110,7 +110,7 @@ void* __player_input_get(void* _) {
           player_input_intermediary_buffer_index = 0;
         }
         break;
-      case CLIC3_CHAR_VALUE_SQUARE_BRACKET_OPENING:
+      case clic3_char_value_square_bracket_opening:
         if (player_input_intermediary_buffer_index == 1) {
           player_input_intermediary_buffer[1] = player_input_intermediary;
           player_input_intermediary_buffer_index = 2;
@@ -120,7 +120,7 @@ void* __player_input_get(void* _) {
           player_input_intermediary_buffer_index = 0;
         }
         break;
-      case CLIC3_CHAR_VALUE_A:
+      case clic3_char_value_A:
         if (player_input_intermediary_buffer_index == 2) {
           pthread_mutex_lock(&player_input_mutex);
           player_input = UP;
@@ -132,7 +132,7 @@ void* __player_input_get(void* _) {
         player_input_intermediary_buffer_index = 0;
         
         break;
-      case CLIC3_CHAR_VALUE_B:
+      case clic3_char_value_B:
         if (player_input_intermediary_buffer_index == 2) {
           pthread_mutex_lock(&player_input_mutex);
           player_input = DOWN;
@@ -145,7 +145,7 @@ void* __player_input_get(void* _) {
         
         
         break;
-      case CLIC3_CHAR_VALUE_C:
+      case clic3_char_value_C:
         if (player_input_intermediary_buffer_index == 2) {
           pthread_mutex_lock(&player_input_mutex);
           player_input = RIGHT;
@@ -157,7 +157,7 @@ void* __player_input_get(void* _) {
         player_input_intermediary_buffer_index = 0;
         
         break;
-      case CLIC3_CHAR_VALUE_D:
+      case clic3_char_value_D:
         if (player_input_intermediary_buffer_index == 2) {
           pthread_mutex_lock(&player_input_mutex);
           player_input = LEFT;
@@ -187,4 +187,3 @@ void* __player_input_get(void* _) {
     &termios_attrs_original
   );
 }
-
