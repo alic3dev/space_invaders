@@ -206,7 +206,8 @@ void game_state_aliens_populate(struct game_state* game_state) {
 
       alien_initialize(
         game_state->aliens[index_alien],
-        game_state
+        game_state,
+        y_index % length_alien_frames
       );
 
       game_state->aliens[index_alien]->sprite.position.x = 0 + (x_index * (ALIEN_SIZE_WIDTH + ALIEN_SPACING_X));
