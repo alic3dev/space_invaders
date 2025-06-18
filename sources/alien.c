@@ -9,20 +9,33 @@
 
 const struct cexil_size size_alien = { width: ALIEN_SIZE_WIDTH, height: ALIEN_SIZE_HEIGHT };
 
-const char alien_frame[ALIEN_SIZE_HEIGHT][ALIEN_SIZE_WIDTH] = {
-  {0,0,1,1,1,1,1,1},
-  {0,1,1,1,1,1,1,1},
-  {1,0,0,1,1,0,0,1},
-  {1,1,0,1,1,0,1,1},
-  {1,1,1,1,1,1,1,1},
-  {1,1,1,1,1,1,1,1},
-  {1,0,1,0,1,0,1,0},
-  {1,0,1,0,1,0,1,0},
+const char alien_frames[length_alien_frames][ALIEN_SIZE_HEIGHT][ALIEN_SIZE_WIDTH] = {
+  {
+    {0,0,1,1,1,1,1,1},
+    {0,1,1,1,1,1,1,1},
+    {1,0,0,1,1,0,0,1},
+    {1,1,0,1,1,0,1,1},
+    {1,1,1,1,1,1,1,1},
+    {1,1,1,1,1,1,1,1},
+    {1,0,1,0,1,0,1,0},
+    {1,0,1,0,1,0,1,0},
+  },
+  {
+    {0,0,0,0,0,0,0,0},
+    {0,1,1,0,0,1,1,0},
+    {0,1,0,1,1,0,1,0},
+    {0,0,0,1,1,0,0,0},
+    {0,0,1,1,1,1,0,0},
+    {0,1,1,0,0,1,1,0},
+    {0,0,1,1,1,1,0,0},
+    {0,0,0,0,0,0,0,0},
+  }, 
 };
 
 void alien_initialize(
   struct alien* alien,
-  struct game_state* game_state
+  struct game_state* game_state,
+  unsigned char index_frame
 ) {
   cexil_sprite_initialize(
     &alien->sprite,
@@ -30,13 +43,17 @@ void alien_initialize(
   );
 
   alien_frame_set(
-    alien->sprite.pixels
+    alien->sprite.pixels,
+    index_frame
   );
 
   alien->game_state = game_state;
 }
 
-void alien_frame_set(char** pixels) {
+void alien_frame_set(
+  char** pixels,
+  unsigned char index_frame
+) {
   for (
     unsigned char y_index = 0;
     y_index < ALIEN_SIZE_HEIGHT;
@@ -47,7 +64,9 @@ void alien_frame_set(char** pixels) {
       x_index < ALIEN_SIZE_WIDTH;
       ++x_index
     ) {
-      pixels[y_index][x_index] = alien_frame[y_index][x_index];
+      pixels[y_index][x_index] = (
+        alien_frames[index_frame][y_index][x_index]
+      );
     }
   }
 }
