@@ -729,4 +729,3 @@ void game_state_destroy(struct game_state* game_state) {
   free(game_state->projectiles_player);
   free(game_state->projectiles_alien);
 }
-
