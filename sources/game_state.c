@@ -43,7 +43,7 @@ void game_state_initialize_with_mode(
   
   game_state->player = player;
 
-  game_state->aliens_columns = 20;
+  game_state->aliens_columns = 10;
   game_state->aliens_rows = 4;
   game_state->aliens_count = 0;
   game_state->aliens = malloc(

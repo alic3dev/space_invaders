@@ -29,14 +29,42 @@ int main(
 
   struct cexil_size size_screen;
   cexil_size_set_to_terminal(&size_screen);
-  size_screen.width = size_screen.width - 2; // screen_size_columns * 2; //
-  size_screen.height = size_screen.height - 4; // screen_size_rows * 4; //
+
+  size_screen.width = size_screen.width - 2;
+  size_screen.height = size_screen.height - 4;
+
+  struct cexil_size size_renderer = {
+    .width = 228,
+    .height = 128
+  };
+
+  if (
+    size_screen.width < size_renderer.width ||
+    size_screen.height < size_renderer.height
+  ) {
+    fprintf(
+      stderr,
+      "terminal_size_too_small\nrequired:\n  width->{114}\nheight->{32}\n"
+    );
+
+    return 1;
+  }
+
+  struct cexil_size size_offset = {
+    .width = ((size_screen.width - (size_renderer.width - 8)) / 2) / 2,
+    .height = ((size_screen.height - (size_renderer.height - 4)) / 2) / 4
+  };
 
   struct cexil_renderer renderer;
 
   cexil_renderer_initialize(
     &renderer,
-    &size_screen
+    &size_renderer
+  );
+
+  cexil_renderer_offset_set(
+    &renderer,
+    &size_offset
   );
 
   cexil_renderer_target_frame_rate_set(
