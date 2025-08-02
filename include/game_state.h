@@ -73,6 +73,7 @@ void game_state_score_text_set(
 
 void game_state_poll_intro(struct game_state*);
 void game_state_poll_game(struct game_state*);
+void game_state_poll_game_over(struct game_state*);
 void game_state_poll(struct game_state*);
 
 void game_state_alien_remove(

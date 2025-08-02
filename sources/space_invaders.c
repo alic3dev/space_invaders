@@ -100,7 +100,10 @@ int main(
 
   player_input_thread_start();
 
-  while (interrupt_handler_interrupted == 0) {
+  while (
+    interrupt_handler_interrupted == 0 &&
+    game_state.mode != outro
+  ) {
     cexil_renderer_render_clear(
       &renderer
     );
@@ -111,13 +114,27 @@ int main(
 
     game_state_poll(&game_state);
 
-    cexil_renderer_render(
-      &renderer
-    );
+    if (
+      game_state.mode != game_over
+    ) {
+      cexil_renderer_render(
+        &renderer
+      );
+    }
   }
   
   cexil_renderer_destroy(
     &renderer
+  );
+
+  printf(
+    "GAME OVER\n\n"
+    "total_score: %i\n"
+    "total_time: %llu\n"
+    "level: %u\n",
+    game_state.total_score,
+    game_state.total_time,
+    game_state.level
   );
 
   game_state_destroy(&game_state);

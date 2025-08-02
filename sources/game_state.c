@@ -4,11 +4,13 @@
 #include <intro.h>
 #include <mode.h>
 #include <player.h>
+#include <player_input.h>
 #include <projectile.h>
 
 #include <cexil.h>
 
 #include <stdlib.h>
+#include <stdio.h>
 
 const unsigned int game_state_default_level = 1;
 
@@ -223,7 +225,6 @@ void game_state_aliens_populate(struct game_state* game_state) {
 
 void game_state_progress_level(struct game_state* game_state) {
   game_state->total_score = game_state->total_score + game_state->score;
-  // game_state->score = 0;
 
   cexil_timer_stop(&game_state->timer);
   game_state->total_time = game_state->total_time + cexil_timer_time_total(&game_state->timer);
@@ -386,6 +387,10 @@ void game_state_poll_game(
         game_state->player,
         1
       );
+
+      game_state->score = (
+        game_state->score - 150
+      );
     } else if (game_state->projectiles_alien[index_projectile_alien]->sprite.position.y >= game_state->renderer->size.height) {
       projectile_should_remove = 1;
     }
@@ -447,7 +452,8 @@ void game_state_poll_game(
     );
 
     if (
-      game_state->aliens[index_alien]->sprite.position.y >=
+      (game_state->aliens[index_alien]->sprite.position.y +
+       game_state->aliens[index_alien]->sprite.size.height) >=
       game_state->player->sprite.position.y
     ) {
       game_state_alien_remove(
@@ -458,6 +464,10 @@ void game_state_poll_game(
       player_damage(
         game_state->player,
         1
+      );
+
+      game_state->score = (
+        game_state->score - 250
       );
 
       continue;
@@ -513,6 +523,27 @@ void game_state_poll_game(
   if (game_state->aliens_count == 0) {
     game_state_progress_level(game_state);
   }
+
+  if (
+    game_state->player->health == 0
+  ) {
+    game_state_mode_set(
+      game_state,
+      game_over
+    );
+  }
+}
+
+void game_state_poll_game_over(struct game_state* game_state) {
+  game_state->total_score = game_state->total_score + game_state->score;
+
+  cexil_timer_stop(&game_state->timer);
+  game_state->total_time = game_state->total_time + cexil_timer_time_total(&game_state->timer);
+
+  game_state_mode_set(
+    game_state,
+    outro
+  );
 }
 
 void game_state_poll(
@@ -524,6 +555,9 @@ void game_state_poll(
       break;
     case game:
       game_state_poll_game(game_state);
+      break;
+    case game_over:
+      game_state_poll_game_over(game_state);
       break;
     default:
       break;
