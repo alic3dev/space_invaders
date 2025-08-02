@@ -246,8 +246,8 @@ void player_heal(
       );
 
       heart_frame_set(
-        player->sprites_hearts[player->health].pixels,
-        0
+        player->sprites_hearts[player->health - 1].pixels,
+        1
       );
     } else {
       break;
