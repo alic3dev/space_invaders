@@ -17,10 +17,12 @@ struct game_state {
 
   struct intro intro;
 
-  struct cexil_text score_text;
-  int score;
+  struct cexil_text text_score;
+  struct cexil_text text_level;
 
+  int score;
   int total_score;
+
   unsigned long long int total_time;
 
   struct player* player;
@@ -67,7 +69,11 @@ void game_state_aliens_populate(struct game_state*);
 
 void game_state_progress_level(struct game_state*);
 
-void game_state_score_text_set(
+void game_state_text_score_set(
+  struct game_state*
+);
+
+void game_state_text_level_set(
   struct game_state*
 );
 

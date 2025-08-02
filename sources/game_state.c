@@ -56,24 +56,36 @@ void game_state_initialize_with_mode(
 
   game_state->score = 0;
   game_state->total_score = 0;
+  game_state->total_time = 0;
+  game_state->level = game_state_default_level;
   
   cexil_text_initialize(
-    &game_state->score_text,
+    &game_state->text_score,
+    ""
+  );
+
+  cexil_text_initialize(
+    &game_state->text_level,
     ""
   );
   
   cexil_renderer_text_add(
     game_state->renderer,
-    &game_state->score_text
+    &game_state->text_score
   );
 
-  game_state_score_text_set(
+  cexil_renderer_text_add(
+    game_state->renderer,
+    &game_state->text_level
+  );
+
+  game_state_text_score_set(
     game_state
   );
-  
-  game_state->total_time = 0;
 
-  game_state->level = game_state_default_level;
+  game_state_text_level_set(
+    game_state
+  );
 
   game_state->projectiles_player_count = 0;
   game_state->projectiles_alien_count = 0;
@@ -128,7 +140,8 @@ void game_state_mode_set(
     );
   }
 
-  game_state->score_text.visible = elements_game_visible;
+  game_state->text_score.visible = elements_game_visible;
+  game_state->text_level.visible = elements_game_visible;
 
   game_state->intro.sprite.visible = mode == intro ? 1 : 0;
 
@@ -248,9 +261,13 @@ void game_state_progress_level(struct game_state* game_state) {
     game_state,
     game_state->player
   );
+
+  game_state_text_level_set(
+    game_state
+  );
 }
 
-void game_state_score_text_set(
+void game_state_text_score_set(
   struct game_state* game_state
 ) {
   int score = game_state->score;
@@ -304,16 +321,75 @@ void game_state_score_text_set(
   score_char_array[score_length - 1] = '\0';
 
   cexil_text_text_set(
-    &game_state->score_text,
+    &game_state->text_score,
     score_char_array
   );
 
-  game_state->score_text.position.x = (
+  game_state->text_score.position.x = (
     game_state->renderer->size.width -
-    game_state->score_text.size.width - 1
+    game_state->text_score.size.width - 1
   );
 
   free(score_char_array);
+}
+
+void game_state_text_level_set(
+  struct game_state* game_state
+) {
+  int level = game_state->level;
+  unsigned short int level_length = 1;
+
+  char* level_char_array = malloc(
+    sizeof(char) * level_length
+  );
+
+  while (level >= 0) {
+    unsigned int level_part = level / 10;
+
+    level_length = (
+      level_length + 1
+    );
+
+    level_char_array = realloc(
+      level_char_array,
+      sizeof(char) * level_length
+    );
+
+    level_char_array[level_length - 2] = (
+      '0' + (level - (level_part * 10))
+    );
+
+    level = level_part;
+
+    if (level == 0) {
+      break;
+    }
+  }
+
+  for (
+    unsigned short int index_level = 0;
+    index_level <= (level_length - 2) / 2;
+    ++index_level
+  ) {
+    char char_level_hold = level_char_array[index_level];
+
+    level_char_array[index_level] = level_char_array[level_length - 2 - index_level];
+    level_char_array[level_length - 2 - index_level] = char_level_hold;
+  }
+
+  level_char_array[level_length - 1] = '\0';
+
+  cexil_text_text_set(
+    &game_state->text_level,
+    level_char_array
+  );
+
+  game_state->text_level.position.x = (
+    (game_state->renderer->size.width / 2) -
+    (game_state->text_level.size.width / 2)
+  );
+
+  free(level_char_array);
 }
 
 void game_state_poll_intro(
@@ -500,7 +576,7 @@ void game_state_poll_game(
           game_state->score + 100
         );
 
-        game_state_score_text_set(
+        game_state_text_score_set(
           game_state
         );
 
