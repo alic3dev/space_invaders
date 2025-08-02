@@ -1,5 +1,5 @@
-#ifndef __HEART_H
-#define __HEART_H
+#ifndef __heart_h
+#define __heart_h
 
 #define heart_size_width 8
 #define heart_size_height 8
