@@ -1,5 +1,5 @@
-#ifndef __VELOCITY_H
-#define __VELOCITY_H
+#ifndef __velocity_h
+#define __velocity_h
 
 struct velocity {
   float x;

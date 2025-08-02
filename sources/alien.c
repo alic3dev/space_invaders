@@ -77,7 +77,7 @@ void alien_poll(struct alien* alien) {
 
     projectile_initialize(
       projectile,
-      ALIEN
+      projectile_alien
     );
 
     projectile->sprite.position.x = alien->sprite.position.x + (alien->sprite.size.width / 2);

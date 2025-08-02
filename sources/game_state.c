@@ -351,7 +351,7 @@ void game_state_poll_game(
   ) {
     projectile_poll(game_state->projectiles_player[index_projectile_player]);
 
-    if (game_state->projectiles_player[index_projectile_player]->sprite.position.y <= -PROJECTILE_SIZE_HEIGHT) {
+    if (game_state->projectiles_player[index_projectile_player]->sprite.position.y <= -projectile_size_height) {
       game_state_projectile_player_remove(
         game_state,
         index_projectile_player

@@ -1,5 +1,5 @@
-#ifndef __ALIEN_H
-#define __ALIEN_H
+#ifndef __alien_h
+#define __alien_h
 
 #include "cexil.h"
 

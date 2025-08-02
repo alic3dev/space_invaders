@@ -1,4 +1,12 @@
+#include <space_invaders.h>
+
+#include <game_state.h>
+#include <player.h>
+#include <player_input.h>
+#include <screen.h>
+#include <cexil.h>
 #include <clic3.h>
+#include <interrupt_handler.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,8 +29,8 @@ int main(
 
   struct cexil_size size_screen;
   cexil_size_set_to_terminal(&size_screen);
-  size_screen.width = size_screen.width - 2; // SCREEN_SIZE_COLUMNS * 2; //
-  size_screen.height = size_screen.height - 4; // SCREEN_SIZE_ROWS * 4; //
+  size_screen.width = size_screen.width - 2; // screen_size_columns * 2; //
+  size_screen.height = size_screen.height - 4; // screen_size_rows * 4; //
 
   struct cexil_renderer renderer;
 

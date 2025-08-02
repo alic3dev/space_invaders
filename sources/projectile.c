@@ -5,8 +5,8 @@
 #include "velocity.h"
 
 const struct cexil_size projectile_size = {
-  width: PROJECTILE_SIZE_WIDTH,
-  height: PROJECTILE_SIZE_HEIGHT
+  width: projectile_size_width,
+  height: projectile_size_height
 };
 
 void projectile_initialize(
@@ -18,7 +18,7 @@ void projectile_initialize(
   velocity_initialize(&projectile->velocity);
   projectile->velocity.x = 0;
   projectile->velocity.y = (
-    source == PLAYER
+    source == projectile_player
     ? -1.25125f
     : 1.25125f
   );
@@ -34,7 +34,7 @@ void projectile_initialize(
   );
 }
 
-const char projectile_frame_player[PROJECTILE_SIZE_HEIGHT][PROJECTILE_SIZE_WIDTH] = {
+const char projectile_frame_player[projectile_size_height][projectile_size_width] = {
   { 1 },
   { 1 }
 };
@@ -45,14 +45,14 @@ void projectile_frame_set(
 ) {
   for (
     unsigned char y_index = 0;
-    y_index < PROJECTILE_SIZE_HEIGHT;
+    y_index < projectile_size_height;
     ++y_index
   ) {
-    const unsigned char y_index_offset = y_index * PROJECTILE_SIZE_WIDTH;
+    const unsigned char y_index_offset = y_index * projectile_size_width;
 
     for (
       unsigned char x_index = 0;
-      x_index < PROJECTILE_SIZE_WIDTH;
+      x_index < projectile_size_width;
       ++x_index
     ) {
       pixels[y_index][x_index] = frame[y_index_offset + x_index];

@@ -1,5 +1,5 @@
-#ifndef __GAME_STATE_H
-#define __GAME_STATE_H
+#ifndef __game_state_h
+#define __game_state_h
 
 #include "cexil.h"
 

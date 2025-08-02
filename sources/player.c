@@ -137,12 +137,12 @@ void player_poll(
 ) {
   pthread_mutex_lock(&player_input_mutex);
   switch(player_input) {
-    case UP:
+    case up:
       struct projectile* projectile = malloc(sizeof(struct projectile));
 
       projectile_initialize(
         projectile,
-        PLAYER
+        projectile_player
       );
 
       projectile->sprite.position.x = player->sprite.position.x + (player->sprite.size.width / 2);
@@ -153,10 +153,10 @@ void player_poll(
         projectile
       );
       break;
-    case LEFT:
+    case left:
       player->velocity.x = -player->speed;
       break;
-    case RIGHT:
+    case right:
       player->velocity.x = player->speed;
       break;
     case DOWN:
@@ -164,7 +164,7 @@ void player_poll(
       player->velocity.y = 0;
       break;
   }
-  player_input = NONE;
+  player_input = none;
   pthread_mutex_unlock(&player_input_mutex);
 
   velocity_advance(&player->velocity);
