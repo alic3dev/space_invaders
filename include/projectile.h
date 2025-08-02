@@ -1,21 +1,21 @@
-#ifndef __PROJECTILE_H
-#define __PROJECTILE_H
+#ifndef __projectile_h
+#define __projectile_h
 
 #include <velocity.h>
 
 #include <cexil.h>
 
-#define PROJECTILE_SIZE_WIDTH 1
-#define PROJECTILE_SIZE_HEIGHT 2
+#define projectile_size_width 1
+#define projectile_size_height 2
 
 enum projectile_source {
-  PLAYER,
-  ALIEN
+  projectile_player,
+  projectile_alien
 };
 
 extern const struct cexil_size projectile_size;
 
-extern const char projectile_frame_player[PROJECTILE_SIZE_HEIGHT][PROJECTILE_SIZE_WIDTH];
+extern const char projectile_frame_player[projectile_size_height][projectile_size_width];
 
 struct projectile {
   struct cexil_sprite sprite;

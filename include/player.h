@@ -1,5 +1,5 @@
-#ifndef __PLAYER_H
-#define __PLAYER_H
+#ifndef __player_h
+#define __player_h
 
 #include <game_state.h>
 #include <velocity.h>

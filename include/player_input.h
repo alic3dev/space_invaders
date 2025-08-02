@@ -1,14 +1,14 @@
-#ifndef __PLAYER_INPUT_H
-#define __PLAYER_INPUT_H
+#ifndef __player_input_h
+#define __player_input_h
 
 #include <pthread.h>
 
 enum player_input_value {
-  NONE,
-  UP,
+  none,
+  up,
   DOWN,
-  LEFT,
-  RIGHT
+  left,
+  right
 };
 
 extern enum player_input_value player_input;

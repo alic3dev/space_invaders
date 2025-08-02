@@ -1,5 +1,5 @@
-#ifndef __SPACE_INVADERS_H
-#define __SPACE_INVADERS_H
+#ifndef __space_invaders_h
+#define __space_invaders_h
 
 int main(
   int,

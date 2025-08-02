@@ -29,8 +29,8 @@ int main(
 
   struct cexil_size size_screen;
   cexil_size_set_to_terminal(&size_screen);
-  size_screen.width = size_screen.width - 2; // SCREEN_SIZE_COLUMNS * 2; //
-  size_screen.height = size_screen.height - 4; // SCREEN_SIZE_ROWS * 4; //
+  size_screen.width = size_screen.width - 2; // screen_size_columns * 2; //
+  size_screen.height = size_screen.height - 4; // screen_size_rows * 4; //
 
   struct cexil_renderer renderer;
 

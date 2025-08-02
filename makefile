@@ -1,45 +1,45 @@
-PROJECT_NAME=space_invaders
+project_name=space_invaders
 
-INCLUDE_DIRECTORY=include
-OBJECTS_DIRECTORY=objects
-OUTPUT_DIRECTORY=output
-SOURCES_DIRECTORY=sources
+include_directory=include
+objects_directory=objects
+output_directory=output
+sources_directory=sources
 
-OUT_FILE=${OUTPUT_DIRECTORY}/${PROJECT_NAME}
+out_file=${output_directory}/${project_name}
 
-CEXIL_DIRECTORY=../cexil
-CEXIL_INCLUDE_DIRECTORY=${CEXIL_DIRECTORY}/include
-CEXIL_OBJECT_FILE=${CEXIL_DIRECTORY}/library/cexil.o
+cexil_directory=../cexil
+cexil_include_directory=${cexil_directory}/include
+cexil_object_file=${cexil_directory}/library/cexil.o
 
-CLIC3_DIRECTORY=../clic3
-CLIC3_INCLUDE_DIRECTORY=${CLIC3_DIRECTORY}/include
-CLIC3_OBJECT_FILE=${CLIC3_DIRECTORY}/library/clic3.o
+clic3_directory=../clic3
+clic3_include_directory=${clic3_directory}/include
+clic3_object_file=${clic3_directory}/library/clic3.o
 
-INTERRUPT_HANDLER_DIRECTORY=../interrupt_handler
-INTERRUPT_HANDLER_INCLUDE_DIRECTORY=${INTERRUPT_HANDLER_DIRECTORY}/include
-INTERRUPT_HANDLER_OBJECT_FILE=${INTERRUPT_HANDLER_DIRECTORY}/library/interrupt_handler.o
+interrupt_handler_directory=../interrupt_handler
+interrupt_handler_include_directory=${interrupt_handler_directory}/include
+interrupt_handler_object_file=${interrupt_handler_directory}/library/interrupt_handler.o
 
-SOURCE_FILES=${wildcard ${SOURCES_DIRECTORY}/*.c}
-OBJECT_FILES=${patsubst ${SOURCES_DIRECTORY}/%.c, ${OBJECTS_DIRECTORY}/%.o, ${SOURCE_FILES}}
+source_files=${wildcard ${sources_directory}/*.c}
+object_files=${patsubst ${sources_directory}/%.c, ${objects_directory}/%.o, ${source_files}}
 
-CC=gcc
-C_FLAGS=-O3 -I${INCLUDE_DIRECTORY} -I${CEXIL_INCLUDE_DIRECTORY} -I${INTERRUPT_HANDLER_INCLUDE_DIRECTORY} -I${CLIC3_INCLUDE_DIRECTORY} -Wno-gnu-designator
+cc=gcc
+c_flags=-O3 -I${include_directory} -I${cexil_include_directory} -I${interrupt_handler_include_directory} -I${clic3_include_directory}
 
-${NAME}: ${OUT_FILE}
+${name}: ${out_file}
 
-${OUT_FILE}: ${OBJECT_FILES} ${OUTPUT_DIRECTORY}
-	${CC} ${C_FLAGS} ${OBJECT_FILES} ${CEXIL_OBJECT_FILE} ${CLIC3_OBJECT_FILE} ${INTERRUPT_HANDLER_OBJECT_FILE} -o $@
+${out_file}: ${object_files} ${output_directory}
+	${cc} ${c_flags} ${object_files} ${cexil_object_file} ${clic3_object_file} ${interrupt_handler_object_file} -o $@
 
-${OBJECTS_DIRECTORY}/%.o: ${SOURCES_DIRECTORY}/%.c ${OBJECTS_DIRECTORY}
-	${CC} ${C_FLAGS} -c $< -o $@
+${objects_directory}/%.o: ${sources_directory}/%.c ${objects_directory}
+	${cc} ${c_flags} -c $< -o $@
 
-${OUTPUT_DIRECTORY}:
-	mkdir -p ${OUTPUT_DIRECTORY}
+${output_directory}:
+	mkdir -p ${output_directory}
 
-${OBJECTS_DIRECTORY}:
-	mkdir -p ${OBJECTS_DIRECTORY}
+${objects_directory}:
+	mkdir -p ${objects_directory}
 
 clean:
-	-rm ${OUT_FILE}
-	-rm ${OBJECTS_DIRECTORY}/*.o 2> /dev/null
+	-rm ${out_file}
+	-rm ${objects_directory}/*.o 2> /dev/null
 

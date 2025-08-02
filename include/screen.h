@@ -1,8 +1,8 @@
-#ifndef __SCREEN_H
-#define __SCREEN_H
+#ifndef __screen_h
+#define __screen_h
 
-#define SCREEN_SIZE_ROWS 30
-#define SCREEN_SIZE_COLUMNS 80
+#define screen_size_rows 30
+#define screen_size_columns 80
 
 struct screen {
 
