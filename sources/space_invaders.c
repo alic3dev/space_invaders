@@ -96,7 +96,6 @@ int main(
       game
     );
   }
-    
 
   player_input_thread_start();
 
@@ -130,10 +129,10 @@ int main(
   printf(
     "GAME OVER\n\n"
     "total_score: %i\n"
-    "total_time: %llu\n"
+    "total_time: %llus\n"
     "level: %u\n",
     game_state.total_score,
-    game_state.total_time,
+    game_state.total_time / 1000000,
     game_state.level
   );
 
