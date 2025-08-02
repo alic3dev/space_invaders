@@ -240,7 +240,10 @@ void game_state_progress_level(struct game_state* game_state) {
   game_state->total_score = game_state->total_score + game_state->score;
 
   cexil_timer_stop(&game_state->timer);
-  game_state->total_time = game_state->total_time + cexil_timer_time_total(&game_state->timer);
+  game_state->total_time = (
+    game_state->total_time +
+    cexil_timer_time_total(&game_state->timer)
+  );
   cexil_timer_start(&game_state->timer);
 
   game_state->level = game_state->level + 1; 
@@ -428,7 +431,10 @@ void game_state_poll_game(
   ) {
     projectile_poll(game_state->projectiles_player[index_projectile_player]);
 
-    if (game_state->projectiles_player[index_projectile_player]->sprite.position.y <= -projectile_size_height) {
+    if (
+      game_state->projectiles_player[index_projectile_player]->sprite.position.y <=
+      -projectile_size_height
+    ) {
       game_state_projectile_player_remove(
         game_state,
         index_projectile_player
@@ -437,6 +443,47 @@ void game_state_poll_game(
       index_projectile_player = (
         index_projectile_player - 1
       );
+      
+      continue;
+    }
+
+    for (
+      long int index_alien = 0;
+      index_alien < game_state->aliens_count;
+      ++index_alien
+    ) {
+      if (
+        cexil_collision_intersects(
+          &game_state->aliens[index_alien]->sprite.position,
+          &game_state->aliens[index_alien]->sprite.size,
+          &game_state->projectiles_player[index_projectile_player]->sprite.position,
+          &game_state->projectiles_player[index_projectile_player]->sprite.size
+        )
+      ) {
+        game_state_projectile_player_remove(
+          game_state,
+          index_projectile_player
+        );
+
+        game_state_alien_remove(
+          game_state,
+          index_alien
+        );
+
+        game_state->score = (
+          game_state->score + 100
+        );
+
+        game_state_text_score_set(
+          game_state
+        );
+
+        index_projectile_player = (
+          index_projectile_player - 1
+        );
+
+        break;
+      }
     }
   }
 
@@ -467,7 +514,10 @@ void game_state_poll_game(
       game_state->score = (
         game_state->score - 150
       );
-    } else if (game_state->projectiles_alien[index_projectile_alien]->sprite.position.y >= game_state->renderer->size.height) {
+    } else if (
+      game_state->projectiles_alien[index_projectile_alien]->sprite.position.y >= 
+      game_state->renderer->size.height
+    ) {
       projectile_should_remove = 1;
     }
 
@@ -547,49 +597,6 @@ void game_state_poll_game(
       );
 
       continue;
-    }
-
-    for (
-      long int index_projectile_player = 0;
-      index_projectile_player < game_state->projectiles_player_count;
-      ++index_projectile_player
-    ) {
-      if (
-        cexil_collision_intersects(
-          &game_state->aliens[index_alien]->sprite.position,
-          &game_state->aliens[index_alien]->sprite.size,
-          &game_state->projectiles_player[index_projectile_player]->sprite.position,
-          &game_state->projectiles_player[index_projectile_player]->sprite.size
-        )
-      ) {
-        game_state_projectile_player_remove(
-          game_state,
-          index_projectile_player
-        );
-
-        game_state_alien_remove(
-          game_state,
-          index_alien
-        );
-
-        game_state->score = (
-          game_state->score + 100
-        );
-
-        game_state_text_score_set(
-          game_state
-        );
-
-        index_projectile_player = (
-          index_projectile_player - 1
-        );
-
-        index_alien = (
-          index_alien - 1
-        );
-
-        break;
-      }
     }
   }
 
