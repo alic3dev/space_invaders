@@ -5,8 +5,8 @@
 #include <cexil.h>
 
 const struct cexil_size projectile_size = {
-  width: projectile_size_width,
-  height: projectile_size_height
+  .width = projectile_size_width,
+  .height = projectile_size_height
 };
 
 void projectile_initialize(

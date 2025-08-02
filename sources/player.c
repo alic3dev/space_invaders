@@ -21,8 +21,8 @@ void player_initialize(
   player->speed = player_default_speed;
 
   struct cexil_size size_sprite_player = {
-    width: 12,
-    height: 8
+    .width = 12,
+    .height = 8
   };
 
   cexil_sprite_initialize(
@@ -58,8 +58,8 @@ void player_initialize(
 
   player->sprites_hearts = malloc(sizeof(struct cexil_sprite) * player->health_max);
   struct cexil_size size_sprite_heart = {
-    width: 8,
-    height: 8
+    .width = 8,
+    .height = 8
   };
 
   for (
@@ -173,11 +173,11 @@ void player_poll(
   player->sprite.position.y = player->sprite.position.y + player->velocity.y_rollover;
 
   struct cexil_position position_max = {
-    x: (
+    .x = (
       player->game_state->renderer->size.width -
       player->sprite.size.width
     ),
-    y: (
+    .y = (
       player->game_state->renderer->size.height -
       player->sprite.size.height
     )

@@ -181,8 +181,8 @@ void game_state_aliens_populate(struct game_state* game_state) {
 
   game_state->aliens_velocity.x = 1;
 
-  game_state->aliens_size.width = (game_state->aliens_columns * (ALIEN_SIZE_WIDTH + ALIEN_SPACING_X)) - ALIEN_SPACING_X;
-  game_state->aliens_size.height = game_state->aliens_rows * (ALIEN_SIZE_WIDTH + ALIEN_SPACING_Y);
+  game_state->aliens_size.width = (game_state->aliens_columns * (alien_size_width + alien_spacing_x)) - alien_spacing_x;
+  game_state->aliens_size.height = game_state->aliens_rows * (alien_size_width + alien_spacing_y);
 
   game_state->aliens_position.x = 0;
 
@@ -210,8 +210,8 @@ void game_state_aliens_populate(struct game_state* game_state) {
         y_index % length_alien_frames
       );
 
-      game_state->aliens[index_alien]->sprite.position.x = 0 + (x_index * (ALIEN_SIZE_WIDTH + ALIEN_SPACING_X));
-      game_state->aliens[index_alien]->sprite.position.y = 14 + (y_index * (ALIEN_SIZE_HEIGHT + ALIEN_SPACING_Y));
+      game_state->aliens[index_alien]->sprite.position.x = 0 + (x_index * (alien_size_width + alien_spacing_x));
+      game_state->aliens[index_alien]->sprite.position.y = 14 + (y_index * (alien_size_height + alien_spacing_y));
 
       cexil_renderer_sprite_add(
         game_state->renderer,
