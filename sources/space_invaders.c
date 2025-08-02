@@ -1,17 +1,22 @@
-#include "space_invaders.h"
+#include <clic3.h>
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "cexil.h"
-#include "interrupt_handler.h"
+int main(
+  int length_parameters,
+  char** parameters
+) {
+  unsigned char skip_intro = (
+    length_parameters >= 2 &&
+    clic3_char_arrays_equal(
+      parameters[1],
+      "--skip-intro"
+    ) == 1
+    ? 1
+    : 0
+  );
 
-#include "game_state.h"
-#include "player.h"
-#include "player_input.h"
-#include "screen.h"
-
-int main() {
   interrupt_handler_initialize();
 
   struct cexil_size size_screen;
@@ -49,6 +54,14 @@ int main() {
     &player,
     0
   );
+
+  if (skip_intro == 1) {
+    game_state_mode_set(
+      &game_state,
+      game
+    );
+  }
+    
 
   player_input_thread_start();
 
