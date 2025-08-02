@@ -412,6 +412,7 @@ void game_state_poll_game(
   if (game_state->aliens_velocity.x > 0) {
     if (game_state->aliens_position.x + game_state->aliens_size.width >= game_state->renderer->size.width) {
       game_state->aliens_velocity.x = -game_state->aliens_velocity.x - 0.025;
+      game_state->aliens_velocity.x_rollover = 0;
       game_state->aliens_velocity.y_rollover = 1;
 
       if (game_state->aliens_position.x + game_state->aliens_size.width > game_state->renderer->size.width) {
@@ -421,6 +422,7 @@ void game_state_poll_game(
   } else {
     if (game_state->aliens_position.x <= 0) {
       game_state->aliens_velocity.x = -game_state->aliens_velocity.x + 0.025;
+      game_state->aliens_velocity.x_rollover = 0;
       game_state->aliens_velocity.y_rollover = 1;
 
       if (game_state->aliens_position.x < 0) {
