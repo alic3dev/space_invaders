@@ -1,10 +1,10 @@
 #ifndef __ALIEN_H
 #define __ALIEN_H
 
-#include "cexil.h"
+#include <cexil.h>
 
-#include "game_state.h"
-#include "velocity.h"
+#include <game_state.h>
+#include <velocity.h>
 
 #define length_alien_frames 2
 

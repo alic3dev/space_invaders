@@ -1,14 +1,14 @@
-#include "game_state.h"
+#include <game_state.h>
 
-#include <stdlib.h>
-
-#include "cexil.h"
-
-#include "alien.h"
+#include <alien.h>
 #include <intro.h>
 #include <mode.h>
-#include "player.h"
-#include "projectile.h"
+#include <player.h>
+#include <projectile.h>
+
+#include <cexil.h>
+
+#include <stdlib.h>
 
 const unsigned int game_state_default_level = 1;
 

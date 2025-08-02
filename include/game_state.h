@@ -1,14 +1,14 @@
 #ifndef __GAME_STATE_H
 #define __GAME_STATE_H
 
-#include "cexil.h"
-
-#include "alien.h"
+#include <alien.h>
 #include <intro.h>
 #include <mode.h>
-#include "player.h"
-#include "projectile.h"
-#include "velocity.h"
+#include <player.h>
+#include <projectile.h>
+#include <velocity.h>
+
+#include <cexil.h>
 
 extern const unsigned int game_state_default_level;
 

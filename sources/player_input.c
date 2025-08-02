@@ -1,11 +1,11 @@
-#include "player_input.h"
+#include <player_input.h>
+
+#include <clic3.h>
 
 #include <pthread.h>
 #include <stdio.h>
 #include <termios.h>
 #include <unistd.h>
-
-#include "clic3.h"
 
 enum player_input_value player_input = NONE;
 

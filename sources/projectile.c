@@ -1,8 +1,8 @@
-#include "projectile.h"
+#include <projectile.h>
 
-#include "cexil.h"
+#include <velocity.h>
 
-#include "velocity.h"
+#include <cexil.h>
 
 const struct cexil_size projectile_size = {
   width: PROJECTILE_SIZE_WIDTH,

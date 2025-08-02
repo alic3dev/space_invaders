@@ -1,9 +1,9 @@
 #ifndef __PROJECTILE_H
 #define __PROJECTILE_H
 
-#include "cexil.h"
+#include <velocity.h>
 
-#include "velocity.h"
+#include <cexil.h>
 
 #define PROJECTILE_SIZE_WIDTH 1
 #define PROJECTILE_SIZE_HEIGHT 2

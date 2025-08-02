@@ -1,11 +1,11 @@
-#include "alien.h"
+#include <alien.h>
+
+#include <game_state.h>
+#include <projectile.h>
+
+#include <cexil.h>
 
 #include <stdlib.h>
-
-#include "cexil.h"
-
-#include "game_state.h"
-#include "projectile.h"
 
 const struct cexil_size size_alien = { width: ALIEN_SIZE_WIDTH, height: ALIEN_SIZE_HEIGHT };
 

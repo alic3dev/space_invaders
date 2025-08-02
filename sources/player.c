@@ -1,12 +1,12 @@
-#include "player.h"
+#include <player.h>
+
+#include <game_state.h>
+#include <heart.h>
+#include <player_input.h>
+#include <projectile.h>
 
 #include <pthread.h>
 #include <stdlib.h>
-
-#include "game_state.h"
-#include "heart.h"
-#include "player_input.h"
-#include "projectile.h"
 
 const unsigned char player_default_health_max = 5;
 const unsigned char player_default_health = player_default_health_max;

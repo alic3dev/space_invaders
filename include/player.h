@@ -1,10 +1,10 @@
 #ifndef __PLAYER_H
 #define __PLAYER_H
 
-#include "cexil.h"
+#include <game_state.h>
+#include <velocity.h>
 
-#include "game_state.h"
-#include "velocity.h"
+#include <cexil.h>
 
 extern const unsigned char player_default_health_max;
 extern const unsigned char player_default_health;
