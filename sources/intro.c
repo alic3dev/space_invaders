@@ -1,8 +1,8 @@
 #include <intro.h>
 
 const struct cexil_size size_intro = {
-  height: size_intro_height,
-  width: size_intro_width
+  .height = size_intro_height,
+  .width = size_intro_width
 };
 
 char pixels_intro[

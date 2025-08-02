@@ -1,13 +1,13 @@
-#include "player_input.h"
+#include <player_input.h>
+
+#include <clic3.h>
 
 #include <pthread.h>
 #include <stdio.h>
 #include <termios.h>
 #include <unistd.h>
 
-#include "clic3.h"
-
-enum player_input_value player_input = NONE;
+enum player_input_value player_input = none;
 
 unsigned char player_input_thread_running = 0;
 
@@ -123,7 +123,7 @@ void* __player_input_get(void* _) {
       case clic3_char_value_A:
         if (player_input_intermediary_buffer_index == 2) {
           pthread_mutex_lock(&player_input_mutex);
-          player_input = UP;
+          player_input = up;
           pthread_mutex_unlock(&player_input_mutex);
         }
 
@@ -148,7 +148,7 @@ void* __player_input_get(void* _) {
       case clic3_char_value_C:
         if (player_input_intermediary_buffer_index == 2) {
           pthread_mutex_lock(&player_input_mutex);
-          player_input = RIGHT;
+          player_input = right;
           pthread_mutex_unlock(&player_input_mutex);
         }
 
@@ -160,7 +160,7 @@ void* __player_input_get(void* _) {
       case clic3_char_value_D:
         if (player_input_intermediary_buffer_index == 2) {
           pthread_mutex_lock(&player_input_mutex);
-          player_input = LEFT;
+          player_input = left;
           pthread_mutex_unlock(&player_input_mutex);
         }
 
@@ -170,7 +170,7 @@ void* __player_input_get(void* _) {
         
         break;
       default: 
-        player_input = NONE;
+        player_input = none;
         player_input_intermediary_buffer[0] = 0;
         player_input_intermediary_buffer[1] = 0;
         player_input_intermediary_buffer_index = 0;

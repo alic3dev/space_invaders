@@ -1,14 +1,14 @@
-#ifndef __GAME_STATE_H
-#define __GAME_STATE_H
+#ifndef __game_state_h
+#define __game_state_h
 
-#include "cexil.h"
-
-#include "alien.h"
+#include <alien.h>
 #include <intro.h>
 #include <mode.h>
-#include "player.h"
-#include "projectile.h"
-#include "velocity.h"
+#include <player.h>
+#include <projectile.h>
+#include <velocity.h>
+
+#include <cexil.h>
 
 extern const unsigned int game_state_default_level;
 
@@ -17,10 +17,12 @@ struct game_state {
 
   struct intro intro;
 
-  struct cexil_text score_text;
-  int score;
+  struct cexil_text text_score;
+  struct cexil_text text_level;
 
+  int score;
   int total_score;
+
   unsigned long long int total_time;
 
   struct player* player;
@@ -67,12 +69,17 @@ void game_state_aliens_populate(struct game_state*);
 
 void game_state_progress_level(struct game_state*);
 
-void game_state_score_text_set(
+void game_state_text_score_set(
+  struct game_state*
+);
+
+void game_state_text_level_set(
   struct game_state*
 );
 
 void game_state_poll_intro(struct game_state*);
 void game_state_poll_game(struct game_state*);
+void game_state_poll_game_over(struct game_state*);
 void game_state_poll(struct game_state*);
 
 void game_state_alien_remove(

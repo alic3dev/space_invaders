@@ -1,11 +1,11 @@
-#ifndef __HEART_H
-#define __HEART_H
+#ifndef __heart_h
+#define __heart_h
 
-#define HEART_SIZE_WIDTH 8
-#define HEART_SIZE_HEIGHT 8
+#define heart_size_width 8
+#define heart_size_height 8
 
-extern const char heart_frame_filled[HEART_SIZE_HEIGHT][HEART_SIZE_WIDTH];
-extern const char heart_frame_unfilled[HEART_SIZE_HEIGHT][HEART_SIZE_WIDTH];
+extern const char heart_frame_filled[heart_size_height][heart_size_width];
+extern const char heart_frame_unfilled[heart_size_height][heart_size_width];
 
 void heart_frame_set(
   char**,

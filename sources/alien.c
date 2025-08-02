@@ -1,15 +1,18 @@
-#include "alien.h"
+#include <alien.h>
+
+#include <game_state.h>
+#include <projectile.h>
+
+#include <cexil.h>
 
 #include <stdlib.h>
 
-#include "cexil.h"
+const struct cexil_size size_alien = {
+  .width = alien_size_width,
+  .height = alien_size_height
+};
 
-#include "game_state.h"
-#include "projectile.h"
-
-const struct cexil_size size_alien = { width: ALIEN_SIZE_WIDTH, height: ALIEN_SIZE_HEIGHT };
-
-const char alien_frames[length_alien_frames][ALIEN_SIZE_HEIGHT][ALIEN_SIZE_WIDTH] = {
+const char alien_frames[length_alien_frames][alien_size_height][alien_size_width] = {
   {
     {0,0,1,1,1,1,1,1},
     {0,1,1,1,1,1,1,1},
@@ -56,12 +59,12 @@ void alien_frame_set(
 ) {
   for (
     unsigned char y_index = 0;
-    y_index < ALIEN_SIZE_HEIGHT;
+    y_index < alien_size_height;
     ++y_index
   ) {
     for (
       unsigned char x_index = 0;
-      x_index < ALIEN_SIZE_WIDTH;
+      x_index < alien_size_width;
       ++x_index
     ) {
       pixels[y_index][x_index] = (
@@ -77,7 +80,7 @@ void alien_poll(struct alien* alien) {
 
     projectile_initialize(
       projectile,
-      ALIEN
+      projectile_alien
     );
 
     projectile->sprite.position.x = alien->sprite.position.x + (alien->sprite.size.width / 2);

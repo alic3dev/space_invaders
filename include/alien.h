@@ -1,20 +1,20 @@
-#ifndef __ALIEN_H
-#define __ALIEN_H
+#ifndef __alien_h
+#define __alien_h
 
-#include "cexil.h"
+#include <cexil.h>
 
-#include "game_state.h"
-#include "velocity.h"
+#include <game_state.h>
+#include <velocity.h>
 
 #define length_alien_frames 2
 
-#define ALIEN_SIZE_WIDTH 8
-#define ALIEN_SIZE_HEIGHT 8
+#define alien_size_width 8
+#define alien_size_height 8
 
-#define ALIEN_SPACING_X 8
-#define ALIEN_SPACING_Y 6
+#define alien_spacing_x 8
+#define alien_spacing_y 6
 
-extern const char alien_frames[length_alien_frames][ALIEN_SIZE_HEIGHT][ALIEN_SIZE_WIDTH];
+extern const char alien_frames[length_alien_frames][alien_size_height][alien_size_width];
 
 struct alien {
   struct cexil_sprite sprite;

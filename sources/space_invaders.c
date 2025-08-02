@@ -1,29 +1,69 @@
-#include "space_invaders.h"
+#include <space_invaders.h>
+
+#include <game_state.h>
+#include <player.h>
+#include <player_input.h>
+#include <cexil.h>
+#include <clic3.h>
+#include <interrupt_handler.h>
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "cexil.h"
-#include "interrupt_handler.h"
+int main(
+  int length_parameters,
+  char** parameters
+) {
+  unsigned char skip_intro = (
+    length_parameters >= 2 &&
+    clic3_char_arrays_equal(
+      parameters[1],
+      "--skip-intro"
+    ) == 1
+    ? 1
+    : 0
+  );
 
-#include "game_state.h"
-#include "player.h"
-#include "player_input.h"
-#include "screen.h"
-
-int main() {
   interrupt_handler_initialize();
 
   struct cexil_size size_screen;
   cexil_size_set_to_terminal(&size_screen);
-  size_screen.width = size_screen.width - 2; // SCREEN_SIZE_COLUMNS * 2; //
-  size_screen.height = size_screen.height - 4; // SCREEN_SIZE_ROWS * 4; //
+
+  size_screen.width = size_screen.width - 2;
+  size_screen.height = size_screen.height - 4;
+
+  struct cexil_size size_renderer = {
+    .width = 228,
+    .height = 128
+  };
+
+  if (
+    size_screen.width < size_renderer.width ||
+    size_screen.height < size_renderer.height
+  ) {
+    fprintf(
+      stderr,
+      "terminal_size_too_small\nrequired:\n  width->{114}\nheight->{32}\n"
+    );
+
+    return 1;
+  }
+
+  struct cexil_size size_offset = {
+    .width = ((size_screen.width - (size_renderer.width - 8)) / 2) / 2,
+    .height = ((size_screen.height - (size_renderer.height - 4)) / 2) / 4
+  };
 
   struct cexil_renderer renderer;
 
   cexil_renderer_initialize(
     &renderer,
-    &size_screen
+    &size_renderer
+  );
+
+  cexil_renderer_offset_set(
+    &renderer,
+    &size_offset
   );
 
   cexil_renderer_target_frame_rate_set(
@@ -50,9 +90,19 @@ int main() {
     0
   );
 
+  if (skip_intro == 1) {
+    game_state_mode_set(
+      &game_state,
+      game
+    );
+  }
+
   player_input_thread_start();
 
-  while (interrupt_handler_interrupted == 0) {
+  while (
+    interrupt_handler_interrupted == 0 &&
+    game_state.mode != outro
+  ) {
     cexil_renderer_render_clear(
       &renderer
     );
@@ -63,13 +113,27 @@ int main() {
 
     game_state_poll(&game_state);
 
-    cexil_renderer_render(
-      &renderer
-    );
+    if (
+      game_state.mode != game_over
+    ) {
+      cexil_renderer_render(
+        &renderer
+      );
+    }
   }
   
   cexil_renderer_destroy(
     &renderer
+  );
+
+  printf(
+    "GAME OVER\n\n"
+    "total_score: %i\n"
+    "total_time: %llus\n"
+    "level: %u\n",
+    game_state.total_score,
+    game_state.total_time / 1000000,
+    game_state.level
   );
 
   game_state_destroy(&game_state);

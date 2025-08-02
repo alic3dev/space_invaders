@@ -1,12 +1,12 @@
-#include "player.h"
+#include <player.h>
+
+#include <game_state.h>
+#include <heart.h>
+#include <player_input.h>
+#include <projectile.h>
 
 #include <pthread.h>
 #include <stdlib.h>
-
-#include "game_state.h"
-#include "heart.h"
-#include "player_input.h"
-#include "projectile.h"
 
 const unsigned char player_default_health_max = 5;
 const unsigned char player_default_health = player_default_health_max;
@@ -21,8 +21,8 @@ void player_initialize(
   player->speed = player_default_speed;
 
   struct cexil_size size_sprite_player = {
-    width: 12,
-    height: 8
+    .width = 12,
+    .height = 8
   };
 
   cexil_sprite_initialize(
@@ -58,8 +58,8 @@ void player_initialize(
 
   player->sprites_hearts = malloc(sizeof(struct cexil_sprite) * player->health_max);
   struct cexil_size size_sprite_heart = {
-    width: 8,
-    height: 8
+    .width = 8,
+    .height = 8
   };
 
   for (
@@ -137,12 +137,12 @@ void player_poll(
 ) {
   pthread_mutex_lock(&player_input_mutex);
   switch(player_input) {
-    case UP:
+    case up:
       struct projectile* projectile = malloc(sizeof(struct projectile));
 
       projectile_initialize(
         projectile,
-        PLAYER
+        projectile_player
       );
 
       projectile->sprite.position.x = player->sprite.position.x + (player->sprite.size.width / 2);
@@ -153,10 +153,10 @@ void player_poll(
         projectile
       );
       break;
-    case LEFT:
+    case left:
       player->velocity.x = -player->speed;
       break;
-    case RIGHT:
+    case right:
       player->velocity.x = player->speed;
       break;
     case DOWN:
@@ -164,7 +164,7 @@ void player_poll(
       player->velocity.y = 0;
       break;
   }
-  player_input = NONE;
+  player_input = none;
   pthread_mutex_unlock(&player_input_mutex);
 
   velocity_advance(&player->velocity);
@@ -173,11 +173,11 @@ void player_poll(
   player->sprite.position.y = player->sprite.position.y + player->velocity.y_rollover;
 
   struct cexil_position position_max = {
-    x: (
+    .x = (
       player->game_state->renderer->size.width -
       player->sprite.size.width
     ),
-    y: (
+    .y = (
       player->game_state->renderer->size.height -
       player->sprite.size.height
     )
