@@ -444,6 +444,23 @@ void game_state_poll_game(
       game_state->aliens[index_alien]->sprite.position.y + game_state->aliens_velocity.y_rollover
     );
 
+    if (
+      game_state->aliens[index_alien]->sprite.position.y >=
+      game_state->player->sprite.position.y
+    ) {
+      game_state_alien_remove(
+        game_state,
+        index_alien
+      );
+
+      player_damage(
+        game_state->player,
+        1
+      );
+
+      continue;
+    }
+
     for (
       long int index_projectile_player = 0;
       index_projectile_player < game_state->projectiles_player_count;
