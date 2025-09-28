@@ -1,56 +1,64 @@
-project_name=space_invaders
+name=space_invaders
 
-include_directory=include
-objects_directory=objects
-output_directory=output
-sources_directory=sources
+directory_include=include
+directory_objects=objects
+directory_output=output
+directory_sources=sources
 
-out_file=${output_directory}/${project_name}
-out_file_debug=${output_directory}/${project_name}_debug
+file_output=${directory_output}/${name}
+file_output_debug=${directory_output}/${name}_debug
 
-cexil_directory=../cexil
-cexil_include_directory=${cexil_directory}/include
-cexil_object_file=${cexil_directory}/library/cexil.o
+directory_cexil=../cexil
+directory_cexil_include=${directory_cexil}/include
 
-clic3_directory=../clic3
-clic3_include_directory=${clic3_directory}/include
-clic3_object_file=${clic3_directory}/library/clic3.o
+directory_clic3=../clic3
+directory_clic3_include=${directory_clic3}/include
 
-interrupt_handler_directory=../interrupt_handler
-interrupt_handler_include_directory=${interrupt_handler_directory}/include
-interrupt_handler_object_file=${interrupt_handler_directory}/library/interrupt_handler.o
+directory_interrupt_handler=../interrupt_handler
+directory_interrupt_handler_include=${directory_interrupt_handler}/include
 
-source_files=${wildcard ${sources_directory}/*.c}
-object_files=${patsubst ${sources_directory}/%.c, ${objects_directory}/%.o, ${source_files}}
-object_files_debug=${addprefix __debug/,${patsubst ${sources_directory}/%.c, ${objects_directory}/%.debug.o, ${source_files}}}
+file_library_cexil=${directory_cexil}/library/cexil.o
+file_library_clic3=${directory_clic3}/library/clic3.o
+file_library_interrupt_handler=${directory_interrupt_handler}/library/interrupt_handler.o
+
+files_sources=${wildcard ${directory_sources}/*.c}
+files_objects=${patsubst ${directory_sources}/%.c, ${directory_objects}/%.o, ${files_sources}}
+files_objects_debug=${addprefix __debug/,${patsubst ${directory_sources}/%.c, ${directory_objects}/%.debug.o, ${files_sources}}}
 
 cc=gcc
-c_flags=-O3 -I${include_directory} -I${cexil_include_directory} -I${interrupt_handler_include_directory} -I${clic3_include_directory}
-c_flags_debug=-O0 -g -v -da -Q -I${include_directory} -I${cexil_include_directory} -I${interrupt_handler_include_directory} -I${clic3_include_directory}
+c_flags=-O3 -I${directory_include} -I${directory_cexil_include} -I${directory_interrupt_handler_include} -I${directory_clic3_include}
+c_flags_debug=-O0 -g -v -da -Q -I${directory_include} -I${directory_cexil_include} -I${directory_interrupt_handler_include} -I${directory_clic3_include}
 
-${project_name}: ${out_file}
+${name}: ${file_output}
 
-debug: ${out_file_debug}
+debug: ${file_output_debug}
 
-${out_file}: ${object_files} ${output_directory}
-	${cc} ${c_flags} ${object_files} ${cexil_object_file} ${clic3_object_file} ${interrupt_handler_object_file} -o $@
+run:
+	./${file_output}
 
-${out_file_debug}: ${object_files_debug} ${output_directory}
-	${cc} ${c_flags_debug} ${patsubst __debug/%,%,${object_files_debug}} ${cexil_object_file} ${clic3_object_file} ${interrupt_handler_object_file} -o $@
+${file_output}: ${files_objects} ${directory_output}
+	${cc} ${c_flags} ${files_objects} ${file_library_cexil} ${file_library_clic3} ${file_library_interrupt_handler} -o $@
 
-${objects_directory}/%.o: ${sources_directory}/%.c ${objects_directory}
+${file_output_debug}: ${files_objects_debug} ${directory_output}
+	${cc} ${c_flags_debug} ${patsubst __debug/%,%,${files_objects_debug}} ${file_library_cexil} ${file_library_clic3} ${file_library_interrupt_handler} -o $@
+
+${directory_objects}/%.o: ${directory_sources}/%.c ${directory_objects}
 	${cc} ${c_flags} -c $< -o $@
 
-__debug/${objects_directory}/%.debug.o: ${sources_directory}/%.c ${objects_directory}
+__debug/${directory_objects}/%.debug.o: ${directory_sources}/%.c ${directory_objects}
 	${cc} ${c_flags_debug} -c $< -o ${patsubst __debug/%,%,$@}
 
-${output_directory}:
-	mkdir -p ${output_directory}
+${directory_output}:
+	mkdir -p ${directory_output}
 
-${objects_directory}:
-	mkdir -p ${objects_directory}
+${directory_objects}:
+	mkdir -p ${directory_objects}
 
-clean:
-	-rm -r ${output_directory} 2> /dev/null
-	-rm -r ${objects_directory} 2> /dev/null
+clean: clean_objects clean_output
+
+clean_objects:
+	-rm -r ${directory_objects} 2> /dev/null
+
+clean_output:
+	-rm -r ${directory_output} 2> /dev/null
 
