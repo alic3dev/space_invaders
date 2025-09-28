@@ -58,7 +58,7 @@ void game_state_initialize_with_mode(
   game_state->total_score = 0;
   game_state->total_time = 0;
   game_state->level = game_state_default_level;
-  
+
   cexil_text_initialize(
     &game_state->text_score,
     ""
@@ -86,6 +86,10 @@ void game_state_initialize_with_mode(
   game_state_text_level_set(
     game_state
   );
+  
+  game_state->text_score.visible = game_state->mode == game;
+  game_state->text_level.visible = game_state->mode == game;
+
 
   game_state->projectiles_player_count = 0;
   game_state->projectiles_alien_count = 0;
