@@ -6,7 +6,7 @@
 #include <game_state.h>
 #include <velocity.h>
 
-#define length_alien_frames 2
+#define length_alien_frames 10
 
 #define alien_size_width 8
 #define alien_size_height 8
