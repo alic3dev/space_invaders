@@ -1,6 +1,6 @@
 # space_invaders
 
-![space_invaders_intro](https://github.com/user-attachments/assets/73567ca1-85d6-4180-b3df-9c10493fdd09)
+![space_invaders](https://github.com/user-attachments/assets/23a1b063-c39c-496d-9cf2-55f1b7a288a2)
 
 c_implementation.of->{space_invaders};
 
