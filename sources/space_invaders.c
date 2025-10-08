@@ -144,5 +144,5 @@ int main(
   player_input_thread_join();
   player_input_destroy();
 
-  return interrupt_handler_interrupted;
+  return 0;
 }
