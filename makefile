@@ -61,4 +61,3 @@ clean_objects:
 
 clean_output:
 	-rm -r ${directory_output} 2> /dev/null
-
