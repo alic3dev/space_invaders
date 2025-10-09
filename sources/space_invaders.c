@@ -10,19 +10,75 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+const unsigned short int space_invaders_renderer_width_default = 228;
+const unsigned short int space_invaders_renderer_height_default = 128;
+
 int main(
   int length_parameters,
   char** parameters
 ) {
-  unsigned char skip_intro = (
-    length_parameters >= 2 &&
-    clic3_char_arrays_equal(
-      parameters[1],
-      "--skip-intro"
-    ) == 1
-    ? 1
-    : 0
-  );
+  unsigned char skip_intro = 0;
+  unsigned char fill_screen = 0;
+
+  for (
+    int index_parameter = 1;
+    index_parameter < length_parameters;
+    ++index_parameter
+  ) {
+    int index_parameter_found = clic3_char_arrays_within(
+      parameters[index_parameter],
+      2,
+      "--skip-intro",
+      "--fill-screen"
+    );
+
+    switch (index_parameter_found) {
+      case 0:
+        if (
+          skip_intro == 1
+        ) {
+          fprintf(
+            stderr,
+            "already_set:parameter->{%s}\n",
+            parameters[
+              index_parameter
+            ]
+          );
+
+          return 1;
+        }
+
+        skip_intro = 1;
+        break;
+      case 1:
+        if (
+          fill_screen == 1
+        ) {
+          fprintf(
+            stderr,
+            "already_set:parameter->{%s}\n",
+            parameters[
+              index_parameter
+            ]
+          );
+
+          return 1;
+        }
+
+        fill_screen = 1;
+        break;
+      default:
+        fprintf(
+          stderr,
+          "unknown:parameter->{%s}\n",
+          parameters[
+            index_parameter
+          ]
+        );
+
+        return 1;
+    }
+  }
 
   interrupt_handler_initialize();
 
@@ -32,10 +88,15 @@ int main(
   size_screen.width = size_screen.width - 2;
   size_screen.height = size_screen.height - 4;
 
-  struct cexil_size size_renderer = {
-    .width = 228,
-    .height = 128
-  };
+  struct cexil_size size_renderer;
+
+  if (fill_screen) {
+    size_renderer.width = size_screen.width;
+    size_renderer.height = size_screen.height;
+  } else {
+    size_renderer.width = space_invaders_renderer_width_default;
+    size_renderer.height = space_invaders_renderer_height_default;
+  }
 
   if (
     size_screen.width < size_renderer.width ||
@@ -43,7 +104,13 @@ int main(
   ) {
     fprintf(
       stderr,
-      "terminal_size_too_small\nrequired:\n  width->{114}\nheight->{32}\n"
+      "terminal_size_too_small\n"
+      "  required:\n"
+      "    width->{%i}\n"
+      "    height->{%i}\n"
+      "  use->{--fill-screen}.to_disable_size_constraints\n",
+      space_invaders_renderer_width_default / 2,
+      space_invaders_renderer_height_default / 4
     );
 
     return 1;

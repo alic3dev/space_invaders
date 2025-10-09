@@ -4,6 +4,21 @@
 
 c_implementation.of->{space_invaders};
 
+## running
+
+```sh
+./output/space_invaders
+```
+
+```sh
+make run
+```
+
+### parameters
+
+- `--skip-intro` : skips the intro screen
+- `--fill-screen`: fills the entire screen regardless of size
+
 ## dependencies
 
 - [alic3dev](https://github.com/alic3dev)
@@ -20,4 +35,3 @@ make
 ## copyright|copyleft
 
 > © [copyleft|copyright]->{alic3dev:[2025]}:[all_lefts_reserved|all_rights_reserved]
-
