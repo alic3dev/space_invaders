@@ -137,7 +137,7 @@ void player_poll(
 ) {
   pthread_mutex_lock(&player_input_mutex);
   switch(player_input) {
-    case up:
+    case up: {
       struct projectile* projectile = malloc(sizeof(struct projectile));
 
       projectile_initialize(
@@ -153,6 +153,7 @@ void player_poll(
         projectile
       );
       break;
+    }
     case left:
       player->velocity.x = -player->speed;
       break;
