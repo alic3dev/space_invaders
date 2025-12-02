@@ -32,7 +32,7 @@ const char alien_frames[length_alien_frames][alien_size_height][alien_size_width
     {0,1,1,0,0,1,1,0},
     {0,0,1,1,1,1,0,0},
     {0,0,0,0,0,0,0,0},
-  }, 
+  },
   {
     {0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0},

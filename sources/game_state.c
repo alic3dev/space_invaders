@@ -25,24 +25,24 @@ void game_state_initialize_with_mode(
   intro_initialize(
     &game_state->intro
   );
-  
+
   cexil_renderer_sprite_add(
     game_state->renderer,
     &game_state->intro.sprite
   );
 
   game_state->intro.sprite.position.x = (
-    (game_state->renderer->size.width / 2) - 
+    (game_state->renderer->size.width / 2) -
     (game_state->intro.sprite.size.width / 2)
   );
 
   game_state->intro.sprite.position.y = (
-    (game_state->renderer->size.height / 2) - 
+    (game_state->renderer->size.height / 2) -
     (game_state->intro.sprite.size.height / 2)
   );
 
   game_state->intro.sprite.visible = mode == intro ? 1 : 0;
-  
+
   game_state->player = player;
 
   game_state->aliens_columns = 10;
@@ -68,7 +68,7 @@ void game_state_initialize_with_mode(
     &game_state->text_level,
     ""
   );
-  
+
   cexil_renderer_text_add(
     game_state->renderer,
     &game_state->text_score
@@ -86,10 +86,9 @@ void game_state_initialize_with_mode(
   game_state_text_level_set(
     game_state
   );
-  
+
   game_state->text_score.visible = game_state->mode == game;
   game_state->text_level.visible = game_state->mode == game;
-
 
   game_state->projectiles_player_count = 0;
   game_state->projectiles_alien_count = 0;
@@ -162,7 +161,7 @@ void game_state_mode_set(
       game_state->total_time = 0;
       cexil_timer_start(&game_state->timer);
 
-      game_state->level = game_state_default_level; 
+      game_state->level = game_state_default_level;
 
       player_heal(
         game_state->player,
@@ -250,7 +249,7 @@ void game_state_progress_level(struct game_state* game_state) {
   );
   cexil_timer_start(&game_state->timer);
 
-  game_state->level = game_state->level + 1; 
+  game_state->level = game_state->level + 1;
 
   player_heal(
     game_state->player,
@@ -447,7 +446,7 @@ void game_state_poll_game(
       index_projectile_player = (
         index_projectile_player - 1
       );
-      
+
       continue;
     }
 
@@ -519,7 +518,7 @@ void game_state_poll_game(
         game_state->score - 150
       );
     } else if (
-      game_state->projectiles_alien[index_projectile_alien]->sprite.position.y >= 
+      game_state->projectiles_alien[index_projectile_alien]->sprite.position.y >=
       game_state->renderer->size.height
     ) {
       projectile_should_remove = 1;
@@ -801,10 +800,10 @@ void game_state_projectile_player_remove(
   );
 }
 
-void game_state_projectiles_remove_all( 
+void game_state_projectiles_remove_all(
   struct game_state* game_state,
   struct projectile*** projectiles,
-  unsigned short int* projectiles_count 
+  unsigned short int* projectiles_count
 ) {
   for (
     unsigned int index_projectile = *projectiles_count;

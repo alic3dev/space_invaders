@@ -26,7 +26,7 @@ struct game_state {
   unsigned long long int total_time;
 
   struct player* player;
-  
+
   struct alien** aliens;
   unsigned short int aliens_count;
   unsigned char aliens_rows;
@@ -34,7 +34,7 @@ struct game_state {
   struct cexil_position aliens_position;
   struct cexil_size aliens_size;
   struct velocity aliens_velocity;
-  
+
   struct cexil_timer timer;
   unsigned int level;
 

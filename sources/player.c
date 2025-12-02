@@ -29,7 +29,7 @@ void player_initialize(
     &player->sprite,
     &size_sprite_player
   );
-  
+
   for (
     unsigned int index_x = 0;
     index_x < size_sprite_player.width;
@@ -39,13 +39,13 @@ void player_initialize(
     player->sprite.pixels[7][index_x] = 1;
 
     if (
-      index_x >= size_sprite_player.width / 4 && 
+      index_x >= size_sprite_player.width / 4 &&
       index_x <= size_sprite_player.width - (size_sprite_player.width / 4)
     ) {
       player->sprite.pixels[5][index_x] = 1;
     }
   }
-  
+
   player_reset(
     game_state,
     player
@@ -154,16 +154,22 @@ void player_poll(
       );
       break;
     }
-    case left:
+    case left: {
       player->velocity.x = -player->speed;
       break;
-    case right:
+    }
+    case right: {
       player->velocity.x = player->speed;
       break;
-    case DOWN:
+    }
+    case DOWN: {
       player->velocity.x = 0;
       player->velocity.y = 0;
       break;
+    }
+    default: {
+      break;
+    }
   }
   player_input = none;
   pthread_mutex_unlock(&player_input_mutex);
@@ -186,7 +192,7 @@ void player_poll(
 
   if (player->sprite.position.x < 0) {
     player->sprite.position.x = 0;
-    
+
     velocity_reset_x(&player->velocity);
   } else if (player->sprite.position.x > position_max.x) {
     player->sprite.position.x = position_max.x;

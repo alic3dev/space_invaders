@@ -130,7 +130,7 @@ void* __player_input_get(void* _) {
         player_input_intermediary_buffer[0] = 0;
         player_input_intermediary_buffer[1] = 0;
         player_input_intermediary_buffer_index = 0;
-        
+
         break;
       case clic3_char_value_B:
         if (player_input_intermediary_buffer_index == 2) {
@@ -142,8 +142,7 @@ void* __player_input_get(void* _) {
         player_input_intermediary_buffer[0] = 0;
         player_input_intermediary_buffer[1] = 0;
         player_input_intermediary_buffer_index = 0;
-        
-        
+
         break;
       case clic3_char_value_C:
         if (player_input_intermediary_buffer_index == 2) {
@@ -155,7 +154,7 @@ void* __player_input_get(void* _) {
         player_input_intermediary_buffer[0] = 0;
         player_input_intermediary_buffer[1] = 0;
         player_input_intermediary_buffer_index = 0;
-        
+
         break;
       case clic3_char_value_D:
         if (player_input_intermediary_buffer_index == 2) {
@@ -167,9 +166,9 @@ void* __player_input_get(void* _) {
         player_input_intermediary_buffer[0] = 0;
         player_input_intermediary_buffer[1] = 0;
         player_input_intermediary_buffer_index = 0;
-        
+
         break;
-      default: 
+      default:
         player_input = none;
         player_input_intermediary_buffer[0] = 0;
         player_input_intermediary_buffer[1] = 0;
@@ -186,4 +185,6 @@ void* __player_input_get(void* _) {
     TCSANOW,
     &termios_attrs_original
   );
+
+  return (void*)0;
 }

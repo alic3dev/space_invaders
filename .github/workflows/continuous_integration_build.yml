@@ -3,37 +3,91 @@ on:
   push:
     branches: ["core"]
   pull_request:
-    branches: ["core"]
+    branches: ["*"]
+env:
+  enabled_caching: 1
+  enabled_caching_cexil: 1
+  enabled_caching_clic3: 1
+  enabled_caching_interrupt_handler: 1
+  key_cache_cexil: cache_cexil_0_0_0
+  key_cache_clic3: cache_clic3_0_0_0
+  key_cache_interrupt_handler: cache_interrupt_handler_0_0_0
+  target_device_version_macos: 15.5
 jobs:
   continuous_integration_build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - name: git_initialization
         run: git config --global init.defaultBranch core
       - name: checkout_space_invaders
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: space_invaders
+      - name: cache_restore_cexil
+        id: cache_restore_cexil
+        if: ${{ env.enabled_caching == '1' && env.enabled_caching_cexil == '1' }}
+        uses: actions/cache/restore@v4
+        with:
+          path: cexil
+          key: ${{ env.key_cache_cexil }}
+      - name: cache_restore_clic3
+        id: cache_restore_clic3
+        if: ${{ env.enabled_caching == '1' && env.enabled_caching_clic3 == '1' }}
+        uses: actions/cache/restore@v4
+        with:
+          path: clic3
+          key: ${{ env.key_cache_clic3 }}
+      - name: cache_restore_interrupt_handler
+        id: cache_restore_interrupt_handler
+        if: ${{ env.enabled_caching == '1' && env.enabled_caching_interrupt_handler == '1' }}
+        uses: actions/cache/restore@v4
+        with:
+          path: interrupt_handler
+          key: ${{ env.key_cache_interrupt_handler }}
       - name: checkout_cexil
+        if: steps.cache_restore_cexil.outputs.cache-hit != 'true'
         uses: actions/checkout@v4
         with:
           repository: alic3dev/cexil
           path: cexil
       - name: checkout_clic3
+        if: steps.cache_restore_clic3.outputs.cache-hit != 'true'
         uses: actions/checkout@v4
         with:
           repository: alic3dev/clic3
           path: clic3
       - name: checkout_interrupt_handler
+        if: steps.cache_restore_interrupt_handler.outputs.cache-hit != 'true'
         uses: actions/checkout@v4
         with:
           repository: alic3dev/interrupt_handler
           path: interrupt_handler
       - name: make_cexil
-        run: cd cexil && make
+        run: cd cexil && make cexil_dylib target_device_version=${{ env.target_device_version_macos }}
       - name: make_clic3
-        run: cd clic3 && make
+        run: cd clic3 && make clic3_dylib target_device_version=${{ env.target_device_version_macos }}
       - name: make_interrupt_handler
-        run: cd interrupt_handler && make
+        run: cd interrupt_handler && make interrupt_handler_dylib target_device_version=${{ env.target_device_version_macos }}
       - name: make_space_invaders
-        run: cd space_invaders && make
+        run: cd space_invaders && make target_device_version=${{ env.target_device_version_macos }}
+      - name: cache_save_cexil
+        id: cache_save_cexil
+        if: ${{ env.enabled_caching == '1' && env.enabled_caching_cexil == '1' && steps.cache_restore_cexil.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@v4
+        with:
+          path: cexil
+          key: ${{ env.key_cache_cexil }}
+      - name: cache_save_clic3
+        id: cache_save_clic3
+        if: ${{ env.enabled_caching == '1' && env.enabled_caching_clic3 == '1' && steps.cache_restore_clic3.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@v4
+        with:
+          path: clic3
+          key: ${{ env.key_cache_clic3 }}
+      - name: cache_save_interrupt_handler
+        id: cache_save_interrupt_handler
+        if: ${{ env.enabled_caching == '1' && env.enabled_caching_interrupt_handler == '1' && steps.cache_restore_interrupt_handler.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@v4
+        with:
+          path: interrupt_handler
+          key: ${{ env.key_cache_interrupt_handler }}
