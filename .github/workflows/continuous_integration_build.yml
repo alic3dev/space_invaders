@@ -78,7 +78,7 @@ jobs:
           path: rand
       - name: checkout cer0
         with:
-          repository:alic3dev/cer0
+          repository: alic3dev/cer0
           path: cer0
       - name: make cer0
         run: cd cer0 && make cer0_dylib target_device_version=${{ env.target_device_version_macos }}
