@@ -6,7 +6,7 @@ c_implementation.of->{space_invaders};
 
 ## running
 
-```sh
+```zsh
 ./output/space_invaders
 ```
 
@@ -16,8 +16,8 @@ make run
 
 ### parameters
 
-- `--skip-intro` : skips the intro screen
-- `--fill-screen`: fills the entire screen regardless of size
+- `--skip_intro` : skips the intro screen
+- `--fill_screen`: fills the entire screen regardless of size
 
 ## dependencies
 
