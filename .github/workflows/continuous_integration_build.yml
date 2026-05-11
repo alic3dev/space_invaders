@@ -32,51 +32,54 @@ jobs:
       - name: cache_restore_cexil
         id: cache_restore_cexil
         if: ${{ env.enabled_caching == '1' && env.enabled_caching_cexil == '1' }}
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: cexil
           key: ${{ env.key_cache_cexil }}
       - name: cache_restore_clic3
         id: cache_restore_clic3
         if: ${{ env.enabled_caching == '1' && env.enabled_caching_clic3 == '1' }}
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: clic3
           key: ${{ env.key_cache_clic3 }}
       - name: cache_restore_interrupt_handler
         id: cache_restore_interrupt_handler
         if: ${{ env.enabled_caching == '1' && env.enabled_caching_interrupt_handler == '1' }}
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: interrupt_handler
           key: ${{ env.key_cache_interrupt_handler }}
       - name: checkout_cexil
         if: steps.cache_restore_cexil.outputs.cache-hit != 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: alic3dev/cexil
           path: cexil
       - name: checkout_clic3
         if: steps.cache_restore_clic3.outputs.cache-hit != 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: alic3dev/clic3
           path: clic3
       - name: checkout_interrupt_handler
         if: steps.cache_restore_interrupt_handler.outputs.cache-hit != 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: alic3dev/interrupt_handler
           path: interrupt_handler
       - name: checkout_math_c
+        uses: actions/checkout@v5
         with:
           repository: alic3dev/math_c
           path: math_c
       - name: checkout_rand
+        uses: actions/checkout@v5
         with:
           repository: alic3dev/rand
           path: rand
       - name: checkout cer0
+        uses: actions/checkout@v5
         with:
           repository: alic3dev/cer0
           path: cer0
