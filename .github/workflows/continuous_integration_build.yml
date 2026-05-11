@@ -83,8 +83,6 @@ jobs:
         with:
           repository: alic3dev/cer0
           path: cer0
-      - name: make cer0
-        run: cd cer0 && make cer0_dylib target_device_version=${{ env.target_device_version_macos }}
       - name: make_cexil
         run: cd cexil && make cexil_dylib target_device_version=${{ env.target_device_version_macos }}
       - name: make_clic3
@@ -95,6 +93,8 @@ jobs:
         run: cd math_c && make math_c_dylib target_device_version=${{ env.target_device_version_macos }}
       - name: make_rand
         run: cd rand && make rand_dylib target_device_version=${{ env.target_device_version_macos }}
+      - name: make_cer0
+        run: cd cer0 && make cer0_dylib target_device_version=${{ env.target_device_version_macos }}
       - name: make_space_invaders
         run: cd space_invaders && make target_device_version=${{ env.target_device_version_macos }}
       - name: cache_save_cexil
