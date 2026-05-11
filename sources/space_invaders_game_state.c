@@ -15,17 +15,15 @@
 
 #include <stdio.h>
 
-const unsigned int game_state_default_level = (
-  0x01
-);
-
 void game_state_initialize_with_mode(
   struct game_state* game_state,
   struct cexil_renderer* renderer,
   struct player* player,
   enum mode mode
 ) {
-  game_state->renderer = renderer;
+  game_state->renderer = (
+    renderer
+  );
 
   intro_initialize(
     &game_state->intro
@@ -1226,9 +1224,11 @@ void game_state_alien_remove(
   rand_clean(
     &game_state->aliens[
       index_alien
-      ]->rand_result,
-      &game_state->aliens[
-      index_alien]->rand_source);
+    ]->rand_result,
+    &game_state->aliens[
+      index_alien
+    ]->rand_source
+  );
 
   clic3_memory_free_raw(
     game_state->aliens[
@@ -1538,11 +1538,15 @@ void game_state_destroy(
   ) {
   
   rand_clean(
-    &game_state->aliens[index_alien]->rand_result,
-   &game_state->aliens[index_alien]->rand_source
+    &game_state->aliens[
+      index_alien
+    ]->rand_result,
+    &game_state->aliens[
+      index_alien
+    ]->rand_source
    ); 
   
-    clic3_memory_free_raw(
+   clic3_memory_free_raw(
       game_state->aliens[
         index_alien
       ]

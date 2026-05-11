@@ -204,9 +204,13 @@ void alien_poll(
   if (
     alien->index_rand == 
     0x00
-    ) {
-      rand_get(&alien->rand_source,&alien->rand_result,&alien->rand_parameters);
-    }
+  ) {
+    rand_get(
+      &alien->rand_source,
+      &alien->rand_result,
+      &alien->rand_parameters
+    );
+  }
 
   if (
     (
@@ -216,13 +220,15 @@ void alien_poll(
     ) >=
     0xfe
   ) {
-   alien->index_rand = (
-     (alien->index_rand
-     + 0x01) %
-     alien->rand_result.length 
-     );
+    alien->index_rand = (      (
+        alien->index_rand
++
+        0x01
+      ) %      alien->rand_result.length 
+    );
   
     static struct projectile* projectile;
+    
     projectile = (
       clic3_memory_allocate_raw(
         sizeof(

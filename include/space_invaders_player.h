@@ -6,9 +6,9 @@
 
 #include <cexil.h>
 
-extern const unsigned char player_default_health_max;
-extern const unsigned char player_default_health;
-extern const float player_default_speed;
+#define player_default_health_max 0x05
+#define player_default_health player_default_health_max
+#define player_default_speed 0x02
 
 struct player {
   struct game_state* game_state;

@@ -11,32 +11,42 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-const unsigned short int space_invaders_renderer_width_default = 228;
-const unsigned short int space_invaders_renderer_height_default = 128;
-
 int main(
   int length_parameters,
   char** parameters
 ) {
-  unsigned char skip_intro = 0;
-  unsigned char fill_screen = 0;
+  unsigned char skip_intro = (
+    0x00
+  );
+  
+  unsigned char fill_screen = (
+    0x00
+  );
 
   for (
-    int index_parameter = 1;
-    index_parameter < length_parameters;
+    int index_parameter = (
+      0x01
+    );
+    (
+      index_parameter <
+      length_parameters
+    );
     ++index_parameter
   ) {
-    int index_parameter_found = clic3_char_arrays_within(
-      parameters[index_parameter],
-      2,
-      "--skip-intro",
-      "--fill-screen"
-    );
-
-    switch (index_parameter_found) {
-      case 0:
+    switch (
+      clic3_char_arrays_within(
+        parameters[
+          index_parameter
+        ],
+        0x02,
+        "--skip-intro",
+        "--fill-screen"
+      )
+    ) {
+      case 0x00: {
         if (
-          skip_intro == 1
+          skip_intro ==
+          0x01
         ) {
           fprintf(
             stderr,
@@ -46,14 +56,21 @@ int main(
             ]
           );
 
-          return 1;
+          return (
+            0x01
+          );
         }
 
-        skip_intro = 1;
+        skip_intro = (
+          0x01
+        );
+        
         break;
-      case 1:
+      }
+      case 0x01: {
         if (
-          fill_screen == 1
+          fill_screen ==
+          0x01
         ) {
           fprintf(
             stderr,
@@ -63,12 +80,18 @@ int main(
             ]
           );
 
-          return 1;
+          return (
+            0x01
+          );
         }
 
-        fill_screen = 1;
+        fill_screen = (
+          0x01
+        );
+        
         break;
-      default:
+      }
+      default: {
         fprintf(
           stderr,
           "unknown:parameter->{%s}\n",
@@ -77,7 +100,10 @@ int main(
           ]
         );
 
-        return 1;
+        return (
+          0x01
+        );
+      }
     }
   }
 
@@ -85,26 +111,52 @@ int main(
 
   struct math_c_vector2_unsigned_int size_screen;
 
-    cexil_size_set_to_terminal(
+  cexil_size_set_to_terminal(
     &size_screen
   );
 
-  size_screen.x = size_screen.x - 2;
-  size_screen.y = size_screen.y - 4;
+  size_screen.x = (
+    size_screen.x -
+    0x02
+  );
+  
+  size_screen.y = (
+    size_screen.y -
+    0x04
+  );
 
   struct math_c_vector2_unsigned_int size_renderer;
 
-  if (fill_screen) {
-    size_renderer.x = size_screen.x;
-    size_renderer.y = size_screen.y;
+  if (
+    fill_screen ==
+    0x01
+  ) {
+    size_renderer.x = (
+      size_screen.x
+    );
+    
+    size_renderer.y = (
+      size_screen.y
+    );
   } else {
-    size_renderer.x = space_invaders_renderer_width_default;
-    size_renderer.y = space_invaders_renderer_height_default;
+    size_renderer.x = (
+      space_invaders_renderer_width_default
+    );
+    
+    size_renderer.y = (
+      space_invaders_renderer_height_default
+    );
   }
 
   if (
-    size_screen.x < size_renderer.x ||
-    size_screen.y < size_renderer.y
+    (
+      size_screen.x <
+      size_renderer.x
+    ) ||
+    (
+      size_screen.y <
+      size_renderer.y
+    )
   ) {
     fprintf(
       stderr,
@@ -113,16 +165,48 @@ int main(
       "    width->{%i}\n"
       "    height->{%i}\n"
       "  use->{--fill-screen}.to_disable_size_constraints\n",
-      space_invaders_renderer_width_default / 2,
-      space_invaders_renderer_height_default / 4
+      (
+        space_invaders_renderer_width_default /
+        0x02
+      ),
+      (
+        space_invaders_renderer_height_default /
+        0x04
+      )
     );
 
-    return 1;
+    return (
+      0x01
+    );
   }
 
   struct math_c_vector2_unsigned_int size_offset = {
-    .x = ((size_screen.x - (size_renderer.x - 8)) / 2) / 2,
-    .y = ((size_screen.y - (size_renderer.y - 4)) / 2) / 4
+    .x = (
+      (
+        (
+          size_screen.x -
+          (
+            size_renderer.x -
+            0x08
+          )
+        ) /
+        0x02
+      ) /
+      0x02
+    ),
+    .y = (
+      (
+        (
+          size_screen.y -
+          (
+            size_renderer.y -
+            0x04
+          )
+        ) /
+        0x02
+      ) /
+      0x04
+    )
   };
 
   struct cexil_renderer renderer;
@@ -139,7 +223,7 @@ int main(
 
   cexil_renderer_target_frame_rate_set(
     &renderer,
-    60.0f
+    0x3c
   );
 
   struct game_state game_state;
@@ -158,10 +242,13 @@ int main(
 
   player_visibility_set(
     &player,
-    0
+    0x00
   );
 
-  if (skip_intro == 1) {
+  if (
+    skip_intro ==
+    0x01
+  ) {
     game_state_mode_set(
       &game_state,
       game
@@ -171,21 +258,35 @@ int main(
   player_input_thread_start();
 
   while (
-    interrupt_handler_interrupted == 0 &&
-    game_state.mode != outro
+    (
+      interrupt_handler_interrupted ==
+      0x00
+    ) &&
+    (
+      game_state.mode !=
+      outro
+    )
   ) {
     cexil_renderer_render_clear(
       &renderer
     );
 
-    if (game_state.mode == game) {
-      player_poll(&player);
+    if (
+      game_state.mode ==
+      game
+    ) {
+      player_poll(
+        &player
+      );
     }
 
-    game_state_poll(&game_state);
+    game_state_poll(
+      &game_state
+    );
 
     if (
-      game_state.mode != game_over
+      game_state.mode !=
+      game_over
     ) {
       cexil_renderer_render(
         &renderer
@@ -198,22 +299,35 @@ int main(
   );
 
   printf(
-    "GAME OVER\n\n"
-    "total_score: %i\n"
-    "total_time: %llus\n"
-    "level: %u\n",
+    "game_over\n\n"
+    "total_score->{%i}\n"
+    "total_time->{%llu_seconds}\n"
+    "level->{%u}\n",
     game_state.total_score,
-    game_state.total_time / 1000000,
+    (
+      game_state.total_time /
+      0x0f4240
+    ),
     game_state.level
   );
 
-  game_state_destroy(&game_state);
+  game_state_destroy(
+    &game_state
+  );
 
-  player_destroy(&player);
+  player_destroy(
+    &player
+  );
 
-  printf("press_any_key_to_exit\n");
+  printf(
+    "press_any_key_to_exit\n"
+  );
+  
   player_input_thread_join();
+  
   player_input_destroy();
 
-  return 0;
+  return (
+    0x00
+  );
 }

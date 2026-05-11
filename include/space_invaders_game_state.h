@@ -12,7 +12,7 @@
 
 #include <math_c_vector.h>
 
-extern const unsigned int game_state_default_level;
+#define game_state_default_level 0x01
 
 struct game_state {
   enum mode mode;

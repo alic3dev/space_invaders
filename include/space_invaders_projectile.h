@@ -9,18 +9,18 @@
 
 #define projectile_size_width 0x01
 #define projectile_size_height 0x02
+#define projectile_size_total (\
+  projectile_size_width *\
+  projectile_size_height\
+)
 
 enum projectile_source {
   projectile_player,
   projectile_alien
 };
 
-extern const struct math_c_vector2_unsigned_char projectile_size;
-
 extern const char projectile_frame_player[
-  projectile_size_height
-][
-  projectile_size_width
+  projectile_size_total
 ];
 
 struct projectile {
@@ -36,7 +36,7 @@ void projectile_initialize(
 
 void projectile_frame_set(
   char**,
-  char*
+  const char*
 );
 
 void projectile_poll(

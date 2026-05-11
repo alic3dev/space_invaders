@@ -3,17 +3,17 @@
 
 #define heart_size_width 0x08
 #define heart_size_height 0x08
+#define heart_size_total (\
+  heart_size_width *\
+  heart_size_height\
+)
 
 extern const char heart_frame_filled[
-  heart_size_height
-][
-  heart_size_width
+  heart_size_total
 ];
 
 extern const char heart_frame_unfilled[
-  heart_size_height
-][
-  heart_size_width
+  heart_size_total
 ];
 
 void heart_frame_set(

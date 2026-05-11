@@ -7,9 +7,13 @@
 #include <termios.h>
 #include <unistd.h>
 
-enum player_input_value player_input = none;
+enum player_input_value player_input = (
+  none
+);
 
-unsigned char player_input_thread_running = 0;
+unsigned char player_input_thread_running = (
+  0x00
+);
 
 pthread_mutex_t player_input_thread_running_mutex;
 pthread_mutex_t player_input_mutex;
@@ -104,6 +108,7 @@ void* __player_input_get(
   );
 
   int player_input_intermediary;
+  
   int player_input_intermediary_buffer[
     0x02
   ] = {
@@ -142,80 +147,226 @@ void* __player_input_get(
             0x01
           );
         } else {
-          player_input_intermediary_buffer[0] = 0;
-          player_input_intermediary_buffer[1] = 0;
-          player_input_intermediary_buffer_index = 0;
+          player_input_intermediary_buffer[
+            0x00
+          ] = (
+            0x00
+          );
+          
+          player_input_intermediary_buffer[
+            0x01
+          ] = (
+            0x00
+          );
+          
+          player_input_intermediary_buffer_index = (
+            0x00
+          );
         }
         
         break;
       }
-      case clic3_char_value_square_bracket_opening:
-        if (player_input_intermediary_buffer_index == 1) {
-          player_input_intermediary_buffer[1] = player_input_intermediary;
-          player_input_intermediary_buffer_index = 2;
+      case clic3_char_value_square_bracket_opening: {
+        if (
+          player_input_intermediary_buffer_index ==
+          0x01
+        ) {
+          player_input_intermediary_buffer[
+            0x01
+          ] = (
+            player_input_intermediary
+          );
+          
+          player_input_intermediary_buffer_index = (
+            0x02
+          );
         } else {
-          player_input_intermediary_buffer[0] = 0;
-          player_input_intermediary_buffer[1] = 0;
-          player_input_intermediary_buffer_index = 0;
+          player_input_intermediary_buffer[
+            0x00
+          ] = (
+            0x00
+          );
+          
+          player_input_intermediary_buffer[
+            0x01
+          ] = (
+            0x00
+          );
+          
+          player_input_intermediary_buffer_index = (
+            0x00
+          );
         }
+        
         break;
-      case clic3_char_value_A:
-        if (player_input_intermediary_buffer_index == 2) {
-          pthread_mutex_lock(&player_input_mutex);
-          player_input = up;
-          pthread_mutex_unlock(&player_input_mutex);
+      }
+      case clic3_char_value_A: {
+        if (
+          player_input_intermediary_buffer_index ==
+          0x02
+        ) {
+          pthread_mutex_lock(
+            &player_input_mutex
+          );
+          
+          player_input = (
+            up
+          );
+          
+          pthread_mutex_unlock(
+            &player_input_mutex
+          );
         }
 
-        player_input_intermediary_buffer[0] = 0;
-        player_input_intermediary_buffer[1] = 0;
-        player_input_intermediary_buffer_index = 0;
+        player_input_intermediary_buffer[
+          0x00
+        ] = (
+          0x00
+        );
+        
+        player_input_intermediary_buffer[
+          0x01
+        ] = (
+          0x00
+        );
+        
+        player_input_intermediary_buffer_index = (
+          0x00
+        );
 
         break;
-      case clic3_char_value_B:
-        if (player_input_intermediary_buffer_index == 2) {
-          pthread_mutex_lock(&player_input_mutex);
+      }
+      case clic3_char_value_B: {
+        if (
+          player_input_intermediary_buffer_index ==
+          0x02
+        ) {
+          pthread_mutex_lock(
+            &player_input_mutex
+          );
+          
           player_input = (
             down
           );
-          pthread_mutex_unlock(&player_input_mutex);
+          
+          pthread_mutex_unlock(
+            &player_input_mutex
+          );
         }
 
-        player_input_intermediary_buffer[0] = 0;
-        player_input_intermediary_buffer[1] = 0;
-        player_input_intermediary_buffer_index = 0;
+        player_input_intermediary_buffer[
+          0x00
+        ] = (
+          0x00
+        );
+        
+        player_input_intermediary_buffer[
+          0x01
+        ] = (
+          0x00
+        );
+        
+        player_input_intermediary_buffer_index = (
+          0x00
+        );
 
         break;
-      case clic3_char_value_C:
-        if (player_input_intermediary_buffer_index == 2) {
-          pthread_mutex_lock(&player_input_mutex);
-          player_input = right;
-          pthread_mutex_unlock(&player_input_mutex);
+      }
+      case clic3_char_value_C: {
+        if (
+          player_input_intermediary_buffer_index ==
+          0x02
+        ) {
+          pthread_mutex_lock(
+            &player_input_mutex
+          );
+          
+          player_input = (
+            right
+          );
+
+          pthread_mutex_unlock(
+            &player_input_mutex
+          );
         }
 
-        player_input_intermediary_buffer[0] = 0;
-        player_input_intermediary_buffer[1] = 0;
-        player_input_intermediary_buffer_index = 0;
+        player_input_intermediary_buffer[
+          0x00
+        ] = (
+          0x00
+        );
+        
+        player_input_intermediary_buffer[
+          0x01
+        ] = (
+          0x00
+        );
+        
+        player_input_intermediary_buffer_index = (
+          0x00
+        );
 
         break;
-      case clic3_char_value_D:
-        if (player_input_intermediary_buffer_index == 2) {
-          pthread_mutex_lock(&player_input_mutex);
-          player_input = left;
-          pthread_mutex_unlock(&player_input_mutex);
+      }
+      case clic3_char_value_D: {
+        if (
+          player_input_intermediary_buffer_index ==
+          0x02
+        ) {
+          pthread_mutex_lock(
+            &player_input_mutex
+          );
+          
+          player_input = (
+            left
+          );
+          
+          pthread_mutex_unlock(
+            &player_input_mutex
+          );
         }
 
-        player_input_intermediary_buffer[0] = 0;
-        player_input_intermediary_buffer[1] = 0;
-        player_input_intermediary_buffer_index = 0;
+        player_input_intermediary_buffer[
+          0x00
+        ] = (
+          0x00
+        );
+        
+        player_input_intermediary_buffer[
+          0x01
+        ] = (
+          0x00
+        );
+        
+        player_input_intermediary_buffer_index = (
+          0x00
+        );
 
         break;
-      default:
-        player_input = none;
-        player_input_intermediary_buffer[0] = 0;
-        player_input_intermediary_buffer[1] = 0;
-        player_input_intermediary_buffer_index = 0;
+      }
+      default: {
+        player_input = (
+          none
+        );
+        
+        player_input_intermediary_buffer[
+          0x00
+        ] = (
+          0x00
+        );
+        
+        player_input_intermediary_buffer[
+          0x01
+        ] = (
+          0x00
+        );
+        
+        player_input_intermediary_buffer_index = (
+          0x00
+        );
 
         break;
+      }
     }
 
     pthread_mutex_lock(
