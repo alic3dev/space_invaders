@@ -68,6 +68,18 @@ jobs:
         with:
           repository: alic3dev/interrupt_handler
           path: interrupt_handler
+      - name: checkout_math_c
+        with:
+          repository: alic3dev/math_c
+          path: math_c
+      - name: checkout_rand
+        with:
+          repository: alic3dev/rand
+          path: rand
+      - name checkout cer0
+        with:
+          repository:alic3dev/cer0
+          path: cer0
       - name: make cer0
         run: cd cer0 && make cer0_dylib target_device_version=${{ env.target_device_version_macos }}
       - name: make_cexil
