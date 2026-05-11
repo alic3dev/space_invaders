@@ -18,7 +18,7 @@ env:
   key_cache_interrupt_handler: cache_interrupt_handler_0_0_0
   key_cache_math_c: cache_math_c_0_0_0
   key_cache_rand: cache_rand_0_0_0
-  target_device_version_macos: 15.5
+  target_device_version: 15.5
 jobs:
   continuous_integration_build:
     runs-on: macos-latest
@@ -84,19 +84,19 @@ jobs:
           repository: alic3dev/cer0
           path: cer0
       - name: make_clic3
-        run: cd clic3 && make clic3_object clic3_dylib target_device_version=${{ env.target_device_version_macos }}
+        run: cd clic3 && make clic3_object clic3_dylib target_device_version=${{ env.target_device_version }}
       - name: make_interrupt_handler
-        run: cd interrupt_handler && make interrupt_handler_dylib target_device_version=${{ env.target_device_version_macos }}
+        run: cd interrupt_handler && make interrupt_handler_dylib target_device_version=${{ env.target_device_version }}
       - name: make_math_c
-        run: cd math_c && make math_c_object math_c_dylib target_device_version=${{ env.target_device_version_macos }}
+        run: cd math_c && make math_c_object math_c_dylib target_device_version=${{ env.target_device_version }}
       - name: make_cexil
-        run: cd cexil && make cexil_dylib target_device_version=${{ env.target_device_version_macos }}
+        run: cd cexil && make cexil_dylib target_device_version=${{ env.target_device_version }}
       - name: make_rand
-        run: cd rand && make rand_dylib target_device_version=${{ env.target_device_version_macos }}
+        run: cd rand && make rand_dylib target_device_version=${{ env.target_device_version }}
       - name: make_cer0
-        run: cd cer0 && make cer0_dylib target_device_version=${{ env.target_device_version_macos }}
+        run: cd cer0 && make cer0_dylib target_device_version=${{ env.target_device_version }}
       - name: make_space_invaders
-        run: cd space_invaders && make target_device_version=${{ env.target_device_version_macos }}
+        run: cd space_invaders && make target_device_version=${{ env.target_device_version }}
       - name: cache_save_cexil
         id: cache_save_cexil
         if: ${{ env.enabled_caching == '1' && env.enabled_caching_cexil == '1' && steps.cache_restore_cexil.outputs.cache-hit != 'true' }}
