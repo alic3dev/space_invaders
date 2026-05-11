@@ -1,6 +1,6 @@
-#include <projectile.h>
+#include <space_invaders_projectile.h>
 
-#include <velocity.h>
+#include <space_invaders_velocity.h>
 
 #include <cexil.h>
 

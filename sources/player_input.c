@@ -1,4 +1,4 @@
-#include <player_input.h>
+#include <space_invaders_player_input.h>
 
 #include <clic3.h>
 

@@ -1,4 +1,4 @@
-#include <intro.h>
+#include <space_invaders_intro.h>
 
 #include <math_c_vector.h>
 

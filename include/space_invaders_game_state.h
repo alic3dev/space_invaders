@@ -1,12 +1,12 @@
 #ifndef __space_invaders_game_state_h
 #define __space_invaders_game_state_h
 
-#include <alien.h>
-#include <intro.h>
-#include <mode.h>
-#include <player.h>
-#include <projectile.h>
-#include <velocity.h>
+#include <space_invaders_alien.h>
+#include <space_invaders_intro.h>
+#include <space_invaders_mode.h>
+#include <space_invaders_player.h>
+#include <space_invaders_projectile.h>
+#include <space_invaders_velocity.h>
 
 #include <cexil.h>
 

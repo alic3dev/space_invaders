@@ -1,11 +1,11 @@
-#include <game_state.h>
+#include <space_invaders_game_state.h>
 
-#include <alien.h>
-#include <intro.h>
-#include <mode.h>
-#include <player.h>
-#include <player_input.h>
-#include <projectile.h>
+#include <space_invaders_alien.h>
+#include <space_invaders_intro.h>
+#include <space_invaders_mode.h>
+#include <space_invaders_player.h>
+#include <space_invaders_player_input.h>
+#include <space_invaders_projectile.h>
 
 #include <cexil.h>
 

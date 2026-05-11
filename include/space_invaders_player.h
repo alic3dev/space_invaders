@@ -1,8 +1,8 @@
 #ifndef __space_invaders_player_h
 #define __space_invaders_player_h
 
-#include <game_state.h>
-#include <velocity.h>
+#include <space_invaders_game_state.h>
+#include <space_invaders_velocity.h>
 
 #include <cexil.h>
 

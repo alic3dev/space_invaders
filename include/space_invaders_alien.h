@@ -1,10 +1,10 @@
 #ifndef __space_invaders_alien_h
 #define __space_invaders_alien_h
 
-#include <cexil.h>
+#include <space_invaders_game_state.h>
+#include <space_invaders_velocity.h>
 
-#include <game_state.h>
-#include <velocity.h>
+#include <cexil.h>
 
 #include <rand_parameters.h>
 #include <rand_result.h>

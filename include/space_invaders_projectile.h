@@ -1,7 +1,7 @@
 #ifndef __space_invaders_projectile_h
 #define __space_invaders_projectile_h
 
-#include <velocity.h>
+#include <space_invaders_velocity.h>
 
 #include <cexil.h>
 

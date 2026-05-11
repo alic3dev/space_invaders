@@ -1,9 +1,9 @@
-#include <player.h>
+#include <space_invaders_player.h>
 
-#include <game_state.h>
-#include <heart.h>
-#include <player_input.h>
-#include <projectile.h>
+#include <space_invaders_game_state.h>
+#include <space_invaders_heart.h>
+#include <space_invaders_player_input.h>
+#include <space_invaders_projectile.h>
 
 #include <clic3_memory.h>
 

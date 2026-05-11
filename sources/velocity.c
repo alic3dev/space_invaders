@@ -1,4 +1,4 @@
-#include <velocity.h>
+#include <space_invaders_velocity.h>
 
 void velocity_initialize(struct velocity* velocity) {
   velocity_reset(velocity);

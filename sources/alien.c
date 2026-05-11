@@ -1,7 +1,7 @@
-#include <alien.h>
+#include <space_invaders_alien.h>
 
-#include <game_state.h>
-#include <projectile.h>
+#include <space_invaders_game_state.h>
+#include <space_invaders_projectile.h>
 
 #include <clic3_memory.h>
 

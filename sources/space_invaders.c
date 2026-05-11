@@ -1,8 +1,9 @@
 #include <space_invaders.h>
 
-#include <game_state.h>
-#include <player.h>
-#include <player_input.h>
+#include <space_invaders_game_state.h>
+#include <space_invaders_player.h>
+#include <space_invaders_player_input.h>
+
 #include <cexil.h>
 #include <clic3.h>
 #include <interrupt_handler.h>
