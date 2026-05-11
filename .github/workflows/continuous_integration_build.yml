@@ -10,9 +10,10 @@ env:
   enabled_caching_cexil: 1
   enabled_caching_clic3: 1
   enabled_caching_interrupt_handler: 1
-  enabled_caching_math_c
-  enabled_caching_rand
-  key_cache_cer0: cache_cer0_0_0_0  key_cache_cexil: cache_cexil_0_0_0
+  enabled_caching_math_c: 1
+  enabled_caching_rand: 1
+  key_cache_cer0: cache_cer0_0_0_0
+  key_cache_cexil: cache_cexil_0_0_0
   key_cache_clic3: cache_clic3_0_0_0
   key_cache_interrupt_handler: cache_interrupt_handler_0_0_0
   key_cache_math_c: cache_math_c_0_0_0
