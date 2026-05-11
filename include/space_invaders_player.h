@@ -1,38 +1,45 @@
 #ifndef __space_invaders_player_h
 #define __space_invaders_player_h
 
-#include <space_invaders_game_state.h>
+#include <space_invaders_player_input.h>
+#include <space_invaders_projectile.h>
 #include <space_invaders_velocity.h>
 
-#include <cexil.h>
+#include <cexil_renderer.h>
+#include <cexil_sprite.h>
 
 #define player_default_health_max 0x05
 #define player_default_health player_default_health_max
 #define player_default_speed 0x02
 
-struct player {
-  struct game_state* game_state;
-  struct cexil_sprite sprite;
+struct player {    struct cexil_sprite sprite;
+  
   struct cexil_sprite* sprites_hearts;
+  
   unsigned char health;
   unsigned char health_max;
+  
   struct velocity velocity;
+  
   float speed;
-  unsigned char initialized;
+
+  struct space_invaders_player_input input;
+  
+  struct projectile* projectile;
+  
+  struct cexil_renderer* renderer;
 };
 
 void player_initialize(
   struct player*,
-  struct game_state*
+  struct cexil_renderer*
 );
 
 void player_reset(
-  struct game_state*,
   struct player*
 );
 
 void player_center(
-  struct game_state*,
   struct player*
 );
 

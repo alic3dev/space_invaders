@@ -27,7 +27,7 @@ struct game_state {
 
   unsigned long long int total_time;
 
-  struct player* player;
+  struct player player;
 
   struct alien** aliens;
   unsigned short int aliens_count;
@@ -56,14 +56,12 @@ struct game_state {
 void game_state_initialize_with_mode(
   struct game_state*,
   struct cexil_renderer*,
-  struct player*,
   enum mode
 );
 
 void game_state_initialize(
   struct game_state*,
-  struct cexil_renderer*,
-  struct player*
+  struct cexil_renderer*
 );
 
 void game_state_mode_set(

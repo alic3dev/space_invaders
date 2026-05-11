@@ -1,23 +1,35 @@
 #include <space_invaders_player.h>
 
-#include <space_invaders_game_state.h>
 #include <space_invaders_heart.h>
 #include <space_invaders_player_input.h>
 #include <space_invaders_projectile.h>
+
+#include <cexil_renderer.h>
+#include <cexil_sprite.h>
 
 #include <clic3_memory.h>
 
 #include <math_c_vector.h>
 
-#include <pthread.h>
-
 void player_initialize(
   struct player* player,
-  struct game_state* game_state
+  struct cexil_renderer* cexil_renderer
 ) {
-  player->game_state = game_state;
-  velocity_initialize(&player->velocity);
-  player->speed = player_default_speed;
+  player->renderer = (
+    cexil_renderer
+  );
+  
+  velocity_initialize(
+    &player->velocity
+  );
+  
+  player->projectile = (
+    0x00
+  );
+  
+  player->speed = (
+    player_default_speed
+  );
 
   struct math_c_vector2_unsigned_int size_sprite_player = {
     .x = (
@@ -87,12 +99,11 @@ void player_initialize(
   }
 
   player_reset(
-    game_state,
     player
   );
 
   cexil_renderer_sprite_add(
-    game_state->renderer,
+    player->renderer,
     &player->sprite
   );
 
@@ -139,7 +150,7 @@ void player_initialize(
     );
 
     cexil_renderer_sprite_add(
-      game_state->renderer,
+      player->renderer,
       &player->sprites_hearts[
         index_health
       ]
@@ -155,9 +166,14 @@ void player_initialize(
       index_health
     );
   }
-
-  player->initialized = (
-    0x01
+  
+  player_visibility_set(
+    player,
+    0x00
+  );
+  
+  space_invaders_player_input_initialize(
+    &player->input
   );
 }
 
@@ -188,7 +204,6 @@ void player_visibility_set(
 }
 
 void player_reset(
-  struct game_state* game_state,
   struct player* player
 ) {
   player->health = (
@@ -200,24 +215,29 @@ void player_reset(
   );
 
   player_center(
-    game_state,
     player
+  );
+  
+  clic3_memory_free(
+    player->projectile
+  );
+  
+  player->projectile = (
+    0x00
   );
 }
 
 void player_center(
-  struct game_state* game_state,
-  struct player* player
-) {
+  struct player* player) {
   player->sprite.position.x = (
-    game_state->renderer->size.x /
+    player->renderer->size.x /
     0x02 -
     player->sprite.size.x /
     0x02
   );
   
   player->sprite.position.y = (
-    game_state->renderer->size.y -
+    player->renderer->size.y -
     player->sprite.size.y -
     0x08
   );
@@ -230,15 +250,15 @@ void player_center(
 void player_poll(
   struct player* player
 ) {
-  pthread_mutex_lock(
-    &player_input_mutex
-  );
-  
   switch(
-    player_input
+    player->input.value
   ) {
-    case up: {
-      struct projectile* projectile = (
+    case space_invaders_player_input_value_up: {
+      clic3_memory_free(
+        player->projectile
+      );
+    
+      player->projectile = (
         clic3_memory_allocate_raw(
           sizeof(
             struct projectile
@@ -247,42 +267,37 @@ void player_poll(
       );
 
       projectile_initialize(
-        projectile,
+        player->projectile,
         projectile_player
       );
 
-      projectile->sprite.position.x = (
+      player->projectile->sprite.position.x = (
         player->sprite.position.x +
         player->sprite.size.x /
         0x02
       );
       
-      projectile->sprite.position.y = (
+      player->projectile->sprite.position.y = (
         player->sprite.position.y
-      );
-
-      game_state_projectile_player_add(
-        player->game_state,
-        projectile
       );
       
       break;
     }
-    case left: {
+    case space_invaders_player_input_value_left: {
       player->velocity.x = -(
         player->speed
       );
       
       break;
     }
-    case right: {
+    case space_invaders_player_input_value_right: {
       player->velocity.x = (
         player->speed
       );
       
       break;
     }
-    case down: {
+    case space_invaders_player_input_value_down: {
       player->velocity.x = (
         0x00
       );
@@ -298,14 +313,10 @@ void player_poll(
     }
   }
   
-  player_input = (
-    none
+  player->input.value = (
+    space_invaders_player_input_value_none
   );
   
-  pthread_mutex_unlock(
-    &player_input_mutex
-  );
-
   velocity_advance(
     &player->velocity
   );
@@ -322,11 +333,11 @@ void player_poll(
 
   struct math_c_vector2_unsigned_int position_max = {
     .x = (
-      player->game_state->renderer->size.x -
+      player->renderer->size.x -
       player->sprite.size.x
     ),
     .y = (
-      player->game_state->renderer->size.y -
+      player->renderer->size.y -
       player->sprite.size.y
     )
   };
@@ -462,7 +473,15 @@ void player_heal(
 void player_destroy(
   struct player* player
 ) {
+  clic3_memory_free(
+    player->projectile
+  );
+
   clic3_memory_free_raw(
     player->sprites_hearts
+  );
+  
+  space_invaders_player_input_destroy(
+    &player->input
   );
 }

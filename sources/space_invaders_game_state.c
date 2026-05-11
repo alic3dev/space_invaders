@@ -18,11 +18,15 @@
 void game_state_initialize_with_mode(
   struct game_state* game_state,
   struct cexil_renderer* renderer,
-  struct player* player,
   enum mode mode
 ) {
   game_state->renderer = (
     renderer
+  );
+  
+  player_initialize(
+    &game_state->player,
+    game_state->renderer
   );
 
   intro_initialize(
@@ -63,10 +67,6 @@ void game_state_initialize_with_mode(
     )
     ? 0x01
     : 0x00
-  );
-
-  game_state->player = (
-    player
   );
 
   game_state->aliens_columns = (
@@ -182,13 +182,11 @@ void game_state_initialize_with_mode(
 
 void game_state_initialize(
   struct game_state* game_state,
-  struct cexil_renderer* renderer,
-  struct player* player
+  struct cexil_renderer* renderer
 ) {
   game_state_initialize_with_mode(
     game_state,
     renderer,
-    player,
     intro
   );
 }
@@ -216,16 +214,11 @@ void game_state_mode_set(
     ? 0x01
     : 0x00
   );
-
-  if (
-    game_state->player->initialized ==
-    0x01
-  ) {
-    player_visibility_set(
-      game_state->player,
-      elements_game_visible
-    );
-  }
+  
+  player_visibility_set(
+    &game_state->player,
+    elements_game_visible
+  );
 
   game_state->text_score.visible = (
     elements_game_visible
@@ -279,7 +272,7 @@ void game_state_mode_set(
       );
 
       player_heal(
-        game_state->player,
+        &game_state->player,
         player_default_health_max
       );
 
@@ -304,8 +297,7 @@ void game_state_mode_set(
       );
 
       player_reset(
-        game_state,
-        game_state->player
+        &game_state->player
       );
       
       break;
@@ -456,7 +448,7 @@ void game_state_aliens_populate(
 }
 
 void game_state_progress_level(
-struct game_state* game_state
+  struct game_state* game_state
 ) {
   game_state->total_score = (
     game_state->total_score +
@@ -484,7 +476,7 @@ struct game_state* game_state
   );
 
   player_heal(
-    game_state->player,
+    &game_state->player,
     0x01
   );
 
@@ -505,8 +497,7 @@ struct game_state* game_state
   );
 
   player_center(
-    game_state,
-    game_state->player
+    &game_state->player
   );
 
   game_state_text_level_set(
@@ -822,6 +813,20 @@ void game_state_poll_intro(
 void game_state_poll_game(
   struct game_state* game_state
 ) {
+  if (
+    game_state->player.projectile !=
+    0x00
+  ) {
+    game_state_projectile_player_add(
+      game_state,
+      game_state->player.projectile
+    );
+    
+    game_state->player.projectile = (
+      0x00
+    );
+  }
+  
   for (
     long int index_projectile_player = (
       0x00
@@ -934,8 +939,8 @@ void game_state_poll_game(
 
     if (
       cexil_collision_intersects(
-        &game_state->player->sprite.position,
-        &game_state->player->sprite.size,
+        &game_state->player.sprite.position,
+        &game_state->player.sprite.size,
         &game_state->projectiles_alien[
           index_projectile_alien
         ]->sprite.position,
@@ -950,7 +955,7 @@ void game_state_poll_game(
       );
 
       player_damage(
-        game_state->player,
+        &game_state->player,
         0x01
       );
 
@@ -1103,7 +1108,7 @@ void game_state_poll_game(
           index_alien
         ]->sprite.size.y
       ) >=
-      game_state->player->sprite.position.y
+      game_state->player.sprite.position.y
     ) {
       game_state_alien_remove(
         game_state,
@@ -1111,7 +1116,7 @@ void game_state_poll_game(
       );
 
       player_damage(
-        game_state->player,
+        &game_state->player,
         0x01
       );
 
@@ -1142,7 +1147,7 @@ void game_state_poll_game(
   }
 
   if (
-    game_state->player->health ==
+    game_state->player.health ==
     0x00
   ) {
     game_state_mode_set(
@@ -1180,6 +1185,10 @@ void game_state_poll_game_over(
 void game_state_poll(
   struct game_state* game_state
 ) {
+  player_poll(
+    &game_state->player
+  );
+
   switch (
     game_state->mode
   ) {
@@ -1563,5 +1572,9 @@ void game_state_destroy(
   
   clic3_memory_free_raw(
     game_state->projectiles_alien
+  );
+  
+  player_destroy(
+    &game_state->player
   );
 }

@@ -2,7 +2,6 @@
 
 #include <space_invaders_game_state.h>
 #include <space_invaders_player.h>
-#include <space_invaders_player_input.h>
 
 #include <cexil.h>
 #include <clic3.h>
@@ -227,22 +226,10 @@ int main(
   );
 
   struct game_state game_state;
-  struct player player;
-
+  
   game_state_initialize(
     &game_state,
-    &renderer,
-    &player
-  );
-
-  player_initialize(
-    &player,
-    &game_state
-  );
-
-  player_visibility_set(
-    &player,
-    0x00
+    &renderer
   );
 
   if (
@@ -254,8 +241,6 @@ int main(
       game
     );
   }
-
-  player_input_thread_start();
 
   while (
     (
@@ -270,15 +255,6 @@ int main(
     cexil_renderer_render_clear(
       &renderer
     );
-
-    if (
-      game_state.mode ==
-      game
-    ) {
-      player_poll(
-        &player
-      );
-    }
 
     game_state_poll(
       &game_state
@@ -302,7 +278,8 @@ int main(
     "game_over\n\n"
     "total_score->{%i}\n"
     "total_time->{%llu_seconds}\n"
-    "level->{%u}\n",
+    "level->{%u}\n"
+    "\npress_any_key_to_exit\n",
     game_state.total_score,
     (
       game_state.total_time /
@@ -314,18 +291,6 @@ int main(
   game_state_destroy(
     &game_state
   );
-
-  player_destroy(
-    &player
-  );
-
-  printf(
-    "press_any_key_to_exit\n"
-  );
-  
-  player_input_thread_join();
-  
-  player_input_destroy();
 
   return (
     0x00

@@ -3,29 +3,31 @@
 
 #include <pthread.h>
 
-enum player_input_value {
-  none,
-  up,
-  down,
-  left,
-  right
+enum space_invaders_player_input_value {
+  space_invaders_player_input_value_none  = 0x00,
+  space_invaders_player_input_value_up    = 0x01,
+  space_invaders_player_input_value_down  = 0x02,
+  space_invaders_player_input_value_left  = 0x03,
+  space_invaders_player_input_value_right = 0x04
 };
 
-extern enum player_input_value player_input;
+struct space_invaders_player_input {
+  unsigned char value;
 
-extern unsigned char user_input_thread_running;
+  unsigned char active;
 
-extern pthread_mutex_t player_input_thread_running_mutex;
-extern pthread_mutex_t player_input_mutex;
+  pthread_t thread;
+};
 
-extern pthread_t player_input_thread;
+void space_invaders_player_input_initialize(
+  struct space_invaders_player_input*
+);
 
-void player_input_thread_start();
-void player_input_thread_join();
+void space_invaders_player_input_destroy(
+  struct space_invaders_player_input*
+);
 
-void player_input_destroy();
-
-void* __player_input_get(
+void* space_invaders_player_input_thread(
   void*
 );
 

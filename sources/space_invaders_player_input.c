@@ -7,82 +7,44 @@
 #include <termios.h>
 #include <unistd.h>
 
-enum player_input_value player_input = (
-  none
-);
-
-unsigned char player_input_thread_running = (
-  0x00
-);
-
-pthread_mutex_t player_input_thread_running_mutex;
-pthread_mutex_t player_input_mutex;
-
-pthread_t player_input_thread;
-
-void player_input_thread_start() {
-  pthread_mutex_init(
-    &player_input_mutex,
-    0x00
+void space_invaders_player_input_initialize(
+  struct space_invaders_player_input* space_invaders_player_input
+) {
+  space_invaders_player_input->value = (
+    space_invaders_player_input_value_none
   );
   
-  pthread_mutex_init(
-    &player_input_thread_running_mutex,
-    0x00
-  );
-
-  pthread_create(
-    &player_input_thread,
-    0x00,
-    __player_input_get,
-    0x00
-  );
-
-  pthread_mutex_lock(
-    &player_input_thread_running_mutex
-  );
-  
-  player_input_thread_running = (
+  space_invaders_player_input->active = (
     0x01
   );
-  
-  pthread_mutex_unlock(
-    &player_input_thread_running_mutex
+  pthread_create(
+    &space_invaders_player_input->thread,
+    0x00,
+    space_invaders_player_input_thread,
+    space_invaders_player_input
   );
 }
 
-void player_input_thread_join() {
-  pthread_mutex_lock(
-    &player_input_thread_running_mutex
-  );
-  
-  player_input_thread_running = (
+void space_invaders_player_input_destroy(
+  struct space_invaders_player_input* space_invaders_player_input
+) {
+  space_invaders_player_input->active = (
     0x00
-  );
-  
-  pthread_mutex_unlock(
-    &player_input_thread_running_mutex
   );
 
   pthread_join(
-    player_input_thread,
+    space_invaders_player_input->thread,
     0x00
   );
 }
 
-void player_input_destroy() {
-  pthread_mutex_destroy(
-    &player_input_mutex
-  );
-  
-  pthread_mutex_destroy(
-    &player_input_thread_running_mutex
-  );
-}
-
-void* __player_input_get(
-  void* _
+void* space_invaders_player_input_thread(
+  void* data
 ) {
+  struct space_invaders_player_input* space_invaders_player_input = (
+    data
+  );
+
   struct termios termios_attrs_original;
   struct termios termios_attrs_updated;
 
@@ -121,10 +83,6 @@ void* __player_input_get(
   );
 
   do {
-    pthread_mutex_unlock(
-      &player_input_thread_running_mutex
-    );
-
     player_input_intermediary = (
       getchar()
     );
@@ -205,16 +163,8 @@ void* __player_input_get(
           player_input_intermediary_buffer_index ==
           0x02
         ) {
-          pthread_mutex_lock(
-            &player_input_mutex
-          );
-          
-          player_input = (
-            up
-          );
-          
-          pthread_mutex_unlock(
-            &player_input_mutex
+          space_invaders_player_input->value = (
+            space_invaders_player_input_value_up
           );
         }
 
@@ -241,16 +191,8 @@ void* __player_input_get(
           player_input_intermediary_buffer_index ==
           0x02
         ) {
-          pthread_mutex_lock(
-            &player_input_mutex
-          );
-          
-          player_input = (
-            down
-          );
-          
-          pthread_mutex_unlock(
-            &player_input_mutex
+          space_invaders_player_input->value = (
+            space_invaders_player_input_value_down
           );
         }
 
@@ -277,16 +219,8 @@ void* __player_input_get(
           player_input_intermediary_buffer_index ==
           0x02
         ) {
-          pthread_mutex_lock(
-            &player_input_mutex
-          );
-          
-          player_input = (
-            right
-          );
-
-          pthread_mutex_unlock(
-            &player_input_mutex
+          space_invaders_player_input->value = (
+            space_invaders_player_input_value_right
           );
         }
 
@@ -313,16 +247,8 @@ void* __player_input_get(
           player_input_intermediary_buffer_index ==
           0x02
         ) {
-          pthread_mutex_lock(
-            &player_input_mutex
-          );
-          
-          player_input = (
-            left
-          );
-          
-          pthread_mutex_unlock(
-            &player_input_mutex
+          space_invaders_player_input->value = (
+            space_invaders_player_input_value_left
           );
         }
 
@@ -345,10 +271,6 @@ void* __player_input_get(
         break;
       }
       default: {
-        player_input = (
-          none
-        );
-        
         player_input_intermediary_buffer[
           0x00
         ] = (
@@ -368,12 +290,8 @@ void* __player_input_get(
         break;
       }
     }
-
-    pthread_mutex_lock(
-      &player_input_thread_running_mutex
-    );
   } while (
-    player_input_thread_running ==
+    space_invaders_player_input->active ==
     0x01
   );
 
