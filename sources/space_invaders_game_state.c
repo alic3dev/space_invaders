@@ -450,20 +450,8 @@ void game_state_aliens_populate(
 void game_state_progress_level(
   struct game_state* game_state
 ) {
-  game_state->total_score = (
-    game_state->total_score +
-    game_state->score
-  );
-
-  cexil_timer_stop(
-    &game_state->timer
-  );
-
-  game_state->total_time = (
-    game_state->total_time +
-    cexil_timer_time_total(
-      &game_state->timer
-    )
+  game_state_totals_set(
+    game_state
   );
 
   cexil_timer_start(
@@ -1157,23 +1145,31 @@ void game_state_poll_game(
   }
 }
 
-void game_state_poll_game_over(
+void game_state_totals_set(
   struct game_state* game_state
 ) {
   game_state->total_score = (
     game_state->total_score +
     game_state->score
   );
-
+  
   cexil_timer_stop(
     &game_state->timer
   );
-
+  
   game_state->total_time = (
     game_state->total_time +
     cexil_timer_time_total(
       &game_state->timer
     )
+  );
+}
+
+void game_state_poll_game_over(
+  struct game_state* game_state
+) {
+  game_state_totals_set(
+    game_state
   );
 
   game_state_mode_set(

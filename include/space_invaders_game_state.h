@@ -101,6 +101,10 @@ void game_state_poll(
   struct game_state*
 );
 
+void game_state_totals_set(
+  struct game_state*
+);
+
 void game_state_alien_remove(
   struct game_state*,
   unsigned short int index_alien

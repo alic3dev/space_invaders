@@ -1,109 +1,42 @@
 #include <space_invaders.h>
 
 #include <space_invaders_game_state.h>
+#include <space_invaders_parameters.h>
 #include <space_invaders_player.h>
 
-#include <cexil.h>
-#include <clic3.h>
+#include <cexil_renderer.h>
+#include <cexil_size.h>
+
 #include <interrupt_handler.h>
 
+#include <math_c_vector.h>
+
 #include <stdio.h>
-#include <stdlib.h>
 
 int main(
   int length_parameters,
   char** parameters
 ) {
-  unsigned char skip_intro = (
-    0x00
+  unsigned char space_invaders_parameters = (
+    space_invaders_parameters_parse(
+      (
+        length_parameters -
+        0x01
+      ),
+      (
+        parameters +
+        0x01
+      )
+    )
   );
-
-  unsigned char fill_screen = (
-    0x00
-  );
-
-  for (
-    int index_parameter = (
+  
+  if (
+    space_invaders_parameters ==
+    space_invaders_parameter_error
+  ) {
+    return (
       0x01
     );
-    (
-      index_parameter <
-      length_parameters
-    );
-    ++index_parameter
-  ) {
-    switch (
-      clic3_char_arrays_within(
-        parameters[
-          index_parameter
-        ],
-        0x02,
-        "--skip-intro",
-        "--fill-screen"
-      )
-    ) {
-      case 0x00: {
-        if (
-          skip_intro ==
-          0x01
-        ) {
-          fprintf(
-            stderr,
-            "already_set:parameter->{%s}\n",
-            parameters[
-              index_parameter
-            ]
-          );
-
-          return (
-            0x01
-          );
-        }
-
-        skip_intro = (
-          0x01
-        );
-
-        break;
-      }
-      case 0x01: {
-        if (
-          fill_screen ==
-          0x01
-        ) {
-          fprintf(
-            stderr,
-            "already_set:parameter->{%s}\n",
-            parameters[
-              index_parameter
-            ]
-          );
-
-          return (
-            0x01
-          );
-        }
-
-        fill_screen = (
-          0x01
-        );
-
-        break;
-      }
-      default: {
-        fprintf(
-          stderr,
-          "unknown:parameter->{%s}\n",
-          parameters[
-            index_parameter
-          ]
-        );
-
-        return (
-          0x01
-        );
-      }
-    }
   }
 
   interrupt_handler_initialize();
@@ -127,8 +60,8 @@ int main(
   struct math_c_vector2_unsigned_int size_renderer;
 
   if (
-    fill_screen ==
-    0x01
+    space_invaders_parameters &
+    space_invaders_parameter_fill_screen
   ) {
     size_renderer.x = (
       size_screen.x
@@ -233,8 +166,8 @@ int main(
   );
 
   if (
-    skip_intro ==
-    0x01
+    space_invaders_parameters &
+    space_invaders_parameter_skip_intro
   ) {
     game_state_mode_set(
       &game_state,
@@ -274,18 +207,36 @@ int main(
     &renderer
   );
 
+  if (
+    game_state.mode !=
+    intro
+  ) {
+    if (
+      game_state.mode ==
+      game
+    ) {
+      game_state_totals_set(
+        &game_state
+      );
+    }
+  
+    printf(
+      "game_over\n\n"
+      "total_score->{%i}\n"
+      "total_time->{%llu_seconds}\n"
+      "level->{%u}\n"
+      "\n",
+      game_state.total_score,
+      (
+        game_state.total_time /
+        0x0f4240
+      ),
+      game_state.level
+    );
+  }
+  
   printf(
-    "game_over\n\n"
-    "total_score->{%i}\n"
-    "total_time->{%llu_seconds}\n"
-    "level->{%u}\n"
-    "\npress_any_key_to_exit\n",
-    game_state.total_score,
-    (
-      game_state.total_time /
-      0x0f4240
-    ),
-    game_state.level
+    "press_any_key_to_exit\n"
   );
 
   game_state_destroy(
