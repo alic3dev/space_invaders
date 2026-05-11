@@ -84,11 +84,11 @@ jobs:
           repository: alic3dev/cer0
           path: cer0
       - name: make_clic3
-        run: cd clic3 && make clic3_dylib target_device_version=${{ env.target_device_version_macos }}
+        run: cd clic3 && make clic3_object clic3_dylib target_device_version=${{ env.target_device_version_macos }}
       - name: make_interrupt_handler
         run: cd interrupt_handler && make interrupt_handler_dylib target_device_version=${{ env.target_device_version_macos }}
       - name: make_math_c
-        run: cd math_c && make math_c_dylib target_device_version=${{ env.target_device_version_macos }}
+        run: cd math_c && make math_c_object math_c_dylib target_device_version=${{ env.target_device_version_macos }}
       - name: make_cexil
         run: cd cexil && make cexil_dylib target_device_version=${{ env.target_device_version_macos }}
       - name: make_rand
