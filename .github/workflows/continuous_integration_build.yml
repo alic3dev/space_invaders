@@ -76,7 +76,7 @@ jobs:
         with:
           repository: alic3dev/rand
           path: rand
-      - name checkout cer0
+      - name: checkout cer0
         with:
           repository:alic3dev/cer0
           path: cer0
