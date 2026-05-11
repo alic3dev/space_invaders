@@ -1,5 +1,5 @@
-#ifndef __player_h
-#define __player_h
+#ifndef __space_invaders_player_h
+#define __space_invaders_player_h
 
 #include <game_state.h>
 #include <velocity.h>
@@ -41,7 +41,9 @@ void player_visibility_set(
   unsigned char
 );
 
-void player_poll(struct player*);
+void player_poll(
+  struct player*
+);
 
 void player_damage(
   struct player*,
@@ -53,6 +55,8 @@ void player_heal(
   unsigned char
 );
 
-void player_destroy(struct player*);
+void player_destroy(
+  struct player*
+);
 
 #endif

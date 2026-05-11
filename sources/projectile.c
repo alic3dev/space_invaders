@@ -4,28 +4,37 @@
 
 #include <cexil.h>
 
-const struct cexil_size projectile_size = {
-  .width = projectile_size_width,
-  .height = projectile_size_height
-};
-
 void projectile_initialize(
   struct projectile* projectile,
   enum projectile_source source
 ) {
-  projectile->source = source;
+  projectile->source = (
+    source
+  );
 
-  velocity_initialize(&projectile->velocity);
+  velocity_initialize(
+    &projectile->velocity
+  );
+  
   projectile->velocity.x = 0;
   projectile->velocity.y = (
     source == projectile_player
     ? -1.25125f
     : 1.25125f
   );
+  
+  struct math_c_vector2_unsigned_int projectile_size = {
+    .x = (
+     projectile_size_width
+    ),
+    .y = (
+    projectile_size_height
+    )
+    };
 
   cexil_sprite_initialize(
     &projectile->sprite,
-    (struct cexil_size*) &projectile_size
+    &projectile_size
   );
 
   projectile_frame_set(

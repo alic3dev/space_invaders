@@ -82,25 +82,28 @@ int main(
 
   interrupt_handler_initialize();
 
-  struct cexil_size size_screen;
-  cexil_size_set_to_terminal(&size_screen);
+  struct math_c_vector2_unsigned_int size_screen;
 
-  size_screen.width = size_screen.width - 2;
-  size_screen.height = size_screen.height - 4;
+    cexil_size_set_to_terminal(
+    &size_screen
+  );
 
-  struct cexil_size size_renderer;
+  size_screen.x = size_screen.x - 2;
+  size_screen.y = size_screen.y - 4;
+
+  struct math_c_vector2_unsigned_int size_renderer;
 
   if (fill_screen) {
-    size_renderer.width = size_screen.width;
-    size_renderer.height = size_screen.height;
+    size_renderer.x = size_screen.x;
+    size_renderer.y = size_screen.y;
   } else {
-    size_renderer.width = space_invaders_renderer_width_default;
-    size_renderer.height = space_invaders_renderer_height_default;
+    size_renderer.x = space_invaders_renderer_width_default;
+    size_renderer.y = space_invaders_renderer_height_default;
   }
 
   if (
-    size_screen.width < size_renderer.width ||
-    size_screen.height < size_renderer.height
+    size_screen.x < size_renderer.x ||
+    size_screen.y < size_renderer.y
   ) {
     fprintf(
       stderr,
@@ -116,9 +119,9 @@ int main(
     return 1;
   }
 
-  struct cexil_size size_offset = {
-    .width = ((size_screen.width - (size_renderer.width - 8)) / 2) / 2,
-    .height = ((size_screen.height - (size_renderer.height - 4)) / 2) / 4
+  struct math_c_vector2_unsigned_int size_offset = {
+    .x = ((size_screen.x - (size_renderer.x - 8)) / 2) / 2,
+    .y = ((size_screen.y - (size_renderer.y - 4)) / 2) / 4
   };
 
   struct cexil_renderer renderer;
@@ -188,7 +191,7 @@ int main(
       );
     }
   }
-  
+
   cexil_renderer_destroy(
     &renderer
   );

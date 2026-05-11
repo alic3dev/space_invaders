@@ -1,5 +1,5 @@
-#ifndef __mode_h
-#define __mode_h
+#ifndef __space_invaders_mode_h
+#define __space_invaders_mode_h
 
 enum mode {
   intro,

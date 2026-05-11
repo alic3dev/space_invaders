@@ -19,24 +19,29 @@ pthread_t player_input_thread;
 void player_input_thread_start() {
   pthread_mutex_init(
     &player_input_mutex,
-    (void*)0
+    0x00
   );
+  
   pthread_mutex_init(
     &player_input_thread_running_mutex,
-    (void*)0
+    0x00
   );
 
   pthread_create(
     &player_input_thread,
-    (void*)0,
+    0x00,
     __player_input_get,
-    (void*)0
+    0x00
   );
 
   pthread_mutex_lock(
     &player_input_thread_running_mutex
   );
-  player_input_thread_running = 1;
+  
+  player_input_thread_running = (
+    0x01
+  );
+  
   pthread_mutex_unlock(
     &player_input_thread_running_mutex
   );
@@ -46,14 +51,18 @@ void player_input_thread_join() {
   pthread_mutex_lock(
     &player_input_thread_running_mutex
   );
-  player_input_thread_running = 0;
+  
+  player_input_thread_running = (
+    0x00
+  );
+  
   pthread_mutex_unlock(
     &player_input_thread_running_mutex
   );
 
   pthread_join(
     player_input_thread,
-    (void*)0
+    0x00
   );
 }
 
@@ -61,12 +70,15 @@ void player_input_destroy() {
   pthread_mutex_destroy(
     &player_input_mutex
   );
+  
   pthread_mutex_destroy(
     &player_input_thread_running_mutex
   );
 }
 
-void* __player_input_get(void* _) {
+void* __player_input_get(
+  void* _
+) {
   struct termios termios_attrs_original;
   struct termios termios_attrs_updated;
 
@@ -81,7 +93,8 @@ void* __player_input_get(void* _) {
   );
 
   termios_attrs_updated.c_lflag &= ~(
-    ICANON | ECHO
+    ICANON |
+    ECHO
   );
 
   tcsetattr(
@@ -91,25 +104,51 @@ void* __player_input_get(void* _) {
   );
 
   int player_input_intermediary;
-  int player_input_intermediary_buffer[2] = { 0, 0 };
-  unsigned char player_input_intermediary_buffer_index = 0;
+  int player_input_intermediary_buffer[
+    0x02
+  ] = {
+    0x00,
+    0x00
+  };
+  
+  unsigned char player_input_intermediary_buffer_index = (
+    0x00
+  );
 
   do {
-    pthread_mutex_unlock(&player_input_thread_running_mutex);
+    pthread_mutex_unlock(
+      &player_input_thread_running_mutex
+    );
 
-    player_input_intermediary = getchar();
+    player_input_intermediary = (
+      getchar()
+    );
 
-    switch(player_input_intermediary) {
-      case clic3_char_value_ctrl:
-        if (player_input_intermediary_buffer_index == 0) {
-          player_input_intermediary_buffer[0] = player_input_intermediary;
-          player_input_intermediary_buffer_index = 1;
+    switch(
+      player_input_intermediary
+    ) {
+      case clic3_char_value_ctrl: {
+        if (
+          player_input_intermediary_buffer_index ==
+          0x00
+        ) {
+          player_input_intermediary_buffer[
+            0x00
+          ] = (
+            player_input_intermediary
+          );
+          
+          player_input_intermediary_buffer_index = (
+            0x01
+          );
         } else {
           player_input_intermediary_buffer[0] = 0;
           player_input_intermediary_buffer[1] = 0;
           player_input_intermediary_buffer_index = 0;
         }
+        
         break;
+      }
       case clic3_char_value_square_bracket_opening:
         if (player_input_intermediary_buffer_index == 1) {
           player_input_intermediary_buffer[1] = player_input_intermediary;
@@ -135,7 +174,9 @@ void* __player_input_get(void* _) {
       case clic3_char_value_B:
         if (player_input_intermediary_buffer_index == 2) {
           pthread_mutex_lock(&player_input_mutex);
-          player_input = DOWN;
+          player_input = (
+            down
+          );
           pthread_mutex_unlock(&player_input_mutex);
         }
 
@@ -177,8 +218,13 @@ void* __player_input_get(void* _) {
         break;
     }
 
-    pthread_mutex_lock(&player_input_thread_running_mutex);
-  } while(player_input_thread_running == 1);
+    pthread_mutex_lock(
+      &player_input_thread_running_mutex
+    );
+  } while (
+    player_input_thread_running ==
+    0x01
+  );
 
   tcsetattr(
     STDIN_FILENO,
@@ -186,5 +232,7 @@ void* __player_input_get(void* _) {
     &termios_attrs_original
   );
 
-  return (void*)0;
+  return (
+    0x00
+  );
 }

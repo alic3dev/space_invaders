@@ -5,8 +5,11 @@
 #include <player_input.h>
 #include <projectile.h>
 
+#include <clic3_memory.h>
+
+#include <math_c_vector.h>
+
 #include <pthread.h>
-#include <stdlib.h>
 
 const unsigned char player_default_health_max = 5;
 const unsigned char player_default_health = player_default_health_max;
@@ -20,9 +23,13 @@ void player_initialize(
   velocity_initialize(&player->velocity);
   player->speed = player_default_speed;
 
-  struct cexil_size size_sprite_player = {
-    .width = 12,
-    .height = 8
+  struct math_c_vector2_unsigned_int size_sprite_player = {
+    .x = (
+      0x0c
+    ),
+    .y = (
+      0x08
+    )
   };
 
   cexil_sprite_initialize(
@@ -32,15 +39,15 @@ void player_initialize(
 
   for (
     unsigned int index_x = 0;
-    index_x < size_sprite_player.width;
+    index_x < size_sprite_player.x;
     ++index_x
   ) {
     player->sprite.pixels[6][index_x] = 1;
     player->sprite.pixels[7][index_x] = 1;
 
     if (
-      index_x >= size_sprite_player.width / 4 &&
-      index_x <= size_sprite_player.width - (size_sprite_player.width / 4)
+      index_x >= size_sprite_player.x / 4 &&
+      index_x <= size_sprite_player.x - (size_sprite_player.x / 4)
     ) {
       player->sprite.pixels[5][index_x] = 1;
     }
@@ -56,10 +63,22 @@ void player_initialize(
     &player->sprite
   );
 
-  player->sprites_hearts = malloc(sizeof(struct cexil_sprite) * player->health_max);
-  struct cexil_size size_sprite_heart = {
-    .width = 8,
-    .height = 8
+  player->sprites_hearts = (
+    clic3_memory_allocate_raw(
+      sizeof(
+        struct cexil_sprite
+      ) *
+      player->health_max
+    )
+  );
+  
+  struct math_c_vector2_unsigned_int size_sprite_heart = {
+    .x = (
+      0x08
+    ),
+    .y = (
+      0x08
+    )
   };
 
   for (
@@ -85,7 +104,7 @@ void player_initialize(
     player->sprites_hearts[
       index_health
     ].position.x = (
-      (size_sprite_heart.width + 2) * index_health
+      (size_sprite_heart.x + 2) * index_health
     );
   }
 
@@ -124,8 +143,8 @@ void player_center(
   struct game_state* game_state,
   struct player* player
 ) {
-  player->sprite.position.x = game_state->renderer->size.width / 2 - player->sprite.size.width / 2;
-  player->sprite.position.y = game_state->renderer->size.height - player->sprite.size.height - 8;
+  player->sprite.position.x = game_state->renderer->size.x / 2 - player->sprite.size.x / 2;
+  player->sprite.position.y = game_state->renderer->size.y - player->sprite.size.y - 8;
 
   velocity_reset(
     &player->velocity
@@ -138,14 +157,20 @@ void player_poll(
   pthread_mutex_lock(&player_input_mutex);
   switch(player_input) {
     case up: {
-      struct projectile* projectile = malloc(sizeof(struct projectile));
+      struct projectile* projectile = (
+        clic3_memory_allocate_raw(
+          sizeof(
+            struct projectile
+          )
+        )
+      );
 
       projectile_initialize(
         projectile,
         projectile_player
       );
 
-      projectile->sprite.position.x = player->sprite.position.x + (player->sprite.size.width / 2);
+      projectile->sprite.position.x = player->sprite.position.x + (player->sprite.size.x / 2);
       projectile->sprite.position.y = player->sprite.position.y;
 
       game_state_projectile_player_add(
@@ -162,7 +187,7 @@ void player_poll(
       player->velocity.x = player->speed;
       break;
     }
-    case DOWN: {
+    case down: {
       player->velocity.x = 0;
       player->velocity.y = 0;
       break;
@@ -179,14 +204,14 @@ void player_poll(
   player->sprite.position.x = player->sprite.position.x + player->velocity.x_rollover;
   player->sprite.position.y = player->sprite.position.y + player->velocity.y_rollover;
 
-  struct cexil_position position_max = {
+  struct math_c_vector2_unsigned_int position_max = {
     .x = (
-      player->game_state->renderer->size.width -
-      player->sprite.size.width
+      player->game_state->renderer->size.x -
+      player->sprite.size.x
     ),
     .y = (
-      player->game_state->renderer->size.height -
-      player->sprite.size.height
+      player->game_state->renderer->size.y -
+      player->sprite.size.y
     )
   };
 
@@ -263,5 +288,7 @@ void player_heal(
 }
 
 void player_destroy(struct player* player) {
-  free(player->sprites_hearts);
+  clic3_memory_free_raw(
+    player->sprites_hearts
+  );
 }

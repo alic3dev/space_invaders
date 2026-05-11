@@ -1,12 +1,12 @@
-#ifndef __player_input_h
-#define __player_input_h
+#ifndef __space_invaders_player_input_h
+#define __space_invaders_player_input_h
 
 #include <pthread.h>
 
 enum player_input_value {
   none,
   up,
-  DOWN,
+  down,
   left,
   right
 };
@@ -25,6 +25,8 @@ void player_input_thread_join();
 
 void player_input_destroy();
 
-void* __player_input_get(void*);
+void* __player_input_get(
+  void*
+);
 
 #endif

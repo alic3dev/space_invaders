@@ -1,21 +1,27 @@
-#ifndef __projectile_h
-#define __projectile_h
+#ifndef __space_invaders_projectile_h
+#define __space_invaders_projectile_h
 
 #include <velocity.h>
 
 #include <cexil.h>
 
-#define projectile_size_width 1
-#define projectile_size_height 2
+#include <math_c_vector.h>
+
+#define projectile_size_width 0x01
+#define projectile_size_height 0x02
 
 enum projectile_source {
   projectile_player,
   projectile_alien
 };
 
-extern const struct cexil_size projectile_size;
+extern const struct math_c_vector2_unsigned_char projectile_size;
 
-extern const char projectile_frame_player[projectile_size_height][projectile_size_width];
+extern const char projectile_frame_player[
+  projectile_size_height
+][
+  projectile_size_width
+];
 
 struct projectile {
   struct cexil_sprite sprite;
@@ -33,6 +39,8 @@ void projectile_frame_set(
   char*
 );
 
-void projectile_poll(struct projectile*);
+void projectile_poll(
+  struct projectile*
+);
 
 #endif

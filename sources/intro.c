@@ -1,9 +1,6 @@
 #include <intro.h>
 
-const struct cexil_size size_intro = {
-  .height = size_intro_height,
-  .width = size_intro_width
-};
+#include <math_c_vector.h>
 
 char pixels_intro[
   size_intro_height
@@ -33,27 +30,61 @@ char pixels_intro[
 void intro_initialize(
   struct intro* intro
 ) {
+  struct math_c_vector2_unsigned_int size_intro = {
+    .x = (
+      size_intro_width
+    ),
+    .y = (
+      size_intro_height
+    )
+  };
+
   cexil_sprite_initialize(
     &intro->sprite,
-    (struct cexil_size*) &size_intro
+    &size_intro
   );
 
   for (
-    unsigned char index_y = 0;
-    index_y < size_intro.height;
+    unsigned char index_y = (
+      0x00
+    );
+    (
+      index_y <
+      size_intro.y
+    );
     ++index_y
   ) {
     for (
-      unsigned char index_x = 0;
-      index_x < size_intro.width;
+      unsigned char index_x = (
+        0x00
+      );
+      (
+        index_x <
+        size_intro.x
+      );
       ++index_x
     ) {
-      intro->sprite.pixels[index_y][index_x] = pixels_intro[index_y][index_x];
+      intro->sprite.pixels[
+        index_y
+      ][
+        index_x
+      ] = (
+        pixels_intro[
+          index_y
+        ][
+          index_x
+        ]
+      );
     }
   }
 
-  intro->size_render.height = 0;
-  intro->size_render.width = intro->sprite.size.width;
+  intro->size_render.y = (
+    0x00
+  );
+  
+  intro->size_render.x = (
+    intro->sprite.size.x
+  );
 
   cexil_sprite_render_size_set(
     &intro->sprite,
