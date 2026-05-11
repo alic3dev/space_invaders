@@ -18,15 +18,15 @@ void player_initialize(
   player->renderer = (
     cexil_renderer
   );
-  
+
   velocity_initialize(
     &player->velocity
   );
-  
+
   player->projectile = (
     0x00
   );
-  
+
   player->speed = (
     player_default_speed
   );
@@ -62,7 +62,7 @@ void player_initialize(
     ] = (
       0x01
     );
-    
+
     player->sprite.pixels[
       0x07
     ][
@@ -115,7 +115,7 @@ void player_initialize(
       player->health_max
     )
   );
-  
+
   struct math_c_vector2_unsigned_int size_sprite_heart = {
     .x = (
       0x08
@@ -166,12 +166,12 @@ void player_initialize(
       index_health
     );
   }
-  
+
   player_visibility_set(
     player,
     0x00
   );
-  
+
   space_invaders_player_input_initialize(
     &player->input
   );
@@ -209,7 +209,7 @@ void player_reset(
   player->health = (
     player_default_health
   );
-  
+
   player->health_max = (
     player_default_health_max
   );
@@ -217,11 +217,11 @@ void player_reset(
   player_center(
     player
   );
-  
+
   clic3_memory_free(
     player->projectile
   );
-  
+
   player->projectile = (
     0x00
   );
@@ -235,7 +235,7 @@ void player_center(
     player->sprite.size.x /
     0x02
   );
-  
+
   player->sprite.position.y = (
     player->renderer->size.y -
     player->sprite.size.y -
@@ -257,7 +257,7 @@ void player_poll(
       clic3_memory_free(
         player->projectile
       );
-    
+
       player->projectile = (
         clic3_memory_allocate_raw(
           sizeof(
@@ -276,47 +276,47 @@ void player_poll(
         player->sprite.size.x /
         0x02
       );
-      
+
       player->projectile->sprite.position.y = (
         player->sprite.position.y
       );
-      
+
       break;
     }
     case space_invaders_player_input_value_left: {
       player->velocity.x = -(
         player->speed
       );
-      
+
       break;
     }
     case space_invaders_player_input_value_right: {
       player->velocity.x = (
         player->speed
       );
-      
+
       break;
     }
     case space_invaders_player_input_value_down: {
       player->velocity.x = (
         0x00
       );
-      
+
       player->velocity.y = (
         0x00
       );
-      
+
       break;
     }
     default: {
       break;
     }
   }
-  
+
   player->input.value = (
     space_invaders_player_input_value_none
   );
-  
+
   velocity_advance(
     &player->velocity
   );
@@ -325,7 +325,7 @@ void player_poll(
     player->sprite.position.x +
     player->velocity.x_rollover
   );
-  
+
   player->sprite.position.y = (
     player->sprite.position.y +
     player->velocity.y_rollover
@@ -393,7 +393,7 @@ void player_poll(
   player->velocity.x_rollover = (
     0x00
   );
-  
+
   player->velocity.y_rollover = (
     0x00
   );
@@ -480,7 +480,7 @@ void player_destroy(
   clic3_memory_free_raw(
     player->sprites_hearts
   );
-  
+
   space_invaders_player_input_destroy(
     &player->input
   );

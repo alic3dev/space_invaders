@@ -12,21 +12,22 @@
 #define player_default_health player_default_health_max
 #define player_default_speed 0x02
 
-struct player {    struct cexil_sprite sprite;
-  
+struct player {
+  struct cexil_sprite sprite;
+
   struct cexil_sprite* sprites_hearts;
-  
+
   unsigned char health;
   unsigned char health_max;
-  
+
   struct velocity velocity;
-  
+
   float speed;
 
   struct space_invaders_player_input input;
-  
+
   struct projectile* projectile;
-  
+
   struct cexil_renderer* renderer;
 };
 

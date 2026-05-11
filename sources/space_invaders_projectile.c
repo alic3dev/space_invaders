@@ -22,7 +22,7 @@ void projectile_initialize(
   velocity_initialize(
     &projectile->velocity
   );
-  
+
   projectile->velocity.x = (
     0x00
   );
@@ -35,7 +35,7 @@ void projectile_initialize(
     ? -1.25125f
     : 1.25125f
   );
-  
+
   struct math_c_vector2_unsigned_int projectile_size = {
     .x = (
       projectile_size_width
@@ -119,7 +119,7 @@ void projectile_poll(
   projectile->velocity.x_rollover = (
     0x00
   );
-  
+
   projectile->velocity.y_rollover = (
     0x00
   );

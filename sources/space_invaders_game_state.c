@@ -23,7 +23,7 @@ void game_state_initialize_with_mode(
   game_state->renderer = (
     renderer
   );
-  
+
   player_initialize(
     &game_state->player,
     game_state->renderer
@@ -72,15 +72,15 @@ void game_state_initialize_with_mode(
   game_state->aliens_columns = (
     0x0a
   );
-  
+
   game_state->aliens_rows = (
     0x04
   );
-  
+
   game_state->aliens_count = (
     0x00
   );
-  
+
   game_state->aliens = (
     clic3_memory_allocate_raw(
       sizeof(
@@ -97,15 +97,15 @@ void game_state_initialize_with_mode(
   game_state->score = (
     0x00
   );
-  
+
   game_state->total_score = (
     0x00
   );
-  
+
   game_state->total_time = (
     0x00
   );
-  
+
   game_state->level = (
     game_state_default_level
   );
@@ -142,7 +142,7 @@ void game_state_initialize_with_mode(
     game_state->mode ==
     game
   );
-  
+
   game_state->text_level.visible = (
     game_state->mode ==
     game
@@ -151,7 +151,7 @@ void game_state_initialize_with_mode(
   game_state->projectiles_player_count = (
     0x00
   );
-  
+
   game_state->projectiles_alien_count = (
     0x00
   );
@@ -214,7 +214,7 @@ void game_state_mode_set(
     ? 0x01
     : 0x00
   );
-  
+
   player_visibility_set(
     &game_state->player,
     elements_game_visible
@@ -223,7 +223,7 @@ void game_state_mode_set(
   game_state->text_score.visible = (
     elements_game_visible
   );
-  
+
   game_state->text_level.visible = (
     elements_game_visible
   );
@@ -244,7 +244,7 @@ void game_state_mode_set(
       cexil_timer_start(
         &game_state->timer
       );
-      
+
       break;
     }
     case menu: {
@@ -254,7 +254,7 @@ void game_state_mode_set(
       game_state->total_score = (
         0x00
       );
-      
+
       game_state->score = (
         0x00
       );
@@ -262,7 +262,7 @@ void game_state_mode_set(
       game_state->total_time = (
         0x00
       );
-      
+
       cexil_timer_start(
         &game_state->timer
       );
@@ -283,7 +283,7 @@ void game_state_mode_set(
       game_state_projectiles_alien_remove_all(
         game_state
       );
-      
+
       game_state_projectiles_player_remove_all(
         game_state
       );
@@ -291,7 +291,7 @@ void game_state_mode_set(
       velocity_initialize(
         &game_state->aliens_velocity
       );
-      
+
       game_state_aliens_populate(
         game_state
       );
@@ -299,7 +299,7 @@ void game_state_mode_set(
       player_reset(
         &game_state->player
       );
-      
+
       break;
     }
     case game_over: {
@@ -323,7 +323,7 @@ void game_state_aliens_populate(
     game_state->aliens_columns *
     game_state->aliens_rows
   );
-  
+
   clic3_memory_reallocate_raw(
     &game_state->aliens,
     (
@@ -348,7 +348,7 @@ void game_state_aliens_populate(
     ) -
     alien_spacing_x
   );
-  
+
   game_state->aliens_size.y = (
     game_state->aliens_rows *
     (
@@ -425,7 +425,7 @@ void game_state_aliens_populate(
           alien_spacing_x
         )
       );
-      
+
       game_state->aliens[
         index_alien
       ]->sprite.position.y = (
@@ -458,14 +458,14 @@ void game_state_progress_level(
   cexil_timer_stop(
     &game_state->timer
   );
-  
+
   game_state->total_time = (
     game_state->total_time +
     cexil_timer_time_total(
       &game_state->timer
     )
   );
-  
+
   cexil_timer_start(
     &game_state->timer
   );
@@ -487,7 +487,7 @@ void game_state_progress_level(
   game_state_projectiles_alien_remove_all(
     game_state
   );
-  
+
   game_state_projectiles_player_remove_all(
     game_state
   );
@@ -511,7 +511,7 @@ void game_state_text_score_set(
   int score = (
     game_state->score
   );
-  
+
   unsigned short int score_length;
 
   if (
@@ -608,7 +608,7 @@ void game_state_text_score_set(
         index_score
       ]
     );
-    
+
     score_char_array[
       score_length -
       0x02 -
@@ -647,7 +647,7 @@ void game_state_text_level_set(
   int level = (
     game_state->level
   );
-  
+
   unsigned short int level_length = (
     0x01
   );
@@ -730,7 +730,7 @@ void game_state_text_level_set(
         index_level
       ]
     );
-    
+
     level_char_array[
       level_length -
       0x02 -
@@ -821,12 +821,12 @@ void game_state_poll_game(
       game_state,
       game_state->player.projectile
     );
-    
+
     game_state->player.projectile = (
       0x00
     );
   }
-  
+
   for (
     long int index_projectile_player = (
       0x00
@@ -916,7 +916,7 @@ void game_state_poll_game(
       }
     }
   }
-  
+
   for (
     unsigned int index_projectile_alien = (
       0x00
@@ -1014,11 +1014,11 @@ void game_state_poll_game(
         -game_state->aliens_velocity.x -
         0.025
       );
-      
+
       game_state->aliens_velocity.x_rollover = (
         0x00
       );
-      
+
       game_state->aliens_velocity.y_rollover = (
         0x01
       );
@@ -1045,11 +1045,11 @@ void game_state_poll_game(
         -game_state->aliens_velocity.x +
         0.025
       );
-      
+
       game_state->aliens_velocity.x_rollover = (
         0x00
       );
-      
+
       game_state->aliens_velocity.y_rollover = (
         0x01
       );
@@ -1132,7 +1132,7 @@ void game_state_poll_game(
   game_state->aliens_velocity.x_rollover = (
     0x00
   );
-  
+
   game_state->aliens_velocity.y_rollover = (
     0x00
   );
@@ -1196,21 +1196,21 @@ void game_state_poll(
       game_state_poll_intro(
         game_state
       );
-      
+
       break;
     }
     case game: {
       game_state_poll_game(
         game_state
       );
-      
+
       break;
     }
     case game_over: {
       game_state_poll_game_over(
         game_state
       );
-      
+
       break;
     }
     default: {
@@ -1229,7 +1229,7 @@ void game_state_alien_remove(
       index_alien
     ]->sprite
   );
-  
+
   rand_clean(
     &game_state->aliens[
       index_alien
@@ -1527,7 +1527,7 @@ void game_state_destroy(
     );
     ++index_projectile_alien
   ) {
-  
+
     clic3_memory_free_raw(
       game_state->projectiles_alien[
         index_projectile_alien
@@ -1545,7 +1545,7 @@ void game_state_destroy(
     );
     ++index_alien
   ) {
-  
+
   rand_clean(
     &game_state->aliens[
       index_alien
@@ -1553,8 +1553,8 @@ void game_state_destroy(
     &game_state->aliens[
       index_alien
     ]->rand_source
-   ); 
-  
+   );
+
    clic3_memory_free_raw(
       game_state->aliens[
         index_alien
@@ -1565,15 +1565,15 @@ void game_state_destroy(
   clic3_memory_free_raw(
     game_state->aliens
   );
-  
+
   clic3_memory_free_raw(
     game_state->projectiles_player
   );
-  
+
   clic3_memory_free_raw(
     game_state->projectiles_alien
   );
-  
+
   player_destroy(
     &game_state->player
   );

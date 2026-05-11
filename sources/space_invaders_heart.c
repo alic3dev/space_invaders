@@ -53,7 +53,7 @@ void heart_frame_set(
       index_y *
       heart_size_width
     );
-  
+
     for (
       unsigned char index_x = (
         0x00

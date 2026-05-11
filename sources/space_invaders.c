@@ -17,7 +17,7 @@ int main(
   unsigned char skip_intro = (
     0x00
   );
-  
+
   unsigned char fill_screen = (
     0x00
   );
@@ -63,7 +63,7 @@ int main(
         skip_intro = (
           0x01
         );
-        
+
         break;
       }
       case 0x01: {
@@ -87,7 +87,7 @@ int main(
         fill_screen = (
           0x01
         );
-        
+
         break;
       }
       default: {
@@ -118,7 +118,7 @@ int main(
     size_screen.x -
     0x02
   );
-  
+
   size_screen.y = (
     size_screen.y -
     0x04
@@ -133,7 +133,7 @@ int main(
     size_renderer.x = (
       size_screen.x
     );
-    
+
     size_renderer.y = (
       size_screen.y
     );
@@ -141,7 +141,7 @@ int main(
     size_renderer.x = (
       space_invaders_renderer_width_default
     );
-    
+
     size_renderer.y = (
       space_invaders_renderer_height_default
     );
@@ -226,7 +226,7 @@ int main(
   );
 
   struct game_state game_state;
-  
+
   game_state_initialize(
     &game_state,
     &renderer

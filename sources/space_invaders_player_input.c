@@ -13,7 +13,7 @@ void space_invaders_player_input_initialize(
   space_invaders_player_input->value = (
     space_invaders_player_input_value_none
   );
-  
+
   space_invaders_player_input->active = (
     0x01
   );
@@ -70,14 +70,14 @@ void* space_invaders_player_input_thread(
   );
 
   int player_input_intermediary;
-  
+
   int player_input_intermediary_buffer[
     0x02
   ] = {
     0x00,
     0x00
   };
-  
+
   unsigned char player_input_intermediary_buffer_index = (
     0x00
   );
@@ -100,7 +100,7 @@ void* space_invaders_player_input_thread(
           ] = (
             player_input_intermediary
           );
-          
+
           player_input_intermediary_buffer_index = (
             0x01
           );
@@ -110,18 +110,18 @@ void* space_invaders_player_input_thread(
           ] = (
             0x00
           );
-          
+
           player_input_intermediary_buffer[
             0x01
           ] = (
             0x00
           );
-          
+
           player_input_intermediary_buffer_index = (
             0x00
           );
         }
-        
+
         break;
       }
       case clic3_char_value_square_bracket_opening: {
@@ -134,7 +134,7 @@ void* space_invaders_player_input_thread(
           ] = (
             player_input_intermediary
           );
-          
+
           player_input_intermediary_buffer_index = (
             0x02
           );
@@ -144,18 +144,18 @@ void* space_invaders_player_input_thread(
           ] = (
             0x00
           );
-          
+
           player_input_intermediary_buffer[
             0x01
           ] = (
             0x00
           );
-          
+
           player_input_intermediary_buffer_index = (
             0x00
           );
         }
-        
+
         break;
       }
       case clic3_char_value_A: {
@@ -173,13 +173,13 @@ void* space_invaders_player_input_thread(
         ] = (
           0x00
         );
-        
+
         player_input_intermediary_buffer[
           0x01
         ] = (
           0x00
         );
-        
+
         player_input_intermediary_buffer_index = (
           0x00
         );
@@ -201,13 +201,13 @@ void* space_invaders_player_input_thread(
         ] = (
           0x00
         );
-        
+
         player_input_intermediary_buffer[
           0x01
         ] = (
           0x00
         );
-        
+
         player_input_intermediary_buffer_index = (
           0x00
         );
@@ -229,13 +229,13 @@ void* space_invaders_player_input_thread(
         ] = (
           0x00
         );
-        
+
         player_input_intermediary_buffer[
           0x01
         ] = (
           0x00
         );
-        
+
         player_input_intermediary_buffer_index = (
           0x00
         );
@@ -257,13 +257,13 @@ void* space_invaders_player_input_thread(
         ] = (
           0x00
         );
-        
+
         player_input_intermediary_buffer[
           0x01
         ] = (
           0x00
         );
-        
+
         player_input_intermediary_buffer_index = (
           0x00
         );
@@ -276,13 +276,13 @@ void* space_invaders_player_input_thread(
         ] = (
           0x00
         );
-        
+
         player_input_intermediary_buffer[
           0x01
         ] = (
           0x00
         );
-        
+
         player_input_intermediary_buffer_index = (
           0x00
         );

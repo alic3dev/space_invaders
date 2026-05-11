@@ -7,7 +7,7 @@ struct velocity {
 
   float x_buffer;
   float y_buffer;
-  
+
   signed int x_rollover;
   signed int y_rollover;
 };

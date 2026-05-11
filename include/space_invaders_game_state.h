@@ -31,14 +31,14 @@ struct game_state {
 
   struct alien** aliens;
   unsigned short int aliens_count;
-  
+
   unsigned char aliens_rows;
   unsigned char aliens_columns;
-  
+
   struct math_c_vector2_int aliens_position;
-  
+
   struct math_c_vector2_unsigned_int aliens_size;
-  
+
   struct velocity aliens_velocity;
 
   struct cexil_timer timer;
