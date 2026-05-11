@@ -146,7 +146,7 @@ void alien_initialize(
   alien->game_state = (
     game_state
   );
-  
+
   rand_initialize(
     &alien->rand_parameters,
     &alien->rand_result,
@@ -154,6 +154,10 @@ void alien_initialize(
     0xff,
     rand_mode_bytes,
     rand_source_type_divisive
+  );
+
+  alien->index_rand = (
+    0x00
   );
 }
 
@@ -202,7 +206,7 @@ void alien_poll(
   struct alien* alien
 ) {
   if (
-    alien->index_rand == 
+    alien->index_rand ==
     0x00
   ) {
     rand_get(
@@ -220,15 +224,8 @@ void alien_poll(
     ) >=
     0xfe
   ) {
-    alien->index_rand = (      (
-        alien->index_rand
-+
-        0x01
-      ) %      alien->rand_result.length 
-    );
-  
     static struct projectile* projectile;
-    
+
     projectile = (
       clic3_memory_allocate_raw(
         sizeof(
@@ -247,7 +244,7 @@ void alien_poll(
       alien->sprite.size.x /
       0x02
     );
-    
+
     projectile->sprite.position.y = (
       alien->sprite.position.y +
       alien->sprite.size.y
@@ -258,4 +255,12 @@ void alien_poll(
       projectile
     );
   }
+
+  alien->index_rand = (
+    (
+      alien->index_rand +
+      0x01
+    ) %
+    alien->rand_result.length
+  );
 }
