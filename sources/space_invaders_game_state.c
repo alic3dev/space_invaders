@@ -362,7 +362,7 @@ void game_state_aliens_populate(
   );
 
   for (
-    unsigned char y_index = (
+    unsigned long long int y_index = (
       0x00
     );
     (
@@ -371,13 +371,13 @@ void game_state_aliens_populate(
     );
     ++y_index
   ) {
-    unsigned char y_offset = (
+    unsigned long long int y_offset = (
       y_index *
       game_state->aliens_columns
     );
 
     for (
-      unsigned char x_index = (
+      unsigned long long int x_index = (
         0x00
       );
       (
@@ -386,7 +386,7 @@ void game_state_aliens_populate(
       );
       ++x_index
     ) {
-      unsigned char index_alien = (
+      unsigned long long int index_alien = (
         y_offset +
         x_index
       );
@@ -496,11 +496,11 @@ void game_state_progress_level(
 void game_state_text_score_set(
   struct game_state* game_state
 ) {
-  int score = (
+  long long int score = (
     game_state->score
   );
 
-  unsigned short int score_length;
+  unsigned long long int score_length;
 
   if (
     score <
@@ -566,7 +566,7 @@ void game_state_text_score_set(
   }
 
   for (
-    unsigned short int index_score = (
+    unsigned long long int index_score = (
       0x00
     );
     (
@@ -632,11 +632,11 @@ void game_state_text_score_set(
 void game_state_text_level_set(
   struct game_state* game_state
 ) {
-  int level = (
+  unsigned long long int level = (
     game_state->level
   );
 
-  unsigned short int level_length = (
+  unsigned long long int level_length = (
     0x01
   );
 
@@ -650,7 +650,7 @@ void game_state_text_level_set(
     level >=
     0x00
   ) {
-    unsigned int level_part = (
+    unsigned long long int level_part = (
       level /
       0x0a
     );
@@ -688,7 +688,7 @@ void game_state_text_level_set(
   }
 
   for (
-    unsigned short int index_level = (
+    unsigned long long int index_level = (
       0x00
     );
     (
@@ -816,7 +816,7 @@ void game_state_poll_game(
   }
 
   for (
-    long int index_projectile_player = (
+    unsigned long long int index_projectile_player = (
       0x00
     );
     (
@@ -851,7 +851,7 @@ void game_state_poll_game(
     }
 
     for (
-      long int index_alien = (
+      unsigned long long int index_alien = (
         0x00
       );
       (
@@ -906,7 +906,7 @@ void game_state_poll_game(
   }
 
   for (
-    unsigned int index_projectile_alien = (
+    unsigned long long int index_projectile_alien = (
       0x00
     );
     (
@@ -1054,7 +1054,7 @@ void game_state_poll_game(
   }
 
   for (
-    long int index_alien = (
+    unsigned long long int index_alien = (
       0x00
     );
     (
@@ -1217,7 +1217,7 @@ void game_state_poll(
 
 void game_state_alien_remove(
   struct game_state* game_state,
-  unsigned short int index_alien
+  unsigned long long int index_alien
 ) {
   cexil_renderer_sprite_remove(
     game_state->renderer,
@@ -1247,7 +1247,7 @@ void game_state_alien_remove(
   );
 
   for (
-    long int index_remaining_alien = (
+    unsigned long long int index_remaining_alien = (
       index_alien
     );
     (
@@ -1288,7 +1288,7 @@ void game_state_aliens_remove_all(
   }
 
   for (
-    unsigned short int index_alien = (
+    unsigned long long int index_alien = (
       game_state->aliens_count
     );
     (
@@ -1311,7 +1311,7 @@ void game_state_projectile_add(
   struct game_state* game_state,
   struct projectile* projectile,
   struct projectile*** projectiles,
-  unsigned short int* projectiles_count
+  unsigned long long int* projectiles_count
 ) {
   *projectiles_count = (
     *projectiles_count +
@@ -1368,8 +1368,8 @@ void game_state_projectile_player_add(
 void game_state_projectile_remove(
   struct game_state* game_state,
   struct projectile*** projectiles,
-  unsigned short int index_projectile,
-  unsigned short int* projectiles_count
+  unsigned long long int index_projectile,
+  unsigned long long int* projectiles_count
 ) {
   cexil_renderer_sprite_remove(
     game_state->renderer,
@@ -1392,7 +1392,7 @@ void game_state_projectile_remove(
   );
 
   for (
-    long int index_remaining_projectile = (
+    unsigned long long int index_remaining_projectile = (
       index_projectile
     );
     (
@@ -1424,7 +1424,7 @@ void game_state_projectile_remove(
 
 void game_state_projectile_alien_remove(
   struct game_state* game_state,
-  unsigned short int index_projectile
+  unsigned long long int index_projectile
 ) {
   game_state_projectile_remove(
     game_state,
@@ -1436,7 +1436,7 @@ void game_state_projectile_alien_remove(
 
 void game_state_projectile_player_remove(
   struct game_state* game_state,
-  unsigned short int index_projectile
+  unsigned long long int index_projectile
 ) {
   game_state_projectile_remove(
     game_state,
@@ -1449,10 +1449,10 @@ void game_state_projectile_player_remove(
 void game_state_projectiles_remove_all(
   struct game_state* game_state,
   struct projectile*** projectiles,
-  unsigned short int* projectiles_count
+  unsigned long long int* projectiles_count
 ) {
   for (
-    unsigned int index_projectile = (
+    unsigned long long int index_projectile = (
       *projectiles_count
     );
     (
@@ -1497,7 +1497,7 @@ void game_state_destroy(
   struct game_state* game_state
 ) {
   for (
-    unsigned int index_projectile_player = (
+    unsigned long long int index_projectile_player = (
       0x00
     );
     (
@@ -1514,7 +1514,7 @@ void game_state_destroy(
   }
 
   for (
-    unsigned int index_projectile_alien = (
+    unsigned long long int index_projectile_alien = (
       0x00
     );
     (
@@ -1532,7 +1532,7 @@ void game_state_destroy(
   }
 
   for (
-    unsigned int index_alien = (
+    unsigned long long int index_alien = (
       0x00
     );
     (

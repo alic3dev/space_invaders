@@ -9,6 +9,7 @@
 
 #include <interrupt_handler.h>
 
+#include <math_c_maximum.h>
 #include <math_c_vector.h>
 
 #include <stdio.h>
@@ -164,6 +165,39 @@ int main(
     &game_state,
     &renderer
   );
+  
+  if (
+    space_invaders_parameters &
+    space_invaders_parameter_fill_screen
+  ) {
+    game_state.aliens_columns = (
+      math_c_maximum_unsigned_int(
+        (
+          size_renderer.x /
+          (
+            alien_size_width +
+            alien_spacing_x
+          ) -
+          0x04
+        ),
+        0x01
+      )
+    );
+    
+    game_state.aliens_rows = (
+      math_c_maximum_unsigned_int(
+        (
+          size_renderer.y /
+          (
+            alien_size_height +
+            alien_spacing_y
+          ) /
+          0x02
+        ),
+        0x01
+      )
+    );
+  }
 
   if (
     space_invaders_parameters &
@@ -222,9 +256,9 @@ int main(
   
     printf(
       "game_over\n\n"
-      "total_score->{%i}\n"
+      "total_score->{%lli}\n"
       "total_time->{%llu_seconds}\n"
-      "level->{%u}\n"
+      "level->{%llu}\n"
       "\n",
       game_state.total_score,
       (

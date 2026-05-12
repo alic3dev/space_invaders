@@ -22,18 +22,18 @@ struct game_state {
   struct cexil_text text_score;
   struct cexil_text text_level;
 
-  int score;
-  int total_score;
+  long long int score;
+  long long int total_score;
 
   unsigned long long int total_time;
 
   struct player player;
 
   struct alien** aliens;
-  unsigned short int aliens_count;
+  unsigned long long int aliens_count;
 
-  unsigned char aliens_rows;
-  unsigned char aliens_columns;
+  unsigned long long int aliens_rows;
+  unsigned long long int aliens_columns;
 
   struct math_c_vector2_int aliens_position;
 
@@ -42,15 +42,15 @@ struct game_state {
   struct velocity aliens_velocity;
 
   struct cexil_timer timer;
-  unsigned int level;
+  unsigned long long int level;
 
   struct cexil_renderer* renderer;
 
   struct projectile** projectiles_player;
   struct projectile** projectiles_alien;
 
-  unsigned short int projectiles_player_count;
-  unsigned short int projectiles_alien_count;
+  unsigned long long int projectiles_player_count;
+  unsigned long long int projectiles_alien_count;
 };
 
 void game_state_initialize_with_mode(
@@ -107,7 +107,7 @@ void game_state_totals_set(
 
 void game_state_alien_remove(
   struct game_state*,
-  unsigned short int index_alien
+  unsigned long long int index_alien
 );
 
 void game_state_aliens_remove_all(
@@ -118,7 +118,7 @@ void game_state_projectile_add(
   struct game_state* game_state,
   struct projectile* projectile,
   struct projectile*** projectiles,
-  unsigned short int* projectiles_count
+  unsigned long long int* projectiles_count
 );
 
 void game_state_projectile_player_add(
@@ -134,24 +134,24 @@ void game_state_projectile_alien_add(
 void game_state_projectile_remove(
   struct game_state*,
   struct projectile***,
-  unsigned short int,
-  unsigned short int*
+  unsigned long long int,
+  unsigned long long int*
 );
 
 void game_state_projectile_player_remove(
   struct game_state*,
-  unsigned short int
+  unsigned long long int
 );
 
 void game_state_projectile_alien_remove(
   struct game_state*,
-  unsigned short int
+  unsigned long long int
 );
 
 void game_state_projectiles_remove_all(
   struct game_state*,
   struct projectile***,
-  unsigned short int*
+  unsigned long long int*
 );
 
 void game_state_projectiles_alien_remove_all(
