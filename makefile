@@ -13,7 +13,7 @@ version_target_math_c=0
 version_target_rand=0
 
 directory_cer0=../cer0
-directory_cer0_include=${directory_cer0}
+directory_cer0_include=${directory_cer0}/include
 directory_cer0_library=${directory_cer0}/library/macos/release
 
 directory_cexil=../cexil
