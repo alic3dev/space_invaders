@@ -40,7 +40,7 @@ unsigned char space_invaders_parameters_parse(
           space_invaders_parameters |
           space_invaders_parameter_fill_screen
         );
-      
+
         break;
       }
       case 0x02:
@@ -49,7 +49,7 @@ unsigned char space_invaders_parameters_parse(
           space_invaders_parameters |
           space_invaders_parameter_skip_intro
         );
-        
+
         break;
       }
       default: {
@@ -60,14 +60,14 @@ unsigned char space_invaders_parameters_parse(
             index_parameter
           ]
         );
-        
+
         return (
           space_invaders_parameter_error
         );
       }
     }
   }
-  
+
   return (
     space_invaders_parameters
   );

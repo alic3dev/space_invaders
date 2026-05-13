@@ -1152,11 +1152,11 @@ void game_state_totals_set(
     game_state->total_score +
     game_state->score
   );
-  
+
   cexil_timer_stop(
     &game_state->timer
   );
-  
+
   game_state->total_time = (
     game_state->total_time +
     cexil_timer_time_total(

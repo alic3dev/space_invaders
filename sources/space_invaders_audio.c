@@ -26,18 +26,18 @@ int space_invaders_audio_output_io_proc(
         index_buffer
       ]
     );
-    
+
     float* buffer_out = (
       audio_buffer_current.mData
     );
-    
+
     unsigned long int length_buffer_out = (
       audio_buffer_current.mDataByteSize /
       sizeof(
         float
       )
     );
-    
+
     for (
       unsigned long int index_buffer_out = (
         0x00

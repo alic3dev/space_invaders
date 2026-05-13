@@ -33,7 +33,7 @@ int main(
       )
     )
   );
-  
+
   if (
     space_invaders_parameters ==
     space_invaders_parameter_error
@@ -42,7 +42,7 @@ int main(
       0x01
     );
   }
-  
+
   interrupt_handler_initialize();
 
   struct math_c_vector2_unsigned_int size_screen;
@@ -168,7 +168,7 @@ int main(
     &game_state,
     &renderer
   );
-  
+
   if (
     space_invaders_parameters &
     space_invaders_parameter_fill_screen
@@ -186,7 +186,7 @@ int main(
         0x01
       )
     );
-    
+
     game_state.aliens_rows = (
       math_c_maximum_unsigned_int(
         (
@@ -211,14 +211,14 @@ int main(
       game
     );
   }
-  
+
   struct cer0_audio_output cer0_audio_output;
   static struct space_invaders_audio_output_io_proc_data space_invaders_audio_output_io_proc_data;
-  
+
   space_invaders_audio_output_io_proc_data.game_state = (
     &game_state
   );
-  
+
   cer0_audio_output_initialize(
     &cer0_audio_output,
     space_invaders_audio_output_io_proc,
@@ -269,7 +269,7 @@ int main(
         &game_state
       );
     }
-  
+
     printf(
       "game_over\n\n"
       "total_score->{%lli}\n"
@@ -284,11 +284,11 @@ int main(
       game_state.level
     );
   }
-  
+
   cer0_audio_output_destroy(
     &cer0_audio_output
   );
-  
+
   printf(
     "press_any_key_to_exit\n"
   );
