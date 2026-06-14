@@ -213,16 +213,27 @@ int main(
   }
 
   struct cer0_audio_output cer0_audio_output;
-  static struct space_invaders_audio_output_io_proc_data space_invaders_audio_output_io_proc_data;
-
-  space_invaders_audio_output_io_proc_data.game_state = (
-    &game_state
+  
+  game_state.audio.initialized = (
+    0x00
+  );
+  
+  game_state.audio.index_synthesizer_lazer = (
+    0x00
+  );
+  
+  game_state.audio.index_synthesizer_explosion = (
+    0x00
+  );
+  
+  game_state.audio.rate_sample = &(
+    cer0_audio_output.sample_rate
   );
 
   cer0_audio_output_initialize(
     &cer0_audio_output,
     space_invaders_audio_output_io_proc,
-    &space_invaders_audio_output_io_proc_data
+    &game_state
   );
 
   while (
@@ -296,7 +307,7 @@ int main(
   game_state_destroy(
     &game_state
   );
-
+  
   return (
     0x00
   );

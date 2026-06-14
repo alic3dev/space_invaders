@@ -1,6 +1,7 @@
 #include <space_invaders_game_state.h>
 
 #include <space_invaders_alien.h>
+#include <space_invaders_audio.h>
 #include <space_invaders_intro.h>
 #include <space_invaders_mode.h>
 #include <space_invaders_player.h>
@@ -1572,5 +1573,9 @@ void game_state_destroy(
 
   player_destroy(
     &game_state->player
+  );
+  
+  space_invaders_audio_output_io_proc_data_destroy(
+    &game_state->audio
   );
 }

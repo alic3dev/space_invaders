@@ -2,6 +2,7 @@
 #define __space_invaders_game_state_h
 
 #include <space_invaders_alien.h>
+#include <space_invaders_audio.h>
 #include <space_invaders_intro.h>
 #include <space_invaders_mode.h>
 #include <space_invaders_player.h>
@@ -51,6 +52,8 @@ struct game_state {
 
   unsigned long long int projectiles_player_count;
   unsigned long long int projectiles_alien_count;
+  
+  struct space_invaders_audio_output_io_proc_data audio;
 };
 
 void game_state_initialize_with_mode(
