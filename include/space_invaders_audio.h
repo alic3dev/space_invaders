@@ -5,9 +5,11 @@
 
 #include <CoreAudio/CoreAudio.h>
 
-#define space_invaders_audio_output_io_proc_data_length_synthesizers 0x0a
+#include <pthread.h>
+
+#define space_invaders_audio_output_io_proc_data_length_synthesizers 0x30
 #define space_invaders_audio_output_io_proc_data_index_synthesizer_lazer 0x00
-#define space_invaders_audio_output_io_proc_data_index_synthesizer_explosion 0x05
+#define space_invaders_audio_output_io_proc_data_index_synthesizer_explosion 0x15
 
 struct space_invaders_audio_output_io_proc_data {
   struct cer0_synthesizer synthesizers[
@@ -20,6 +22,8 @@ struct space_invaders_audio_output_io_proc_data {
   float* rate_sample;
   
   unsigned char initialized;
+  
+  pthread_mutex_t mutex;
 };
 
 int space_invaders_audio_output_io_proc(

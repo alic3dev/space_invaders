@@ -4,7 +4,11 @@
 
 #include <cer0_synthesizer.h>
 
+#include <math_c_minimum.h>
+
 #include <CoreAudio/CoreAudio.h>
+
+#include <pthread.h>
 
 int space_invaders_audio_output_io_proc(
   AudioObjectID id_audio_object,
@@ -48,7 +52,36 @@ int space_invaders_audio_output_io_proc(
         cer0_synthesizer,
         square  
       );
+      
+      cer0_synthesizer->attack_sustain_decay_release_parameters.attack = (
+        0.0f
+      );
+      
+      cer0_synthesizer->attack_sustain_decay_release_parameters.sustain = (
+        0.1f
+      );
+      
+      cer0_synthesizer->attack_sustain_decay_release_parameters.decay = (
+        0.2f
+      );
+      
+      cer0_synthesizer->attack_sustain_decay_release_parameters.release = (
+        0.7f
+      );
+      
+      cer0_synthesizer->length_attack_sustain_decay_release = (
+        0x4fff
+      );      
     }
+    
+    pthread_mutex_init(
+      &game_state->audio.mutex,
+      0x00
+    );
+    
+    game_state->audio.initialized = (
+      0x01
+    );
   }
 
   for (
@@ -77,6 +110,10 @@ int space_invaders_audio_output_io_proc(
         float
       )
     );
+    
+    float value = (
+      0x00
+    );
 
     for (
       unsigned long int index_buffer_out = (
@@ -87,47 +124,86 @@ int space_invaders_audio_output_io_proc(
         length_buffer_out
       );
       ++index_buffer_out
-    ) {
-      float value = (
-        0x00
-      );
-      
-      unsigned char active_synthesizers = (
-        0x00
-      );
-      
-      for (
-        unsigned char index_synthesizer = (
-          0x00
-        );
+    ) {      
+      if (
         (
-          index_synthesizer <
-          space_invaders_audio_output_io_proc_data_length_synthesizers
-        );
-        ++index_synthesizer
+          index_buffer_out %
+          0x02
+        ) ==
+        0x00
       ) {
-        struct cer0_synthesizer* cer0_synthesizer = &(
-          game_state->audio.synthesizers[
-            index_synthesizer
-          ]
+        value = (
+          0x00
+        );
+        
+        unsigned char active_synthesizers = (
+          0x00
         );
       
-        if (
-          cer0_synthesizer->frequency !=
-          0x00
+        pthread_mutex_lock(
+          &game_state->audio.mutex
+        );
+      
+        for (
+          unsigned char index_synthesizer = (
+            0x00
+          );
+          (
+            index_synthesizer <
+            space_invaders_audio_output_io_proc_data_length_synthesizers
+          );
+          ++index_synthesizer
         ) {
-          active_synthesizers = (
-            active_synthesizers +
-            0x01
+          struct cer0_synthesizer* cer0_synthesizer = &(
+            game_state->audio.synthesizers[
+              index_synthesizer
+            ]
           );
-  
-          value = (
-            value +
-            cer0_synthesizer_poll(
-              cer0_synthesizer
+      
+          if (
+            (
+              cer0_synthesizer->frequency >
+              0x00
+            ) &&
+            (
+              cer0_synthesizer->index_attack_sustain_decay_release <
+              (
+                cer0_synthesizer->length_attack_sustain_decay_release -
+                0x02
+              )
             )
-          );
+          ) {
+            active_synthesizers = (
+              active_synthesizers +
+              0x01
+            );                        
+    
+            value = (
+              value +
+              cer0_synthesizer_poll(
+                cer0_synthesizer
+              )
+            );
+            
+            cer0_synthesizer_frequency_set(
+              cer0_synthesizer,
+              (
+                cer0_synthesizer->frequency -
+                0.05f
+              )
+            );
+          }
         }
+        
+        value = (
+          value /
+          (float)
+          active_synthesizers
+        );
+      
+        pthread_mutex_unlock(
+          &game_state->audio.mutex
+        );
       }
       
       buffer_out[
@@ -161,5 +237,9 @@ void space_invaders_audio_output_io_proc_data_destroy(
         index_synthesizer
       ]
     );
-  }  
+  }
+  
+  pthread_mutex_destroy(
+    &space_invaders_audio_output_io_proc_data->mutex
+  );  
 }

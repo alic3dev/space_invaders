@@ -15,6 +15,7 @@
 #include <rand_clean.h>
 
 #include <stdio.h>
+#include <pthread.h>
 
 void game_state_initialize_with_mode(
   struct game_state* game_state,
@@ -1339,6 +1340,29 @@ void game_state_projectile_add(
   cexil_renderer_sprite_add(
     game_state->renderer,
     &projectile->sprite
+  );
+  
+  pthread_mutex_lock(
+    &game_state->audio.mutex
+  );
+      
+  cer0_synthesizer_frequency_play(
+    &game_state->audio.synthesizers[
+      game_state->audio.index_synthesizer_lazer
+    ],
+    0x01f4
+  );
+  
+  game_state->audio.index_synthesizer_lazer = (
+    (
+      game_state->audio.index_synthesizer_lazer +
+      0x01
+    ) %
+    space_invaders_audio_output_io_proc_data_index_synthesizer_explosion
+  );
+  
+  pthread_mutex_unlock(
+    &game_state->audio.mutex
   );
 }
 
