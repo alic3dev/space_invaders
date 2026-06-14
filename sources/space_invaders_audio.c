@@ -195,11 +195,16 @@ int space_invaders_audio_output_io_proc(
           }
         }
         
-        value = (
-          value /
-          (float)
-          active_synthesizers
-        );
+        if (
+          active_synthesizers >
+          0x00
+        ) {
+          value = (
+            value /
+            (float)
+            active_synthesizers
+          );
+        }
       
         pthread_mutex_unlock(
           &game_state->audio.mutex
