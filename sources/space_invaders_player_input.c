@@ -17,6 +17,7 @@ void space_invaders_player_input_initialize(
   space_invaders_player_input->active = (
     0x01
   );
+
   pthread_create(
     &space_invaders_player_input->thread,
     0x00,
