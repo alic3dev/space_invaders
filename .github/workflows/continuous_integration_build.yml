@@ -107,12 +107,12 @@ jobs:
         with:
           repository: alic3dev/rand
           path: rand
-      - name: make_clic3
-        if: steps.cache_restore_clic3.outputs.cache-hit != 'true'
-        run: cd clic3 && make clic3_object clic3_dylib target_device_version=${{ env.target_device_version }}
       - name: make_interrupt_handler
         if: steps.cache_restore_interrupt_handler.outputs.cache-hit != 'true'
         run: cd interrupt_handler && make interrupt_handler_dylib target_device_version=${{ env.target_device_version }}
+      - name: make_clic3
+        if: steps.cache_restore_clic3.outputs.cache-hit != 'true'
+        run: cd clic3 && make clic3_object clic3_dylib target_device_version=${{ env.target_device_version }}
       - name: make_math_c
         if: steps.cache_restore_math_c.outputs.cache-hit != 'true'
         run: cd math_c && make math_c_object math_c_dylib target_device_version=${{ env.target_device_version }}
